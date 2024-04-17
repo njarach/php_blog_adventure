@@ -1,0 +1,4 @@
+# Ignore IDE-related files and directories
+.idea/
+.vscode/
+*.vcs.xml
