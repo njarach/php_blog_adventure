@@ -3,9 +3,11 @@
 require_once 'vendor/autoload.php';
 
 use src\controller\BlogPostController;
+use src\controller\ErrorController;
 
-// Instantiate the BlogPostController
+// Instantiate the Controllers
 $blogPostController = new BlogPostController();
+$errorController = new ErrorController();
 
 // Get the URL path
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -24,5 +26,5 @@ switch ($path) {
     default:
         // Handle 404 Not Found
         http_response_code(404);
-        echo '404 Not Found';
+        $errorController->show();
 }
