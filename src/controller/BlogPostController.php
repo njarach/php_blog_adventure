@@ -7,7 +7,7 @@ class BlogPostController extends Controller
     public function index() {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
-             'cache' => __DIR__ . '/cache',
+             'cache' => 'cache',
         ]);
         $blogPosts = array();
         $blogPosts[1]=['title'=>'Titre1','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
@@ -22,7 +22,7 @@ class BlogPostController extends Controller
     public function show($postId) {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
-             'cache' => __DIR__ . '/cache',
+             'cache' => 'cache',
         ]);
         $blogPosts = array();
         $blogPosts[1]=['title'=>'Titre1','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
