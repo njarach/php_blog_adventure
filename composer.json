@@ -1,0 +1,21 @@
+{
+  "name": "njarach/php_blog_adventure",
+  "description": "PHP from scratch blog project.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "nicol",
+      "email": "nicolas.jarachh@hotmail.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "^3.0",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "src\\": "src/"
+    }
+  }
+}

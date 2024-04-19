@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    <h1>ARTICLE {{ post.title }}</h1>
+{% endblock %}
+{% block body %}
+        <div>{{ post.title }}</div>
+        <div>{{ post.content }}</div>
+        <div>{{ post.author_id }}</div>
+        <div>{{ post.created_at }}</div>
+{% endblock %}
