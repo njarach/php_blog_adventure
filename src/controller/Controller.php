@@ -14,7 +14,7 @@ class Controller
     {
         $loader = new FilesystemLoader('templates');
         return new Environment($loader, [
-            'cache' => 'cache',
+            'cache' => false,
         ]);
 
     }
