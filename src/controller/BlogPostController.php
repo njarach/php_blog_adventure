@@ -1,7 +1,5 @@
 <?php
-namespace controller;
-
-use src\Controller;
+namespace src\controller;
 
 class BlogPostController extends Controller
 {

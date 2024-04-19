@@ -1,0 +1,15 @@
+{
+  "name": "vendor_name/php_blog_adventure",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "nicol",
+      "email": "nicolas.jarachh@hotmail.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "^3.0"
+  }
+}
