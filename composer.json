@@ -1,6 +1,6 @@
 {
-  "name": "vendor_name/php_blog_adventure",
-  "description": "description",
+  "name": "njarach/php_blog_adventure",
+  "description": "PHP from scratch blog project.",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
@@ -11,5 +11,10 @@
   ],
   "require": {
     "twig/twig": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "src\\": "src/"
+    }
   }
 }

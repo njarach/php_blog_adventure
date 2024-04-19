@@ -1,40 +1,37 @@
 <?php
 namespace src\controller;
 
+require 'vendor/autoload.php';
 class BlogPostController extends Controller
 {
-    // This controller handles BlogPost related actions. It also needs to handle the CRUD for BlogPosts (maybe before adding an Admin section if more cruds and admin actions are needed) with admin verification.
-    public function index():array {
+    public function index() {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+             'cache' => __DIR__ . '/cache',
+        ]);
         $blogPosts = array();
-        $blogPosts[1]=['Titre1','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[2]=['Titre2','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[3]=['Titre3','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[4]=['Titre4','Contenu du blog post','Auteur du post','Catégorie du post'];
-//        // Retrieves the posts from the database
-//        $query = $this->pdo->query("SELECT * FROM posts");
-//        $post = $query->fetchAll(PDO::FETCH_ASSOC);
-//        // Render the view ?
-//        include_once '../view/post/index.php';
-        return $blogPosts;
+        $blogPosts[1]=['title'=>'Titre1','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[2]=['title'=>'Titre2','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[3]=['title'=>'Titre3','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[4]=['title'=>'Titre4','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+
+        echo $twig->render('blogpost/index.html.twig',[
+            'posts'=>$blogPosts
+        ]);
     }
     public function show($postId) {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+             'cache' => __DIR__ . '/cache',
+        ]);
         $blogPosts = array();
-        $blogPosts[1]=['Titre1','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[2]=['Titre1','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[3]=['Titre1','Contenu du blog post','Auteur du post','Catégorie du post'];
-        $blogPosts[4]=['Titre1','Contenu du blog post','Auteur du post','Catégorie du post'];
-        return $blogPosts[$postId];
-//        // Retrieves the posts from the database
-//        $query = $this->pdo->prepare("SELECT * FROM posts WHERE id = ?");
-//        $query->execute([$postId]);
-//        $post = $query->fetch(PDO::FETCH_ASSOC);
-//
-//        // Fetch comments for the post
-//        $commentQuery = $this->pdo->prepare("SELECT * FROM comments WHERE post_id = ?");
-//        $commentQuery->execute([$postId]);
-//        $comments = $commentQuery->fetchAll(PDO::FETCH_ASSOC);
-//
-//        // Render the view
-//        include_once '../view/post/show.php';
+        $blogPosts[1]=['title'=>'Titre1','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[2]=['title'=>'Titre2','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[3]=['title'=>'Titre3','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPosts[4]=['title'=>'Titre4','content'=>"contenu de l'article",'author'=>"auteur de l'article",'category'=>"catégorie de l'article"];
+        $blogPost = $blogPosts[$postId];
+        echo $twig->render('blogpost/show.html.twig', [
+            'post'=>$blogPost
+        ]);
     }
 }
