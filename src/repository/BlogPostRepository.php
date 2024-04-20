@@ -4,7 +4,7 @@ namespace src\Repository;
 
 use src\model\BlogPost;
 
-class BlogPostRepository extends Repository
+class BlogPostRepository extends AbstractRepository
 {
     public function findAll(): array
     {
@@ -45,4 +45,5 @@ class BlogPostRepository extends Repository
 
         return $post;
     }
+
 }

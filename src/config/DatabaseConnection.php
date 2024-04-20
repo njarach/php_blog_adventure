@@ -15,7 +15,7 @@ class DatabaseConnection
             try {
                 self::$instance = new PDO('mysql:host=localhost;dbname=php_blog_adventure', 'root', '');
             } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
+                die("Erreur de connexion à la base de données: " . $e->getMessage());
             }
         }
         return self::$instance;

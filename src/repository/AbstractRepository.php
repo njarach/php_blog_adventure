@@ -4,7 +4,7 @@ namespace src\repository;
 
 use src\config\DatabaseConnection;
 
-class Repository
+class AbstractRepository
 {
     protected DatabaseConnection $connection;
 
