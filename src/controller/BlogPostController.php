@@ -3,7 +3,7 @@ namespace src\controller;
 
 use src\Repository\BlogPostRepository;
 
-class BlogPostController extends Controller
+class BlogPostController extends AbstractController
 {
     public function index() {
         $blogPostRepository = new BlogPostRepository();

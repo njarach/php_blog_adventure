@@ -1,3 +1,4 @@
 /vendor/
 /.idea/vcs.xml
 /cache/*
+/.idea/symfony2.xml
