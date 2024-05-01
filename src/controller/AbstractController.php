@@ -16,7 +16,6 @@ class AbstractController
         return new Environment($loader, [
             'cache' => false,
         ]);
-
     }
 
     /**
