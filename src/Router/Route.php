@@ -26,6 +26,7 @@ class Route
         $path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
         $pathToMatch = "#^$path$#i";
         if(preg_match($pathToMatch, $url, $matches)){
+            array_shift($matches);
             $this->matches = $matches;
             return true;
         }
@@ -42,11 +43,14 @@ class Route
 
     public function execute()
     {
-        $params = explode('#', $this->action);
-        $controller = "src\\controller\\" . $params[0] . "Controller";
-        $controller = new $controller();
-        $method = $params[1];
-        return isset($this->matches[1]) ? $controller->$method($this->matches[1]) : $controller->$method();
+        if (is_string($this->action)) {
+            $params = explode('#', $this->action);
+            $controller = "src\\controller\\" . $params[0] . "Controller";
+            $controller = new $controller();
+            return call_user_func_array([$controller, $params[1]], $this->matches);
+        } else {
+            return call_user_func_array($this->action, $this->matches);
+        }
     }
 
     public function getUrl($params): array|string|null

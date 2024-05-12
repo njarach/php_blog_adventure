@@ -7,6 +7,9 @@ class Router
 {
     private string $url;
     private array $routes = [];
+    private array $namedRoutes = [];
+//    This variable stores the scope of the route (if any, usually admin)
+    private string $groupPattern = '';
 
     public function __construct($url){
         $this->url = $url;
@@ -34,6 +37,9 @@ class Router
 
     private function add($path, $callable, $name, $method): Route
     {
+        if(!empty($this->groupPattern)){
+            $path = $this->groupPattern.$path;
+        }
         $route = new Route($path, $callable);
         $this->routes[$method][] = $route;
         if(is_string($callable) && $name === null){
@@ -58,5 +64,23 @@ class Router
             }
         }
         throw new RouterException('No matching routes');
+    }
+
+    // This method allows the usage of specific routes in specific scope, if any, usually admin
+    public function scope($groupPattern, \Closure $routes): void
+    {
+        $this->groupPattern = $groupPattern;
+        $routes($this);
+        unset($this->groupPattern);
+
+    }
+    /**
+     * @throws RouterException
+     */
+    public function url($name, $params = []){
+        if(!isset($this->namedRoutes[$name])){
+            throw new RouterException('No route matches this name');
+        }
+        return $this->namedRoutes[$name]->getUrl($params);
     }
 }

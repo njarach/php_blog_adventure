@@ -13,8 +13,12 @@ class Routes
 
     public function setup():void
     {
-        $this->router->get('php_blog_adventure/posts/', 'Post#index');
-        $this->router->get('php_blog_adventure/post/:id', 'Post#show');
-        $this->router->get("php_blog_adventure/", 'Post#index');
+        // GET Method
+        $this->router->get('php_blog_adventure/posts/', 'Post#index','posts');
+        $this->router->get('php_blog_adventure/post/:id', 'Post#show','show_post');
+        $this->router->get("php_blog_adventure/", 'Post#index','homepage');
+        // POST Method
+        // PATCH Method
+        // DELETE Method
     }
 }
