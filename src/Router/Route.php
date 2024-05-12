@@ -40,12 +40,13 @@ class Route
         return '([^/]+)';
     }
 
-    public function execute(){
-            $params = explode('#', $this->action);
-            $controller = "src\\controller\\" . $params[0] . "Controller";
-            $controller = new $controller();
-            $method = $params[1];
-            return isset($this->matches[1]) ? $controller->$method($this->matches) : $controller->$method();
+    public function execute()
+    {
+        $params = explode('#', $this->action);
+        $controller = "src\\controller\\" . $params[0] . "Controller";
+        $controller = new $controller();
+        $method = $params[1];
+        return isset($this->matches[1]) ? $controller->$method($this->matches[1]) : $controller->$method();
     }
 
     public function getUrl($params): array|string|null

@@ -1,13 +1,20 @@
 <?php
 
+use src\controller\ErrorController;
 use src\Router\Router;
+use src\Router\Routes;
 
 require_once 'vendor/autoload.php';
 
 // Router is instantiated with URL as constructor parameter.
-$router = new Router($_GET['url']);
+$url = $_SERVER['REQUEST_URI'] ?? '/';
+$router = new Router($url);
+// Routes class contains the routes (called with the setup method)
+$routes = new Routes($router);
 
-// Routes are defined here. TODO : créer un futur fichier routes.php qui contiendra toutes les routes
-$router->get('/posts/','Post#index');
-$router->get('/posts/:id', 'Post#show');
-$router->listen();
+try {
+    $routes->setup();
+    $router->listen();
+} catch (Exception $e) {
+    echo "une erreur est survenue";
+}

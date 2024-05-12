@@ -7,7 +7,6 @@ class Router
 {
     private string $url;
     private array $routes = [];
-    private array $namedRoutes = [];
 
     public function __construct($url){
         $this->url = $url;
@@ -59,15 +58,5 @@ class Router
             }
         }
         throw new RouterException('No matching routes');
-    }
-
-    /**
-     * @throws RouterException
-     */
-    public function url($name, $params = []){
-        if(!isset($this->namedRoutes[$name])){
-            throw new RouterException('No route matches this name');
-        }
-        return $this->namedRoutes[$name]->getUrl($params);
     }
 }
