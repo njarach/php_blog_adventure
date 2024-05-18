@@ -37,9 +37,6 @@ class Router
 
     private function add($path, $callable, $name, $method): Route
     {
-        if(!empty($this->groupPattern)){
-            $path = $this->groupPattern.$path;
-        }
         $route = new Route($path, $callable);
         $this->routes[$method][] = $route;
         if(is_string($callable) && $name === null){
@@ -66,14 +63,6 @@ class Router
         throw new RouterException('No matching routes');
     }
 
-    // This method allows the usage of specific routes in specific scope, if any, usually admin
-    public function scope($groupPattern, \Closure $routes): void
-    {
-        $this->groupPattern = $groupPattern;
-        $routes($this);
-        unset($this->groupPattern);
-
-    }
     /**
      * @throws RouterException
      */

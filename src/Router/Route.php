@@ -13,14 +13,14 @@ class Route
     private array $params = [];
 
     public function __construct($path, $action){
-        $this->path = trim($path, '/');  // Removes '/'
+        $this->path = trim($path, '/');
         $this->action = $action;
     }
 
     /**
      * Receives the url as parameter and performs regular expression matches before returning url parameters in object instance
      **/
-    public function match($url): bool
+    public function match(string $url): bool
     {
         $url = trim($url, '/');
         $path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
