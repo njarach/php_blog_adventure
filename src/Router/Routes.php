@@ -15,6 +15,7 @@ class Routes
     {
         $this->router->get('/posts', 'Post#index');
         $this->router->get('/posts/:id', 'Post#show');
+        $this->router->get('/posts_special','Post#showSpecial');
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {

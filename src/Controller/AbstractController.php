@@ -8,7 +8,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-class AbstractController
+abstract class AbstractController
 {
     protected function getTwigEnvironment(): Environment
     {
