@@ -2,17 +2,17 @@
 
 namespace src\Router;
 
-// This class contains logic to add routes, and calls on Route object to verify matching and running controller's action.
 class Router
 {
     private string $url;
+    private string $basePath;
     private array $routes = [];
     private array $namedRoutes = [];
-//    This variable stores the scope of the route (if any, usually admin)
     private string $groupPattern = '';
 
-    public function __construct($url){
+    public function __construct(string $url, string $basePath = ''){
         $this->url = $url;
+        $this->basePath = trim($basePath, '/');
     }
 
     public function get($path, $callable, $name = null): Route
@@ -37,26 +37,42 @@ class Router
 
     private function add($path, $callable, $name, $method): Route
     {
+        if ($this->groupPattern) {
+            $path = $this->groupPattern . $path;
+        }
+
+        if ($this->basePath) {
+            $path = '/' . $this->basePath . $path;
+        }
+
         $route = new Route($path, $callable);
         $this->routes[$method][] = $route;
-        if(is_string($callable) && $name === null){
+        if (is_string($callable) && $name === null) {
             $name = $callable;
         }
-        if($name){
+        if ($name) {
             $this->namedRoutes[$name] = $route;
         }
         return $route;
+    }
+
+    public function group(string $pattern, callable $callback): void
+    {
+        $oldGroupPattern = $this->groupPattern;
+        $this->groupPattern .= $pattern;
+        call_user_func($callback, $this);
+        $this->groupPattern = $oldGroupPattern;
     }
 
     /**
      * @throws RouterException
      */
     public function listen(){
-        if(!isset($this->routes[$_SERVER['REQUEST_METHOD']])){
+        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
             throw new RouterException('REQUEST_METHOD does not exist');
         }
-        foreach($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
-            if($route->match($this->url)){
+        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+            if ($route->match($this->url)) {
                 return $route->execute();
             }
         }
@@ -67,7 +83,7 @@ class Router
      * @throws RouterException
      */
     public function url($name, $params = []){
-        if(!isset($this->namedRoutes[$name])){
+        if (!isset($this->namedRoutes[$name])) {
             throw new RouterException('No route matches this name');
         }
         return $this->namedRoutes[$name]->getUrl($params);

@@ -11,30 +11,30 @@ class Routes
         $this->router = $router;
     }
 
-    public function setupGetRoutes():void
+    public function setupGetRoutes(): void
     {
-        //        Example of a specific scope route
-        //        $this->router->scope('/admin', function($router) {
-        //            $this->router->get('/delete/:slug/:id', 'Users#delete');
-        //        });
-        // GET Method
-        $this->router->get('php_blog_adventure/posts/', 'Post#index','posts');
-        $this->router->get('php_blog_adventure/posts/:id', 'Post#show','show_post');
-        $this->router->get("php_blog_adventure/", 'Post#index','homepage');
+        $this->router->get('/posts', 'Post#index');
+        $this->router->get('/posts/:id', 'Post#show');
+
+        // Admin routes
+        $this->router->group('/admin', function (Router $router) {
+            $router->get('/dashboard', 'Admin#dashboard');
+//            $router->get('/posts', 'Admin#posts');
+        });
     }
 
     public function setupPostRoutes(): void
     {
-        // POST Method
+        // Define POST routes here
     }
 
     public function setupPatchRoutes(): void
     {
-        // PATCH Method
+        // Define PATCH routes here
     }
 
     public function setupDeleteRoutes(): void
     {
-        // DELETE Method
+        // Define DELETE routes here
     }
 }

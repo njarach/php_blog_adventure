@@ -5,41 +5,30 @@ use src\Router\Routes;
 
 require_once 'vendor/autoload.php';
 
-// Router is instantiated with URL as constructor parameter.
+// Define the base path for your application
+$basePath = 'php_blog_adventure';
+
+// Router is instantiated with URL as constructor parameter and base path
 $url = $_SERVER['REQUEST_URI'] ?? '/';
-$router = new Router($url);
+$router = new Router($url, $basePath);
 
 // Routes class contains the routes (called with the setup method)
 $routes = new Routes($router);
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    try {
-        $routes->setupGetRoutes();
+try {
+    $routes->setupGetRoutes();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $router->listen();
-    } catch (Exception $e) {
-        echo "La route que vous recherchez n'existe pas.";
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
+    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $routes->setupPostRoutes();
         $router->listen();
-    } catch (Exception $e) {
-        echo "La route que vous recherchez n'existe pas.";
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
-    try {
+    } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
         $routes->setupPatchRoutes();
         $router->listen();
-    } catch (Exception $e) {
-        echo "La route que vous recherchez n'existe pas.";
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    try {
+    } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         $routes->setupDeleteRoutes();
         $router->listen();
-    } catch (Exception $e) {
-        echo "La route que vous recherchez n'existe pas.";
     }
+} catch (Exception $e) {
+    echo "The route you are looking for does not exist.";
 }
-
-
