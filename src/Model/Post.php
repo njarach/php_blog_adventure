@@ -1,52 +1,30 @@
 <?php
 
 namespace src\model;
-class Post
+use DateTime;
+
+class Post extends AbstractEntity
 {
-    protected $id;
-    protected $title;
-    protected $content;
-    protected $author_id;
-    protected $category_id;
-    protected $created_at;
-    protected $updated_at;
+    protected string $title;
+    protected string $content;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    protected string $intro;
+    protected int $author_id;
+    protected int $category_id;
+    protected string $created_at;
+    protected string $updated_at;
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -54,15 +32,12 @@ class Post
     /**
      * @param mixed $content
      */
-    public function setContent($content): void
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAuthorId()
+    public function getAuthorId(): int
     {
         return $this->author_id;
     }
@@ -70,31 +45,22 @@ class Post
     /**
      * @param mixed $author_id
      */
-    public function setAuthorId($author_id): void
+    public function setAuthorId(int $author_id): void
     {
         $this->author_id = $author_id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->category_id;
     }
 
-    /**
-     * @param mixed $category_id
-     */
-    public function setCategoryId($category_id): void
+    public function setCategoryId(int $category_id): void
     {
         $this->category_id = $category_id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->created_at;
     }
@@ -102,15 +68,12 @@ class Post
     /**
      * @param mixed $created_at
      */
-    public function setCreatedAt($created_at): void
+    public function setCreatedAt(string $created_at): void
     {
         $this->created_at = $created_at;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updated_at;
     }
@@ -118,10 +81,24 @@ class Post
     /**
      * @param mixed $updated_at
      */
-    public function setUpdatedAt($updated_at): void
+    public function setUpdatedAt(string $updated_at): void
     {
         $this->updated_at = $updated_at;
     }
 
+    /**
+     * @return string
+     */
+    public function getIntro(): string
+    {
+        return $this->intro;
+    }
 
+    /**
+     * @param string $intro
+     */
+    public function setIntro(string $intro): void
+    {
+        $this->intro = $intro;
+    }
 }

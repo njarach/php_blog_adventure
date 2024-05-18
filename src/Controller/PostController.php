@@ -34,7 +34,11 @@ class PostController extends AbstractController
                 'post' => $blogPost
             ]);
         } else {
-            echo "Aucun billet ne comporte l'id $postId";
+            http_response_code(404);
+            echo $this->render('error/error.html.twig', [
+                'errorCode'=>404,
+                'errorMessage'=>"Aucun article trouvé pour l'id $postId..."
+            ]);
         }
     }
 }
