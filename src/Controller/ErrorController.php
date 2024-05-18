@@ -14,12 +14,26 @@ class ErrorController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function show(Exception $exception, $error_response_code)
+    public function error404(string $errorCode)
     {
-        echo $this->render('error/error.html.twig', [
-            'exception'=>$exception->getMessage(),
-            'error_response_code'=>$error_response_code
+        http_response_code(404);
+        echo $this->render('error/error.html.twig',[
+            'errorCode'=>$errorCode,
+            'errorMessage'=>"La page que vous recherchez n'existe pas."
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function error500(string $errorCode, Exception $exception)
+    {
+        http_response_code(500);
+        echo $this->render('error/error.html.twig',[
+            'errorCode'=>$errorCode,
+            'errorMessage'=>$exception->getMessage()
+        ]);
+    }
 }

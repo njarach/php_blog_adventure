@@ -2,6 +2,11 @@
 
 namespace src\Router;
 
+use src\controller\ErrorController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
 class Router
 {
     private string $url;
@@ -65,18 +70,40 @@ class Router
     }
 
     /**
-     * @throws RouterException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function listen(){
-        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
-            throw new RouterException('REQUEST_METHOD does not exist');
-        }
-        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
-            if ($route->match($this->url)) {
-                return $route->execute();
+        try {
+            if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
+                throw new RouterException('REQUEST_METHOD does not exist');
             }
+            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+                if ($route->match($this->url)) {
+                    return $route->execute();
+                }
+            }
+            $this->handleError(404);
+        } catch (\Exception|SyntaxError|RuntimeError|LoaderError $e) {
+            $this->handleError(500, $e);
         }
-        throw new RouterException('No matching routes');
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function handleError($errorCode, $exception = null): void
+    {
+        $errorController = new ErrorController();
+
+        if ($errorCode == 404) {
+            $errorController->error404($errorCode);
+        } elseif ($errorCode == 500) {
+            $errorController->error500($errorCode,$exception);
+        }
     }
 
     /**
