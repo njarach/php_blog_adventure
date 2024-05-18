@@ -30,5 +30,5 @@ try {
         $router->listen();
     }
 } catch (Exception $e) {
-    echo "The route you are looking for does not exist.";
+    $router->handleError(500, $e);
 }
