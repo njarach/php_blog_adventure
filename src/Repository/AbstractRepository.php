@@ -42,6 +42,10 @@ abstract class AbstractRepository implements RepositoryInterface
         }
         $sql .= implode(' AND ', $conditions);
         $statement = $this->connection->getInstance()->prepare($sql);
+        foreach ($params as $param => $value) {
+            $statement->bindParam($param, $value);
+        }
+
         $statement->execute($params);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
