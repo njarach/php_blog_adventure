@@ -3,8 +3,9 @@
 namespace src\model;
 use DateTime;
 
-class Post extends AbstractEntity
+class Post
 {
+    use EntityId;
     protected string $title;
     protected string $content;
 

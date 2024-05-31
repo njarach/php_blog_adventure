@@ -4,8 +4,9 @@ namespace src\controller\AdminController;
 
 use src\controller\AbstractController;
 
-class PostController extends AbstractController
+class PostController extends CrudController
 {
+    // check role and authorization in service ?
     public function index()
     {
 //        here add logic so an admin can view all the blogposts for easier management
@@ -22,5 +23,10 @@ class PostController extends AbstractController
     public function delete(int $postId)
     {
 //        here add logic to delete a blogpost
+    }
+
+    public function show(int $postId)
+    {
+        // TODO: Implement show() method.
     }
 }

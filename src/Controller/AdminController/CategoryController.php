@@ -2,10 +2,9 @@
 
 namespace src\controller\AdminController;
 
-use src\controller\AbstractController;
-
-class CategoryController extends AbstractController
+class CategoryController extends CrudController
 {
+    // check role and authorization in service ?
     public function index()
     {
 //        here add logic so an admin can view all the categories for easier management
@@ -22,5 +21,10 @@ class CategoryController extends AbstractController
     public function delete(int $postId)
     {
 //        here add logic to delete a category
+    }
+
+    public function show(int $postId)
+    {
+        // TODO: Implement show() method.
     }
 }

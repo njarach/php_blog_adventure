@@ -16,8 +16,8 @@ $router = new Router($url, $basePath);
 $routes = new Routes($router);
 
 try {
-    $routes->setupGetRoutes();
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $routes->setupGetRoutes();
         $router->listen();
     } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $routes->setupPostRoutes();
@@ -30,5 +30,10 @@ try {
         $router->listen();
     }
 } catch (Exception $e) {
-    $router->handleError(500, $e);
+    try {
+        $router->handleError(500, $e);
+    } catch (Exception $e) {
+        echo ('Le controller responsable de la gestion des erreurs a rencontré une erreur.');
+        return true;
+    }
 }

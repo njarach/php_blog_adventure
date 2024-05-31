@@ -16,6 +16,7 @@ class AdminController extends AbstractController
      */
     public function dashboard()
     {
+        // check role and authorization in service ?
         echo $this->render('admin/dashboard.html.twig');
     }
 
