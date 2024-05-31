@@ -1,6 +1,7 @@
 <?php
 namespace src\controller;
 
+use Exception;
 use src\Repository\PostRepository;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -9,9 +10,7 @@ use Twig\Error\SyntaxError;
 class PostController extends AbstractController
 {
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @throws Exception
      */
     public function index() {
         $blogPostRepository = new PostRepository();
@@ -22,9 +21,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @throws Exception
      */
     public function show($postId) {
         $blogPostRepository = new PostRepository();
@@ -42,10 +39,9 @@ class PostController extends AbstractController
         }
     }
 
-    /** This was written to test the findBy criteria method from repository. Will implement later
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+    /**
+     * @throws Exception
+     * This was written to test the findBy criteria method from repository. Will implement later
      */
     public function showSpecial()
     {

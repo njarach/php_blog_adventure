@@ -2,8 +2,9 @@
 
 namespace src\model;
 
-class Comment extends AbstractEntity
+class Comment
 {
+    use EntityId;
     protected int $post_id;
     protected int $user_id;
     protected string $content;

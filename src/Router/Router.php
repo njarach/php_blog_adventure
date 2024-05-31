@@ -2,6 +2,7 @@
 
 namespace src\Router;
 
+use Exception;
 use src\controller\ErrorController;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -20,7 +21,7 @@ class Router
         $this->basePath = trim($basePath, '/');
     }
 
-    public function get($path, $callable, $name = null): Route
+    public function get(string $path, callable $callable, string $name = null): Route
     {
         return $this->add($path, $callable, $name, 'GET');
     }
@@ -70,38 +71,39 @@ class Router
     }
 
     /**
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
+     * @throws Exception
      */
-    public function listen(){
+    public function listen(): mixed {
         try {
             if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
                 throw new RouterException('REQUEST_METHOD does not exist');
             }
-            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
+            /**
+             * @var Route[] $routes
+             */
+            $routes = $this->routes[$_SERVER['REQUEST_METHOD']];
+            foreach ($routes as $route) {
                 if ($route->match($this->url)) {
                     return $route->execute();
                 }
             }
             $this->handleError(404);
-        } catch (\Exception|SyntaxError|RuntimeError|LoaderError $e) {
+        } catch (Exception $e) {
             $this->handleError(500, $e);
         }
+        return false;
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @throws Exception
      */
-    public function handleError($errorCode, $exception = null): void
+    public function handleError(string $errorCode, Exception $exception = null): void
     {
         $errorController = new ErrorController();
 
         if ($errorCode == 404) {
             $errorController->error404($errorCode);
-        } elseif ($errorCode == 500) {
+        } else {
             $errorController->error500($errorCode,$exception);
         }
     }

@@ -2,10 +2,8 @@
 
 namespace src\controller;
 
+use Exception;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractController
@@ -19,21 +17,15 @@ abstract class AbstractController
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @throws Exception
      */
     protected function render(string $template, array $context = []): string
     {
         try {
             $twig = $this->getTwigEnvironment();
             return $twig->render($template, $context);
-        } catch (LoaderError $e) {
-            throw new LoaderError('A twig LoaderError occurred.');
-        } catch (RuntimeError $e) {
-            throw new RuntimeError('A twig RuntimeError occurred.');
-        } catch (SyntaxError $e) {
-            throw new SyntaxError('A twig SyntaxError occurred.');
+        } catch (Exception $e) {
+            throw new Exception('A twig exception occurred.');
         }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace src\model;
 
-class Category extends AbstractEntity
+class Category
 {
+    use EntityId;
     protected string $name;
 
     /**

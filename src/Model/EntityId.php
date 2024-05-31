@@ -2,7 +2,7 @@
 
 namespace src\model;
 
-abstract class AbstractEntity implements EntityInterface
+trait EntityId
 {
     protected int $id;
 

@@ -2,8 +2,9 @@
 
 namespace src\model;
 
-class User extends AbstractEntity
+class User
 {
+    use EntityId;
     protected string $username;
     protected string $password;
     protected string $email;
