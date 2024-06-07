@@ -10,8 +10,8 @@ class PostController extends AbstractController
      * @throws Exception
      */
     public function index() {
-        $blogPostRepository = new PostRepository();
-        $blogPosts = $blogPostRepository->findAll();
+        $postRepository = new PostRepository();
+        $blogPosts = $postRepository->findAll();
        echo $this->render('blogpost/index.html.twig', [
            'posts'=>$blogPosts
        ]);
@@ -21,8 +21,8 @@ class PostController extends AbstractController
      * @throws Exception
      */
     public function show(int $postId) {
-        $blogPostRepository = new PostRepository();
-        $blogPost = $blogPostRepository->findById($postId);
+        $postRepository = new PostRepository();
+        $blogPost =$postRepository->findById($postId);
         if ($blogPost) {
             echo $this->render('blogpost/show.html.twig', [
                 'post' => $blogPost

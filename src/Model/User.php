@@ -2,9 +2,9 @@
 
 namespace src\model;
 
-class User
+class User implements EntityInterface
 {
-    use EntityId;
+    use EntityTrait;
     protected string $username;
     protected string $password;
     protected string $email;

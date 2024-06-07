@@ -20,6 +20,9 @@ class Routes
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
             $router->get('/dashboard', 'Admin#dashboard');
+            $router->get('/new_post', 'Post#new');
+            $router->get('/edit_post/:id', 'Post#edit');
+            $router->get('/delete_post/:id', 'Post#delete');
 //            $router->get('/posts', 'Admin#posts');
         });
     }

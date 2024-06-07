@@ -2,7 +2,9 @@
 
 namespace src\controller\AdminController;
 
-use src\controller\AbstractController;
+use Exception;
+use src\model\Post;
+use src\Repository\PostRepository;
 
 class PostController extends CrudController
 {
@@ -11,18 +13,47 @@ class PostController extends CrudController
     {
 //        here add logic so an admin can view all the blogposts for easier management
     }
+
+    /**
+     * @throws Exception
+     */
     public function new()
     {
-//        here add logic to create new blogpost
-    }
-    public function edit(int $postId)
-    {
-//        here add logic to edit a blogpost
+        $newPost = new Post();
+//        $newPost->setId(9);
+        $newPost->setContent('Nouveau post!');
+        $newPost->setAuthorId(1);
+//        $newPost->setId(8);
+        $newPost->setCategoryId(1);
+        $newPost->setTitle('Nouveau titre !');
+//        $newPost->setContent('Nouveau post!');
+        $postRepository = new PostRepository();
+        $postRepository->add($newPost);
+        echo 'nouvel article créé !';
     }
 
+    /**
+     * @throws Exception
+     */
+    public function edit(int $postId)
+    {
+        $postRepostiory = new PostRepository();
+        $post = $postRepostiory->findById($postId);
+        $post->setContent('Contenu modifié encore !');
+        $post->setTitle('Titre modifié à nouveau !');
+        $postRepostiory->edit($post);
+        echo 'Post édite';
+    }
+
+    /**
+     * @throws Exception
+     */
     public function delete(int $postId)
     {
-//        here add logic to delete a blogpost
+        $postRepostiory = new PostRepository();
+        $post = $postRepostiory->findById($postId);
+        $postRepostiory->delete($post);
+        echo 'Post supprimé';
     }
 
     public function show(int $postId)

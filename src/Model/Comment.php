@@ -2,9 +2,9 @@
 
 namespace src\model;
 
-class Comment
+class Comment implements EntityInterface
 {
-    use EntityId;
+    use EntityTrait;
     protected int $post_id;
     protected int $user_id;
     protected string $content;

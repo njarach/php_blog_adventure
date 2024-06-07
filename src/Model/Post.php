@@ -1,11 +1,10 @@
 <?php
 
 namespace src\model;
-use DateTime;
 
-class Post
+class Post implements EntityInterface
 {
-    use EntityId;
+    use EntityTrait;
     protected string $title;
     protected string $content;
 
