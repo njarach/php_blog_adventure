@@ -3,7 +3,6 @@
 namespace src\Repository;
 
 use Exception;
-use PDO;
 use src\model\Post;
 
 class PostRepository extends AbstractRepository
@@ -11,6 +10,14 @@ class PostRepository extends AbstractRepository
     protected function getTableName(): string
     {
         return 'post';
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function add(Post $post): void
+    {
+        $this->new($post);
     }
 
     /**
@@ -92,7 +99,7 @@ class PostRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?Post
     {
-        $row = $this->findOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $post = new Post();
             $post->setContent($row['content']);

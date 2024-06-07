@@ -2,9 +2,9 @@
 
 namespace src\model;
 
-class Category
+class Category implements EntityInterface
 {
-    use EntityId;
+    use EntityTrait;
     protected string $name;
 
     /**

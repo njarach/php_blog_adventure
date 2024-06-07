@@ -2,7 +2,7 @@
 
 namespace src\model;
 
-trait EntityId
+trait EntityTrait
 {
     protected int $id;
 
@@ -18,5 +18,10 @@ trait EntityId
     {
         $this->id = $id;
     }
+// this is actually auto incremented ?
 
+    public function getProperties(): array
+    {
+        return get_object_vars($this);
+    }
 }
