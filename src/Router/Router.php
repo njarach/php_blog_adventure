@@ -21,7 +21,7 @@ class Router
         $this->basePath = trim($basePath, '/');
     }
 
-    public function get(string $path, callable $callable, string $name = null): Route
+    public function get(string $path, $callable, string $name = null): Route
     {
         return $this->add($path, $callable, $name, 'GET');
     }
