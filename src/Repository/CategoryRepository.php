@@ -2,6 +2,7 @@
 
 namespace src\Repository;
 
+use Exception;
 use src\model\Category;
 
 class CategoryRepository extends AbstractRepository
@@ -11,28 +12,75 @@ class CategoryRepository extends AbstractRepository
         return 'category';
     }
 
-    public function findById(int $id): ?Category
-    {
-        $rows = $this->fetchById($id);
-        // TODO : ajouter les if empty etc ?
-        $category = new Category();
-        // TODO : var_dumper pour voir ce qui est retourné, voir abstractrepo.
-        // $category->setName($rows['name']); ...
-        // return $category ?
-    }
-
+    /**
+     * @throws Exception
+     */
     public function findAll(): array
     {
-        // TODO: Implement findAll() method.
+        $rows =  $this->fetchAll();
+        $categories = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row){
+                $category = new Category();
+                $category->setId($row['content']);
+                $category->setName($row['id']);
+                $categories[] = $category;
+            }
+            return $categories;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function findById(int $id): ?Category
+    {
+        $row =  $this->fetchById($id);
+        if (!empty($row)) {
+            $category = new Category();
+            $category->setId($row['content']);
+            $category->setName($row['id']);
+            return $category;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     public function findBy(array $criteria): array
     {
-        // TODO: Implement findBy() method.
+        $rows =  $this->fetchBy($criteria);
+        $categories = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row){
+                $category = new Category();
+                $category->setId($row['content']);
+                $category->setName($row['id']);
+                $categories[] = $category;
+            }
+            return $categories;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 
-    public function findOneBy(array $criteria): ?array
+    /**
+     * @throws Exception
+     */
+    public function findOneBy(array $criteria): ?Category
     {
-        // TODO: Implement findOneBy() method.
+        $row = $this->findOneBy($criteria);
+        if (!empty($row)) {
+            $category = new Category();
+            $category->setId($row['content']);
+            $category->setName($row['id']);
+            return $category;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 }
