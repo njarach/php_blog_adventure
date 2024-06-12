@@ -3,15 +3,21 @@ namespace src\controller;
 
 use Exception;
 use src\Repository\PostRepository;
+use src\Service\Manager\PostManager;
 
 class PostController extends AbstractController
 {
+    private PostManager $postManager;
+    public function __construct()
+    {
+        $this->postManager = new PostManager();
+    }
+
     /**
      * @throws Exception
      */
     public function index() {
-        $postRepository = new PostRepository();
-        $blogPosts = $postRepository->findAll();
+        $blogPosts = $this->postManager->findAll();
        echo $this->render('blogpost/index.html.twig', [
            'posts'=>$blogPosts
        ]);
@@ -21,8 +27,7 @@ class PostController extends AbstractController
      * @throws Exception
      */
     public function show(int $postId) {
-        $postRepository = new PostRepository();
-        $blogPost =$postRepository->findById($postId);
+        $blogPost = $this->postManager->findById($postId);
         if ($blogPost) {
             echo $this->render('blogpost/show.html.twig', [
                 'post' => $blogPost

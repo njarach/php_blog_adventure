@@ -42,7 +42,7 @@ class PostController extends CrudController
         $post->setContent('Contenu modifié encore !');
         $post->setTitle('Titre modifié à nouveau !');
         $postRepostiory->edit($post);
-        echo 'Post édite';
+        echo 'Post édité';
     }
 
     /**

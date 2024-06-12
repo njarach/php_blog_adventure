@@ -1,28 +1,24 @@
 {% extends 'base.html.twig' %}
-{% block title %}
-    <h1>TOUS LES ARTICLES</h1>
-{% endblock %}
 {% block body %}
-    <div>
-        <table>
-            <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Auteur</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for post in posts %}
-                <tr>
-                    <td>{{ post.title }}</td>
-                    <td>{{ post.content }}</td>
-                    <td>{{ post.authorid }}</td>
-                    <td>{{ post.createdat }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+
+<div class="row mb-2 mt-5">
+    {% for post in posts %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ post.categoryid }}</strong>
+                    <h3 class="mb-0">{{ post.title }}</h3>
+                    <div class="mb-1 text-body-secondary">{{ post.createdat|date('M-y') }}</div>
+                    <p class="card-text mb-auto">{{ post.intro|default("Introduction de l'article si aucune n'a été définie.") }}</p>
+                    <a href="posts/{{ post.id }}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Lire...
+                        <svg class="bi">
+                            <use xlink:href="#chevron-right"></use>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

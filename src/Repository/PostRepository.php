@@ -23,12 +23,13 @@ class PostRepository extends AbstractRepository
     /**
      * @throws Exception
      */
-    public function findAll(): array
+    public function findAll(): ?array
     {
-        $rows =  $this->fetchAll();
-        $posts = [];
-        if (!empty($rows)) {
-            foreach ($rows as $row){
+        // TODO : voir pour rajouter ces optimisations sur les autres méthodes
+        $rows = $this->fetchAll();
+        if (count($rows)) {
+            $posts = [];
+            foreach ($rows as $row) {
                 $post = new Post();
                 $post->setContent($row['content']);
                 $post->setId($row['id']);
@@ -39,11 +40,10 @@ class PostRepository extends AbstractRepository
                 $post->setCreatedAt($row['created_at']);
                 $post->setUpdatedAt($row['updated_at']);
                 $posts[] = $post;
-        }
+            }
             return $posts;
-        } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
         }
+        return null;
     }
 
     /**
@@ -73,6 +73,7 @@ class PostRepository extends AbstractRepository
      */
     public function findBy(array $criteria): array
     {
+        // TODO : idéalement, findBy ne renvoie pas d'exception mais juste un tableau qui ne contient aucun résultat
         $rows =  $this->fetchBy($criteria);
         $posts = [];
         if (!empty($rows)) {

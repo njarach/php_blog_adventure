@@ -13,9 +13,14 @@ class Routes
 
     public function setupGetRoutes(): void
     {
+        // Home routes
+        $this->router->get('/home','Home#home');
+        // Posts routes
         $this->router->get('/posts', 'Post#index');
         $this->router->get('/posts/:id', 'Post#show');
         $this->router->get('/posts_special','Post#showSpecial');
+        // Contact routes
+        $this->router->get('/contact','Contact#form');
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
