@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
-{% block title %}
-    <h1>ARTICLE {{ post.title }}</h1>
-{% endblock %}
 {% block body %}
-        <div>{{ post.title }}</div>
-        <div>{{ post.content }}</div>
-        <div>{{ post.authorid }}</div>
-        <div>{{ post.createdat }}</div>
+        <article class="blog-post">
+                <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
+                        <div class="crud-links-wrapper">
+                                <a style="text-decoration: none" class="me-1" href="/php_blog_adventure/admin/edit_post/{{ post.id }}">Editer</a>
+                                <a style="text-decoration: none" href="/php_blog_adventure/admin/delete_post/{{ post.id }}">Supprimer</a>
+                        </div>
+                </div>
+                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ post.authorid }}</strong></p>
+                <div>{{ post.content }}</div>
+        </article>
+
 {% endblock %}

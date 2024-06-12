@@ -2,17 +2,13 @@
 
 namespace src\controller\AdminController;
 
+use Exception;
 use src\controller\AbstractController;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class AdminController extends AbstractController
 {
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @throws Exception
      */
     public function dashboard()
     {

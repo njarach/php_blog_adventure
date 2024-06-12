@@ -74,7 +74,7 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * @throws Exception
      */
-    protected function new(EntityInterface $entity)
+    protected function new(EntityInterface $entity): void
     {
         $properties = $entity->getProperties();
         $columns = array_keys($properties);
