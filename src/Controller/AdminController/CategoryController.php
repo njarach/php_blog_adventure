@@ -9,7 +9,7 @@ class CategoryController extends CrudController
     {
 //        here add logic so an admin can view all the categories for easier management
     }
-    public function new()
+    public function create()
     {
 //        here add logic to create new category
     }

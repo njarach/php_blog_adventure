@@ -15,26 +15,32 @@ class Routes
     {
         // Home routes
         $this->router->get('/home','Home#home');
-        // Posts routes
+        // BlogPost routes
         $this->router->get('/posts', 'Post#index');
         $this->router->get('/posts/:id', 'Post#show');
-        $this->router->get('/posts_special','Post#showSpecial');
         // Contact routes
         $this->router->get('/contact','Contact#form');
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
+        // Admin Dashboard Routes (if any ???)
             $router->get('/dashboard', 'Admin#dashboard');
-            $router->get('/new_post', 'Post#new');
-            $router->get('/edit_post/:id', 'Post#edit');
-            $router->get('/delete_post/:id', 'Post#delete');
-//            $router->get('/posts', 'Admin#posts');
+        // Admin BlogPost Routes
+            $router->get('/posts/edit/:id', 'Post#edit');
+            $router->get('/posts/new', 'Post#create');
+            $router->get('/posts/delete/:id', 'Post#delete');
         });
     }
 
+
     public function setupPostRoutes(): void
     {
-        // Define POST routes here
+        // Admin Routes
+        $this->router->group('/admin',function (Router $router) {
+            // Admin BlogPost Routes
+            $router->post('/posts/edit/:id', 'Post#edit');
+            $router->post('/posts/new', 'Post#create');
+        });
     }
 
     public function setupPatchRoutes(): void

@@ -1,0 +1,27 @@
+<form action="/php_blog_adventure/admin/posts/edit/{{ post.id }}" method="post">
+
+    {% if error is defined and error is not null %}
+        <div>{{ error }}</div>
+    {% endif %}
+
+    <label for="title">Titre</label>
+    <input type="text" id="title" name="title" value="{{ post.title }}" required>
+
+    <label for="content">Contenu</label>
+    <textarea id="content" name="content" required>{{ post.content }}</textarea>
+
+    <label for="category_id">Catégorie</label>
+    <select id="category_id" name="category_id" required>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == post.category_id %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label for="intro">Intro</label>
+    <textarea id="intro" name="intro" required>{{ post.intro }}</textarea>
+{#    The author is not required since there is only one author for BlogPosts in this project. #}
+
+    <button type="submit">Enregistrer</button>
+</form>

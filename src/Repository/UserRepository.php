@@ -2,8 +2,21 @@
 
 namespace src\Repository;
 
-class User extends AbstractRepository
+use PDO;
+
+class UserRepository extends AbstractRepository
 {
+
+    public function getUserNameById(int $userId): ?string
+    {
+        $sql = "SELECT username FROM user WHERE id = :userId";
+        $statement = $this->connection->getInstance()->prepare($sql);
+        $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result['username'] ?? null;
+    }
 
     protected function getTableName(): string
     {

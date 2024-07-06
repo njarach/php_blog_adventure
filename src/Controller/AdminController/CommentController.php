@@ -32,7 +32,7 @@ class CommentController extends CrudController
         // TODO: Implement show() method.
     }
 
-    public function new()
+    public function create()
     {
         // TODO: Implement new() method.
     }
