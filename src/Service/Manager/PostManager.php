@@ -12,7 +12,6 @@ class PostManager
 {
     private PostRepository $postRepository;
     private CategoryRepository $categoryRepository;
-    private UserRepository $userRepository;
 
     private array $errors = [];
 
@@ -20,7 +19,6 @@ class PostManager
     {
         $this->postRepository = new PostRepository();
         $this->categoryRepository = new CategoryRepository();
-        $this->userRepository = new UserRepository();
     }
 
     /**
@@ -70,12 +68,6 @@ class PostManager
         return null;
     }
 
-    // This is useful ?
-    public function getCategoryNameById(int $categoryId): ?string
-    {
-        return $this->categoryRepository->getCategoryNameById($categoryId);
-    }
-
     /**
      * @throws Exception
      * This is used most notably to display categories' names on forms
@@ -83,12 +75,6 @@ class PostManager
     public function getAllCategories(): array
     {
         return $this->categoryRepository->findAll();
-    }
-
-    // This is maybe useful ?
-    public function getAuthorNameById(int $userId): ?string
-    {
-        return $this->userRepository->getUserNameById($userId);
     }
 
     public function createPost(string $title, string $content, int $categoryId, string $intro): ?Post
@@ -115,7 +101,7 @@ class PostManager
     /**
      * @throws Exception
      */
-    public function delete($post): void
+    public function delete(Post $post): void
     {
         $this->postRepository->delete($post);
     }

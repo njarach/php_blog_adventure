@@ -9,6 +9,7 @@ class Comment implements EntityInterface
     protected int $user_id;
     protected string $content;
     protected string $created_at;
+    protected bool $reviewed;
 
     /**
      * @return int
@@ -72,6 +73,22 @@ class Comment implements EntityInterface
     public function setCreatedAt(string $created_at): void
     {
         $this->created_at = $created_at;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReviewed(): bool
+    {
+        return $this->reviewed;
+    }
+
+    /**
+     * @param bool $reviewed
+     */
+    public function setReviewed(bool $reviewed): void
+    {
+        $this->reviewed = $reviewed;
     }
 
 }

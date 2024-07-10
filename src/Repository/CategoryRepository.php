@@ -84,15 +84,4 @@ class CategoryRepository extends AbstractRepository
             throw new Exception("Aucune donnée n'a été trouvée !");
         }
     }
-
-    public function getCategoryNameById(int $categoryId): ?string
-    {
-        $sql = "SELECT name FROM category WHERE id = :categoryId";
-        $statement = $this->connection->getInstance()->prepare($sql);
-        $statement->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-        return $result['name'] ?? null;
-    }
 }

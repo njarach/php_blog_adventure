@@ -7,7 +7,6 @@ use src\model\Comment;
 
 class CommentRepository extends AbstractRepository
 {
-
     protected function getTableName(): string
     {
         return 'comment';
@@ -95,5 +94,13 @@ class CommentRepository extends AbstractRepository
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function add(Comment $comment): void
+    {
+        $this->new($comment);
     }
 }
