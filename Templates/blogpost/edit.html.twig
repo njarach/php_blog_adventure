@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Modifier l'article</h2>
+        {% if errors is defined and errors is not empty %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field, error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form action="/php_blog_adventure/admin/posts/edit/{{ post.id }}" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Titre</label>
+                <input type="text" class="form-control {% if errors.title is defined %}is-invalid{% endif %}" id="title" name="title" value="{{ formData.title|default(post.title) }}" required>
+                {% if errors.title is defined %}
+                    <div class="invalid-feedback">
+                        {{ errors.title }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="intro" class="form-label">Intro</label>
+                <textarea class="form-control {% if errors.intro is defined %}is-invalid{% endif %}" id="intro" name="intro" required>{{ formData.intro|default(post.intro) }}</textarea>
+                {% if errors.intro is defined %}
+                    <div class="invalid-feedback">
+                        {{ errors.intro }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Contenu</label>
+                <textarea class="form-control {% if errors.content is defined %}is-invalid{% endif %}" id="content" name="content" required>{{ formData.content|default(post.content) }}</textarea>
+                {% if errors.content is defined %}
+                    <div class="invalid-feedback">
+                        {{ errors.content }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Catégorie</label>
+                <select class="form-select {% if errors.category_id is defined %}is-invalid{% endif %}" id="category_id" name="category_id" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if formData.category_id is defined and formData.category_id == category.id or post.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.category_id is defined %}
+                    <div class="invalid-feedback">
+                        {{ errors.category_id }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+{% endblock %}

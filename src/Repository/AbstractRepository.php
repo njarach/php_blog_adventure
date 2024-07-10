@@ -88,7 +88,7 @@ abstract class AbstractRepository implements RepositoryInterface
         }
 
         if (!$statement->execute()) {
-            throw new Exception('Failed to create new entity: ' . implode(', ', $statement->errorInfo()));
+            throw new Exception('La création de l entité a échouée: ' . implode(', ', $statement->errorInfo()));
         }
     }
 
@@ -100,11 +100,8 @@ abstract class AbstractRepository implements RepositoryInterface
         $properties = $entity->getProperties();
 
         $primaryKey = 'id';
-        if (!isset($properties[$primaryKey])) {
-            throw new \Exception('Primary key value is missing. Do not forget to set it when feeding your result in the object.');
-        }
+
         $primaryKeyValue = $properties[$primaryKey];
-        unset($properties[$primaryKey]); // Primary key should not be edited, so it is removed from the $properties array.
 
         // Filter out null values to only update provided properties. That way if a user doesn't set a property, it goes to the next to be updated.
         $properties = array_filter($properties, fn($value) => $value !== null);

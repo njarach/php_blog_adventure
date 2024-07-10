@@ -3,6 +3,7 @@
 namespace src\Repository;
 
 use Exception;
+use PDO;
 use src\model\Category;
 
 class CategoryRepository extends AbstractRepository
@@ -22,8 +23,8 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['content']);
-                $category->setName($row['id']);
+                $category->setId($row['id']);
+                $category->setName($row['name']);
                 $categories[] = $category;
             }
             return $categories;
@@ -40,8 +41,8 @@ class CategoryRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['content']);
-            $category->setName($row['id']);
+            $category->setId($row['id']);
+            $category->setName($row['name']);
             return $category;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
@@ -58,8 +59,8 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['content']);
-                $category->setName($row['id']);
+                $category->setId($row['id']);
+                $category->setName($row['name']);
                 $categories[] = $category;
             }
             return $categories;
@@ -76,11 +77,22 @@ class CategoryRepository extends AbstractRepository
         $row = $this->findOneBy($criteria);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['content']);
-            $category->setName($row['id']);
+            $category->setId($row['id']);
+            $category->setName($row['name']);
             return $category;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
         }
+    }
+
+    public function getCategoryNameById(int $categoryId): ?string
+    {
+        $sql = "SELECT name FROM category WHERE id = :categoryId";
+        $statement = $this->connection->getInstance()->prepare($sql);
+        $statement->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result['name'] ?? null;
     }
 }

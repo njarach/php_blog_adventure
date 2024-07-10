@@ -3,33 +3,59 @@
 namespace src\controller\AdminController;
 
 use Exception;
-use src\model\Post;
-use src\Repository\PostRepository;
+use src\Service\Manager\PostManager;
 
 class PostController extends CrudController
 {
+    private PostManager $postManager;
+
+    public function __construct()
+    {
+        $this->postManager = new PostManager();
+    }
+
     // check role and authorization in service ?
+
+    /**
+     * @throws Exception
+     */
     public function index()
     {
-//        here add logic so an admin can view all the blogposts for easier management
+        $blogPosts = $this->postManager->findAll();
+        echo $this->render('blogpost/index.html.twig', [
+            'posts'=>$blogPosts
+        ]);
     }
 
     /**
      * @throws Exception
      */
-    public function new()
+    public function create()
     {
-        $newPost = new Post();
-//        $newPost->setId(9);
-        $newPost->setContent('Nouveau post!');
-        $newPost->setAuthorId(1);
-//        $newPost->setId(8);
-        $newPost->setCategoryId(1);
-        $newPost->setTitle('Nouveau titre !');
-//        $newPost->setContent('Nouveau post!');
-        $postRepository = new PostRepository();
-        $postRepository->add($newPost);
-        echo 'nouvel article créé !';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // On vérifie les données par l'utilisateur, la méthode retourne les erreurs le cas échéant
+            $errors = $this->postManager->validatePostData($_POST);
+            if (empty($errors)) {
+                $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
+                echo $this->render('blogpost/index.html.twig', [
+                    'posts' => $this->postManager->findAll()
+                ]);
+            } else {
+                // S'il y a au moins une erreur on renvoie le formulaire avec l'erreur et les données déjà remplies par l'utilisateur
+                $categories = $this->postManager->getAllCategories();
+                echo $this->render('blogpost/new.html.twig', [
+                    'categories' => $categories,
+                    'errors' => $errors,
+                    'formData' => $_POST
+                ]);
+            }
+        } else {
+            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
+            $categories = $this->postManager->getAllCategories();
+            echo $this->render('blogpost/new.html.twig', [
+                'categories' => $categories
+            ]);
+        }
     }
 
     /**
@@ -37,12 +63,33 @@ class PostController extends CrudController
      */
     public function edit(int $postId)
     {
-        $postRepostiory = new PostRepository();
-        $post = $postRepostiory->findById($postId);
-        $post->setContent('Contenu modifié encore !');
-        $post->setTitle('Titre modifié à nouveau !');
-        $postRepostiory->edit($post);
-        echo 'Post édité';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = $this->postManager->validatePostData($_POST);
+
+            if (empty($errors)) {
+                $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
+                echo $this->render('blogpost/index.html.twig', [
+                    'posts' => $this->postManager->findAll()
+                ]);
+            } else {
+                $categories = $this->postManager->getAllCategories();
+                $post = $this->postManager->findById($postId);
+                echo $this->render('blogpost/edit.html.twig', [
+                    'post' => $post,
+                    'categories' => $categories,
+                    'errors' => $errors,
+                    'formData' => $_POST
+                ]);
+            }
+        } else {
+            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
+            $categories = $this->postManager->getAllCategories();
+            $post = $this->postManager->findById($postId);
+            echo $this->render('blogpost/edit.html.twig', [
+                'post' => $post,
+                'categories' => $categories
+            ]);
+        }
     }
 
     /**
@@ -50,14 +97,29 @@ class PostController extends CrudController
      */
     public function delete(int $postId)
     {
-        $postRepostiory = new PostRepository();
-        $post = $postRepostiory->findById($postId);
-        $postRepostiory->delete($post);
-        echo 'Post supprimé';
+        $post = $this->postManager->findById($postId);
+        $this->postManager->delete($post);
+        echo $this->render('blogpost/index.html.twig',[
+            'posts'=>$this->postManager->findAll()
+        ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function show(int $postId)
     {
-        // TODO: Implement show() method.
+        $blogPost = $this->postManager->findById($postId);
+        if ($blogPost) {
+            echo $this->render('blogpost/show.html.twig', [
+                'post' => $blogPost
+            ]);
+        } else {
+            http_response_code(404);
+            echo $this->render('error/error.html.twig', [
+                'errorCode'=>404,
+                'errorMessage'=>"Aucun article trouvé pour l'id $postId..."
+            ]);
+        }
     }
 }
