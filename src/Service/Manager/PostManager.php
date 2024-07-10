@@ -106,7 +106,7 @@ class PostManager
         $this->postRepository->delete($post);
     }
 
-    public function validatePostData($data): array
+    public function validatePostData(array $data): array
     {
         // Un tableau vide, toujours vide à l'instanciation
         $errors = $this->errors;
@@ -127,7 +127,7 @@ class PostManager
         return $errors;
     }
 
-    public function checkPost($data): bool
+    private function checkPost($data): bool
     {
         return isset($data) && !empty(trim($data));
     }

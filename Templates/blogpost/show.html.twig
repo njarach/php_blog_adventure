@@ -13,5 +13,15 @@
                 <hr>
                 <div>{{ post.content }}</div>
         </article>
-
+        <form action="/php_blog_adventure/comments/new/{{ post.id }}">
+                <input type="text" name="content" id="comment-content">
+        </form>
+        <section id="comment-section">
+                {% if comments|length > 0 %}
+                        {% for comment in comments %}
+                <div class="comment">
+                        <span>{{ comment.content }}</span>
+                        <span>par {{ comment.username }} le {{ comment.createdat }}</span>
+                </div>
+        </section>
 {% endblock %}

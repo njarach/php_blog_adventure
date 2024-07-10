@@ -9,6 +9,7 @@ use src\Repository\CommentRepository;
 class CommentManager
 {
     private CommentRepository $commentRepository;
+    private array $commentErrors = [];
 
     public function __construct()
     {
@@ -37,7 +38,7 @@ class CommentManager
         }
     }
 
-    public function createNewComment(string $content, int $userId, int $postId): ?Comment
+    public function createComment(string $content, int $userId, int $postId): ?Comment
     {
         if ($content && $postId){
             $newComment = new Comment();
@@ -107,6 +108,21 @@ class CommentManager
             echo "Erreur: Il semblerait que le commentaire n'existe plus.";
         }
         return null;
+    }
+
+    public function validateCommentData(array $data): array
+    {
+        $commentErrors = $this->commentErrors;
+        if (!$this->checkComment($data['content'])) {
+            $commentErrors['content'] = 'Vous devez renseigner un contenu valide.';
+        }
+
+        return $commentErrors;
+    }
+
+    private function checkComment($data): bool
+    {
+        return isset($data) && !empty(trim($data));
     }
 
 }

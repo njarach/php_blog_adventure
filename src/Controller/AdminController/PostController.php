@@ -3,15 +3,18 @@
 namespace src\controller\AdminController;
 
 use Exception;
+use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
 
 class PostController extends CrudController
 {
     private PostManager $postManager;
+    private CommentManager $commentManager;
 
     public function __construct()
     {
         $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
     }
 
     // check role and authorization in service ?
@@ -50,7 +53,7 @@ class PostController extends CrudController
                 ]);
             }
         } else {
-            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
+            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables et les commentaires
             $categories = $this->postManager->getAllCategories();
             echo $this->render('blogpost/new.html.twig', [
                 'categories' => $categories
@@ -111,8 +114,10 @@ class PostController extends CrudController
     {
         $blogPost = $this->postManager->findById($postId);
         if ($blogPost) {
+            $comments = $this->commentManager->getPostComments($postId);
             echo $this->render('blogpost/show.html.twig', [
-                'post' => $blogPost
+                'post' => $blogPost,
+                'comments'=>$comments
             ]);
         } else {
             http_response_code(404);
