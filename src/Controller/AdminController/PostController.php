@@ -15,9 +15,16 @@ class PostController extends CrudController
     }
 
     // check role and authorization in service ?
+
+    /**
+     * @throws Exception
+     */
     public function index()
     {
-//        here add logic so an admin can view all the blogposts for easier management
+        $blogPosts = $this->postManager->findAll();
+        echo $this->render('blogpost/index.html.twig', [
+            'posts'=>$blogPosts
+        ]);
     }
 
     /**
@@ -25,31 +32,25 @@ class PostController extends CrudController
      */
     public function create()
     {
-        // TODO : déplacer checkpost vers le manager
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            // TODO : erreur = array, pour cibler quel input n'est pas valide. Rassembler les check dans une fonction, compter les erreurs, if count error > 1, ...
-
-            $title = $this->checkPost($_POST['title']) ? $_POST['title'] : null;
-            $content = $this->checkPost($_POST['content']) ? $_POST['content'] : null;
-            $categoryId = $this->checkPost($_POST['category_id']) ? $_POST['category_id'] : null;
-            $intro = $this->checkPost($_POST['intro']) ? $_POST['intro'] : null;
-
-            if ($title && $content && $categoryId && $intro) {
-                $this->postManager->createPost($title, $content, $categoryId, $intro);
+            // On vérifie les données par l'utilisateur, la méthode retourne les erreurs le cas échéant
+            $errors = $this->postManager->validatePostData($_POST);
+            if (empty($errors)) {
+                $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
                 echo $this->render('blogpost/index.html.twig', [
                     'posts' => $this->postManager->findAll()
                 ]);
             } else {
-                // TODO : renvoyer les éléments déjà remplis par l'user, soit un tableau (voir le tableau d'erreur, faire un tableau de valeur dans la foulée)
+                // S'il y a au moins une erreur on renvoie le formulaire avec l'erreur et les données déjà remplies par l'utilisateur
                 $categories = $this->postManager->getAllCategories();
                 echo $this->render('blogpost/new.html.twig', [
                     'categories' => $categories,
-                    'error' => 'All fields are required and cannot be empty or spaces.'
+                    'errors' => $errors,
+                    'formData' => $_POST
                 ]);
             }
         } else {
-            // Fetch all categories to display them in the form
+            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
             $categories = $this->postManager->getAllCategories();
             echo $this->render('blogpost/new.html.twig', [
                 'categories' => $categories
@@ -63,13 +64,10 @@ class PostController extends CrudController
     public function edit(int $postId)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = $this->checkPost($_POST['title']) ? $_POST['title'] : null;
-            $content = $this->checkPost($_POST['content']) ? $_POST['content'] : null;
-            $categoryId = $this->checkPost($_POST['category_id']) ? $_POST['category_id'] : null;
-            $intro = $this->checkPost($_POST['intro']) ? $_POST['intro'] : null;
+            $errors = $this->postManager->validatePostData($_POST);
 
-            if ($title && $content && $categoryId && $intro) {
-                $this->postManager->edit($postId, $title, $content, $categoryId, $intro);
+            if (empty($errors)) {
+                $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
                 echo $this->render('blogpost/index.html.twig', [
                     'posts' => $this->postManager->findAll()
                 ]);
@@ -79,11 +77,12 @@ class PostController extends CrudController
                 echo $this->render('blogpost/edit.html.twig', [
                     'post' => $post,
                     'categories' => $categories,
-                    'error' => 'All fields are required and cannot be empty or spaces.'
+                    'errors' => $errors,
+                    'formData' => $_POST
                 ]);
             }
         } else {
-            // Fetch the post and categories to display them in the form
+            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
             $categories = $this->postManager->getAllCategories();
             $post = $this->postManager->findById($postId);
             echo $this->render('blogpost/edit.html.twig', [
@@ -100,18 +99,27 @@ class PostController extends CrudController
     {
         $post = $this->postManager->findById($postId);
         $this->postManager->delete($post);
-        echo "Post $postId supprimé";
         echo $this->render('blogpost/index.html.twig',[
             'posts'=>$this->postManager->findAll()
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function show(int $postId)
     {
-        // TODO: Implement show() method.
-    }
-    private function checkPost($data): bool
-    {
-        return isset($data) && !empty(trim($data));
+        $blogPost = $this->postManager->findById($postId);
+        if ($blogPost) {
+            echo $this->render('blogpost/show.html.twig', [
+                'post' => $blogPost
+            ]);
+        } else {
+            http_response_code(404);
+            echo $this->render('error/error.html.twig', [
+                'errorCode'=>404,
+                'errorMessage'=>"Aucun article trouvé pour l'id $postId..."
+            ]);
+        }
     }
 }

@@ -14,8 +14,7 @@ class PostManager
     private CategoryRepository $categoryRepository;
     private UserRepository $userRepository;
 
-    // TODO : ajouter checkpost et compter les erreurs (voir postcontroller), faire un getter de ce tableau récupérable par le postcontroller
-    private array $error = [];
+    private array $errors = [];
 
     public function __construct()
     {
@@ -119,6 +118,32 @@ class PostManager
     public function delete($post): void
     {
         $this->postRepository->delete($post);
+    }
+
+    public function validatePostData($data): array
+    {
+        // Un tableau vide, toujours vide à l'instanciation
+        $errors = $this->errors;
+
+        if (!$this->checkPost($data['title'])) {
+            $errors['title'] = 'Vous devez renseigner un titre valide.';
+        }
+        if (!$this->checkPost($data['content'])) {
+            $errors['content'] = "Le contenu de l'article ne doit pas être vide.";
+        }
+        if (!$this->checkPost($data['category_id'])) {
+            $errors['category_id'] = 'Veuillez sélectionner une catégorie.';
+        }
+        if (!$this->checkPost($data['intro'])) {
+            $errors['intro'] = "L'intro de l'article ne doit pas être vide.";
+        }
+
+        return $errors;
+    }
+
+    public function checkPost($data): bool
+    {
+        return isset($data) && !empty(trim($data));
     }
 
 }
