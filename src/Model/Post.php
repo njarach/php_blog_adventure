@@ -2,6 +2,7 @@
 
 namespace src\model;
 
+use Exception;
 use src\Repository\UserRepository;
 
 class Post implements EntityInterface
@@ -15,6 +16,7 @@ class Post implements EntityInterface
     protected int $category_id;
     protected string $created_at;
     protected string $updated_at;
+    protected ?string $author_name=null;
     public function getTitle(): string
     {
         return $this->title;
@@ -49,6 +51,24 @@ class Post implements EntityInterface
     public function setAuthorId(int $author_id): void
     {
         $this->author_id = $author_id;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAuthorName(): string
+    {
+        if (!$this->author_name) {
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id' => $this->author_id]);
+            $this->author_name = $author?->getUsername();
+        }
+        return $this->author_name;
+    }
+
+    public function setAuthorName(string $authorName): void
+    {
+        $this->author_name = $authorName;
     }
 
     public function getCategoryId(): int

@@ -18,7 +18,6 @@ trait EntityTrait
     {
         $this->id = $id;
     }
-// this is actually auto incremented ?
 
     public function getProperties(): array
     {

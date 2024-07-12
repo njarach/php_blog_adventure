@@ -2,6 +2,7 @@
 
 namespace src\model;
 
+use Exception;
 use src\Repository\UserRepository;
 
 class Comment implements EntityInterface
@@ -12,6 +13,7 @@ class Comment implements EntityInterface
     protected string $content;
     protected string $created_at;
     protected bool $reviewed;
+    protected string $author_name;
 
     /**
      * @return int
@@ -93,10 +95,21 @@ class Comment implements EntityInterface
         $this->reviewed = $reviewed;
     }
 
-    public function setAuthorName(mixed $user_id)
+    /**
+     * @throws Exception
+     */
+    public function getAuthorName(): string
     {
-        $userRepository = new UserRepository();
-        $user = $userRepository->findOneBy([]);
+        if (!$this->author_name) {
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id' => $this->user_id]);
+            $this->author_name = $author?->getUsername();
+        }
+        return $this->author_name;
     }
 
+    public function setAuthorName(string $authorName): void
+    {
+        $this->author_name = $authorName;
+    }
 }
