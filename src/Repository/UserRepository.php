@@ -9,19 +9,57 @@ use src\model\User;
 class UserRepository extends AbstractRepository
 {
 
+    /**
+     * @throws Exception
+     */
     public function findAll(): ?array
     {
-        // TODO: Implement findAll() method.
+        $rows = $this->fetchAll();
+        $users = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $user = new User();
+                $user->setProperties($row);
+                $users[] = $user;
+            }
+            return $users;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 
-    public function findById(int $id): ?object
+    /**
+     * @throws Exception
+     */
+    public function findById(int $id): ?User
     {
-        // TODO: Implement findById() method.
+        $rows = $this->fetchById($id);
+        if (!empty($row)) {
+            $user = new User();
+            $user->setProperties($row);
+            return $user;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     public function findBy(array $criteria): array
     {
-        // TODO: Implement findBy() method.
+        $rows = $this->fetchBy($criteria);
+        $users = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $user = new User();
+                $user->setProperties($row);
+                $users[] = $user;
+            }
+            return $users;
+        } else {
+            throw new Exception("Aucune donnée n'a été trouvée !");
+        }
     }
 
     /**

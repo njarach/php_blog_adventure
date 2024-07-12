@@ -23,8 +23,7 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['id']);
-                $category->setName($row['name']);
+                $category->setProperties($row);
                 $categories[] = $category;
             }
             return $categories;
@@ -41,8 +40,7 @@ class CategoryRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['id']);
-            $category->setName($row['name']);
+            $category->setProperties($row);
             return $category;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
@@ -59,8 +57,7 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['id']);
-                $category->setName($row['name']);
+                $category->setProperties($row);
                 $categories[] = $category;
             }
             return $categories;
@@ -74,11 +71,10 @@ class CategoryRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?Category
     {
-        $row = $this->findOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['id']);
-            $category->setName($row['name']);
+            $category->setProperties($row);
             return $category;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");

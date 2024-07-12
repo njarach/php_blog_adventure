@@ -23,11 +23,7 @@ class CommentRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $comment = new Comment();
-                $comment->setContent($row['content']);
-                $comment->setId($row['id']);
-                $comment->setUserId($row['user_id']);
-                $comment->setCreatedAt($row['created_at']);
-                $comment->setPostId($row['post_id']);
+                $comment->setProperties($row);
                 $comments[] = $comment;
             }
             return $comments;
@@ -45,12 +41,7 @@ class CommentRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $comment = new Comment();
-            $comment->setContent($row['content']);
-            $comment->setId($row['id']);
-            $comment->setUserId($row['user_id']);
-            $comment->setCreatedAt($row['created_at']);
-            $comment->setPostId($row['post_id']);
-            $comment->setAuthorName($row['user_id']);
+            $comment->setProperties($row);
             return $comment;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
@@ -67,11 +58,7 @@ class CommentRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $comment = new Comment();
-                $comment->setContent($row['content']);
-                $comment->setId($row['id']);
-                $comment->setUserId($row['user_id']);
-                $comment->setCreatedAt($row['created_at']);
-                $comment->setPostId($row['post_id']);
+                $comment->setProperties($row);
                 $comments[] = $comment;
             }
             return $comments;
@@ -88,11 +75,7 @@ class CommentRepository extends AbstractRepository
         $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $comment = new Comment();
-            $comment->setContent($row['content']);
-            $comment->setId($row['id']);
-            $comment->setUserId($row['user_id']);
-            $comment->setCreatedAt($row['created_at']);
-            $comment->setPostId($row['post_id']);
+            $comment->setProperties($row);
             return $comment;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");

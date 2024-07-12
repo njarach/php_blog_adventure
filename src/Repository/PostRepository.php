@@ -25,20 +25,12 @@ class PostRepository extends AbstractRepository
      */
     public function findAll(): ?array
     {
-        // TODO : voir pour rajouter ces optimisations sur les autres méthodes
         $rows = $this->fetchAll();
         if (count($rows)) {
             $posts = [];
             foreach ($rows as $row) {
                 $post = new Post();
-                $post->setContent($row['content']);
-                $post->setId($row['id']);
-                $post->setTitle($row['title']);
-                $post->setCategoryId($row['category_id']);
-                $post->setIntro($row['intro']);
-                $post->setAuthorId($row['author_id']);
-                $post->setCreatedAt($row['created_at']);
-                $post->setUpdatedAt($row['updated_at']);
+                $post->setProperties($row);
                 $posts[] = $post;
             }
             return $posts;
@@ -54,14 +46,7 @@ class PostRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $post = new Post();
-            $post->setContent($row['content']);
-            $post->setId($row['id']);
-            $post->setTitle($row['title']);
-            $post->setCategoryId($row['category_id']);
-            $post->setIntro($row['intro']);
-            $post->setAuthorId($row['author_id']);
-            $post->setCreatedAt($row['created_at']);
-            $post->setUpdatedAt($row['updated_at']);
+            $post->setProperties($row);
             return $post;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
@@ -79,14 +64,7 @@ class PostRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $post = new Post();
-                $post->setContent($row['content']);
-                $post->setId($row['id']);
-                $post->setTitle($row['title']);
-                $post->setCategoryId($row['category_id']);
-                $post->setIntro($row['intro']);
-                $post->setAuthorId($row['author_id']);
-                $post->setCreatedAt($row['created_at']);
-                $post->setUpdatedAt($row['updated_at']);
+                $post->setProperties($row);
                 $posts[] = $post;
             }
             return $posts;
@@ -103,14 +81,7 @@ class PostRepository extends AbstractRepository
         $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $post = new Post();
-            $post->setContent($row['content']);
-            $post->setId($row['id']);
-            $post->setTitle($row['title']);
-            $post->setCategoryId($row['category_id']);
-            $post->setIntro($row['intro']);
-            $post->setAuthorId($row['author_id']);
-            $post->setCreatedAt($row['created_at']);
-            $post->setUpdatedAt($row['updated_at']);
+            $post->setProperties($row);
             return $post;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
