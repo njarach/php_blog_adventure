@@ -25,7 +25,7 @@ class CommentController extends AbstractController
         $comments = $this->commentManager->getPostComments($postId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // On vérifie les données par l'utilisateur, la méthode retourne les erreurs le cas échéant
+            // Checking datas sent by the user, return error to be displayed on the blogpost show if any
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
                 $this->commentManager->createComment($_POST['content'], 1, $postId);
@@ -49,11 +49,11 @@ class CommentController extends AbstractController
 
     public function edit(int $commentId)
     {
-//        here add logic so a user can edit one of his own comments
+        // not requested, maybe add this later
     }
 
     public function delete(int $postId)
     {
-//        here add logic so a user can delete one of his own comments
+        // not requested, maybe add this later
     }
 }

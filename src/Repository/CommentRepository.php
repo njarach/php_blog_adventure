@@ -14,6 +14,7 @@ class CommentRepository extends AbstractRepository
 
     /**
      * @throws Exception
+     * Returns an array of Comment objects.
      */
     public function findAll(): array
     {
@@ -35,6 +36,7 @@ class CommentRepository extends AbstractRepository
         }
     }
 
+
     /**
      * @throws Exception
      */
@@ -48,6 +50,7 @@ class CommentRepository extends AbstractRepository
             $comment->setUserId($row['user_id']);
             $comment->setCreatedAt($row['created_at']);
             $comment->setPostId($row['post_id']);
+            $comment->setAuthorName($row['user_id']);
             return $comment;
         } else {
             throw new Exception("Aucune donnée n'a été trouvée !");
@@ -82,7 +85,7 @@ class CommentRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?Comment
     {
-        $row = $this->findOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $comment = new Comment();
             $comment->setContent($row['content']);

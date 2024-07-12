@@ -2,6 +2,8 @@
 
 namespace src\model;
 
+use src\Repository\UserRepository;
+
 class Post implements EntityInterface
 {
     use EntityTrait;
@@ -13,7 +15,6 @@ class Post implements EntityInterface
     protected int $category_id;
     protected string $created_at;
     protected string $updated_at;
-
     public function getTitle(): string
     {
         return $this->title;

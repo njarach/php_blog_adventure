@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row mb-2 mt-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contenu</th>
+                    <th>Auteur</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in unreviewedComments %}
+                    <tr>
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.content }}</td>
+                        <td>{{ comment.authorname }}</td>
+                        <td>{{ comment.createdat|date('d-m-Y H:i:s') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}

@@ -20,7 +20,7 @@ class CommentManager
     /**
      * @throws Exception
      */
-    public function getLatestComments(): array
+    public function getAllComments(): array
     {
         return $this->commentRepository->findAll();
     }
@@ -125,4 +125,35 @@ class CommentManager
         return isset($data) && !empty(trim($data));
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getReviewedComments(): ?array
+    {
+        $reviewedComments = $this->commentRepository->findBy(['reviewed'=>true]);
+        if (!empty($reviewedComments)){
+            return $reviewedComments;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @return array[]
+     * @throws Exception
+     */
+    public function getReviewSortedComments(): array
+    {
+        $comments = $this->getAllComments();
+        $reviewedComments = [];
+        $unreviewedComments = [];
+        foreach ($comments as $comment) {
+            if ($comment->isReviewed()) {
+                $reviewedComments[] = $comment;
+            } else {
+                $unreviewedComments[] = $comment;
+            }
+        }
+        return array($reviewedComments, $unreviewedComments);
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace src\model;
 
+use src\Repository\UserRepository;
+
 class Comment implements EntityInterface
 {
     use EntityTrait;
@@ -89,6 +91,12 @@ class Comment implements EntityInterface
     public function setReviewed(bool $reviewed): void
     {
         $this->reviewed = $reviewed;
+    }
+
+    public function setAuthorName(mixed $user_id)
+    {
+        $userRepository = new UserRepository();
+        $user = $userRepository->findOneBy([]);
     }
 
 }
