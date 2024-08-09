@@ -132,4 +132,13 @@ class PostManager
         return isset($data) && !empty(trim($data));
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getAuthorName(int $authorId): ?string
+    {
+        $userRepository = new UserRepository();
+        $author = $userRepository->findOneBy(['id'=>$authorId]);
+        return $author?->getUsername();
+    }
 }

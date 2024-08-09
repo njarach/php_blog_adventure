@@ -8,12 +8,12 @@
                                 <a method="post" style="text-decoration: none" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}">Supprimer</a>
                         </div>
                 </div>
-                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ post.authorid }}</strong></p>
+                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ authorName }}</strong></p>
                 <div class="my-3">{{ post.intro }}</div>
                 <hr>
                 <div>{{ post.content }}</div>
         </article>
-        <form action="/php_blog_adventure/comments/new/{{ post.id }}">
+        <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
                 <input type="text" name="content" id="comment-content">
         </form>
         <section id="comment-section">
@@ -23,5 +23,7 @@
                         <span>{{ comment.content }}</span>
                         <span>par {{ comment.username }} le {{ comment.createdat }}</span>
                 </div>
+                {% endfor %}
+                {% endif %}
         </section>
 {% endblock %}

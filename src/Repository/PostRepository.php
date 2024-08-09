@@ -49,16 +49,15 @@ class PostRepository extends AbstractRepository
             $post->setProperties($row);
             return $post;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findBy(array $criteria): array
+    public function findBy(array $criteria): ?array
     {
-        // TODO : idéalement, findBy ne renvoie pas d'exception mais juste un tableau qui ne contient aucun résultat
         $rows =  $this->fetchBy($criteria);
         $posts = [];
         if (!empty($rows)) {
@@ -69,7 +68,7 @@ class PostRepository extends AbstractRepository
             }
             return $posts;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
@@ -84,7 +83,7 @@ class PostRepository extends AbstractRepository
             $post->setProperties($row);
             return $post;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun post n'a été trouvé !");
         }
     }
 }

@@ -36,7 +36,6 @@ class PostController extends CrudController
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // On vérifie les données par l'utilisateur, la méthode retourne les erreurs le cas échéant
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
@@ -44,7 +43,6 @@ class PostController extends CrudController
                     'posts' => $this->postManager->findAll()
                 ]);
             } else {
-                // S'il y a au moins une erreur on renvoie le formulaire avec l'erreur et les données déjà remplies par l'utilisateur
                 $categories = $this->postManager->getAllCategories();
                 echo $this->render('blogpost/new.html.twig', [
                     'categories' => $categories,
@@ -53,7 +51,6 @@ class PostController extends CrudController
                 ]);
             }
         } else {
-            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables et les commentaires
             $categories = $this->postManager->getAllCategories();
             echo $this->render('blogpost/new.html.twig', [
                 'categories' => $categories
@@ -85,7 +82,6 @@ class PostController extends CrudController
                 ]);
             }
         } else {
-            // Si le formulaire n'est pas 'submitted' on l'affiche, avec les catégories sélectionnables
             $categories = $this->postManager->getAllCategories();
             $post = $this->postManager->findById($postId);
             echo $this->render('blogpost/edit.html.twig', [

@@ -12,7 +12,7 @@ class AdminController extends AbstractController
      */
     public function dashboard()
     {
-        // check role and authorization in service ?
+        // check role and authorization in service ? Dashboard is not a required feature, maybe add this later ?
         echo $this->render('admin/dashboard.html.twig');
     }
 

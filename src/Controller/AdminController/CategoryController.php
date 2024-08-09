@@ -4,7 +4,7 @@ namespace src\controller\AdminController;
 
 class CategoryController extends CrudController
 {
-    // check role and authorization in service ?
+    // Categories management is not required, maybe add those later ?
     public function index()
     {
 //        here add logic so an admin can view all the categories for easier management

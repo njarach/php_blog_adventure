@@ -28,7 +28,7 @@ class CategoryRepository extends AbstractRepository
             }
             return $categories;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -43,7 +43,7 @@ class CategoryRepository extends AbstractRepository
             $category->setProperties($row);
             return $category;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -62,7 +62,7 @@ class CategoryRepository extends AbstractRepository
             }
             return $categories;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -77,7 +77,7 @@ class CategoryRepository extends AbstractRepository
             $category->setProperties($row);
             return $category;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 }

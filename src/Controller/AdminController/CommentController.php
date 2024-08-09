@@ -42,6 +42,6 @@ class CommentController extends AbstractController
     public function show(int $postId)
     {
         // TODO: Implement show() method.
-        // not requested, maybe add this later
+        // not required, maybe add this later
     }
 }

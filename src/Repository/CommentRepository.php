@@ -28,7 +28,7 @@ class CommentRepository extends AbstractRepository
             }
             return $comments;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun commentaire n'a été trouvé !");
         }
     }
 
@@ -44,14 +44,14 @@ class CommentRepository extends AbstractRepository
             $comment->setProperties($row);
             return $comment;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findBy(array $criteria): array
+    public function findBy(array $criteria): ?array
     {
         $rows =  $this->fetchBy($criteria);
         $comments = [];
@@ -63,7 +63,7 @@ class CommentRepository extends AbstractRepository
             }
             return $comments;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
@@ -78,7 +78,7 @@ class CommentRepository extends AbstractRepository
             $comment->setProperties($row);
             return $comment;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 

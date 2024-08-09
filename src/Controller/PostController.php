@@ -2,15 +2,18 @@
 namespace src\controller;
 
 use Exception;
-use src\Repository\PostRepository;
+use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
 
 class PostController extends AbstractController
 {
     private PostManager $postManager;
+    private CommentManager $commentManager;
+
     public function __construct()
     {
         $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
     }
 
     /**
@@ -29,8 +32,12 @@ class PostController extends AbstractController
     public function show(int $postId) {
         $blogPost = $this->postManager->findById($postId);
         if ($blogPost) {
+            $authorName = $this->postManager->getAuthorName($blogPost->getAuthorId());
+            $comments = $this->commentManager->getPostComments($postId);
             echo $this->render('blogpost/show.html.twig', [
-                'post' => $blogPost
+                'post' => $blogPost,
+                'authorName'=>$authorName,
+                'comments'=>$comments
             ]);
         } else {
             http_response_code(404);

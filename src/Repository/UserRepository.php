@@ -24,7 +24,7 @@ class UserRepository extends AbstractRepository
             }
             return $users;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun utilisateur n'a été trouvé !");
         }
     }
 
@@ -33,13 +33,13 @@ class UserRepository extends AbstractRepository
      */
     public function findById(int $id): ?User
     {
-        $rows = $this->fetchById($id);
+        $row = $this->fetchById($id);
         if (!empty($row)) {
             $user = new User();
             $user->setProperties($row);
             return $user;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun utilisateur n'a été trouvé !");
         }
     }
 
@@ -58,7 +58,7 @@ class UserRepository extends AbstractRepository
             }
             return $users;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun utilisateur n'a été trouvé !");
         }
     }
 
@@ -67,13 +67,13 @@ class UserRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?User
     {
-        $rows = $this->fetchOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $user = new User();
             $user->setProperties($row);
             return $user;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun utilisateur n'a été trouvé !");
         }
     }
 

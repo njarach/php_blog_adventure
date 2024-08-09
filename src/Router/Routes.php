@@ -35,6 +35,8 @@ class Routes
 
     public function setupPostRoutes(): void
     {
+        // Comment routes
+        $this->router->post('/comments/new/:id', 'Comment#create');
         // Admin Routes
         $this->router->group('/admin',function (Router $router) {
             // Admin BlogPost Routes

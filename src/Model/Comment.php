@@ -13,7 +13,6 @@ class Comment implements EntityInterface
     protected string $content;
     protected string $created_at;
     protected bool $reviewed;
-    protected string $author_name;
 
     /**
      * @return int
@@ -93,23 +92,5 @@ class Comment implements EntityInterface
     public function setReviewed(bool $reviewed): void
     {
         $this->reviewed = $reviewed;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getAuthorName(): string
-    {
-        if (!$this->author_name) {
-            $userRepository = new UserRepository();
-            $author = $userRepository->findOneBy(['id' => $this->user_id]);
-            $this->author_name = $author?->getUsername();
-        }
-        return $this->author_name;
-    }
-
-    public function setAuthorName(string $authorName): void
-    {
-        $this->author_name = $authorName;
     }
 }

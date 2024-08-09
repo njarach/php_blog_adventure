@@ -28,14 +28,10 @@ class CommentManager
     /**
      * @throws Exception
      */
-    public function getPostComments(int $postId): ?array
+    public function getPostComments(int $postId): array
     {
-        $comments = $this->commentRepository->findBy(['id_post'=>$postId]);
-        if (!empty($comments)){
-            return $comments;
-        } else {
-            return null;
-        }
+        $comments = $this->commentRepository->findBy(['post_id' => $postId]);
+        return $comments ?: [];
     }
 
     public function createComment(string $content, int $userId, int $postId): ?Comment
@@ -45,7 +41,7 @@ class CommentManager
             $newComment->setContent($content);
             $newComment->setPostId($postId);
             // for now user id is 1 , will be added dynamically later when authentication is added
-            $newComment->setUserId(1);
+            $newComment->setUserId($userId);
             // will add a condition if user is admin, it sets the reviewed to true automatically
             $newComment->setReviewed(false);
             try {
