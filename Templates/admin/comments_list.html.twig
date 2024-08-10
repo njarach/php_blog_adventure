@@ -2,6 +2,37 @@
 {% block body %}
     <div class="row mb-2 mt-5">
         <div class="table-responsive">
+            <div>
+                <h1>Commentaires non vérifiés</h1>
+            </div>
+            <table class="table mb-3">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contenu</th>
+                    <th>Auteur</th>
+                    <th>Date</th>
+                    <th>Vérifier</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in unreviewedComments %}
+                    <tr>
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.content }}</td>
+                        <td>{{ comment.authorname }}</td>
+                        <td>{{ comment.createdat|date('d-m-Y H:i:s') }}</td>
+                        <td><a href="/php_blog_adventure/admin/comments/review/{{ comment.id }}">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <h1>Commentaires vérifiés</h1>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -12,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for comment in unreviewedComments %}
+                {% for comment in reviewedComments %}
                     <tr>
                         <td>{{ comment.id }}</td>
                         <td>{{ comment.content }}</td>

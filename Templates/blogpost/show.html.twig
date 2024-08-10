@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-        <article class="blog-post">
+        <article class="blog-post mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                         <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
                         <div class="crud-links-wrapper">
@@ -13,16 +13,24 @@
                 <hr>
                 <div>{{ post.content }}</div>
         </article>
-        <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
-                <input type="text" name="content" id="comment-content">
-        </form>
+        <h3>Nouveau commentaire</h3>
+
+                <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
+                        <div class="hstack gap-3 col-6">
+                        <input class="form-control" type="text" name="content" id="comment-content">
+                        <input class="btn btn-primary" type="submit" value="Envoyer">
+                        </div>
+                </form>
+
         <section id="comment-section">
                 {% if comments|length > 0 %}
                         {% for comment in comments %}
+                                {% if comment.reviewed %}
                 <div class="comment">
                         <span>{{ comment.content }}</span>
-                        <span>par {{ comment.username }} le {{ comment.createdat }}</span>
+                        <span>par {{ comment.authorname }} le {{ comment.createdat }}</span>
                 </div>
+                                {% endif %}
                 {% endfor %}
                 {% endif %}
         </section>

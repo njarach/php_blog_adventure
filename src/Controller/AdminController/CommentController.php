@@ -22,7 +22,12 @@ class CommentController extends AbstractController
      */
     public function review(int $commentId)
     {
-        $comment = $this->commentManager->reviewComment($commentId);
+        $this->commentManager->reviewComment($commentId);
+        list($reviewedComments, $unreviewedComments) = $this->commentManager->getReviewSortedComments();
+        echo $this->render('admin/comments_list.html.twig',[
+            'reviewedComments'=>$reviewedComments,
+            'unreviewedComments'=>$unreviewedComments
+        ]);
     }
 
 

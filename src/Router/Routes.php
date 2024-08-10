@@ -23,7 +23,10 @@ class Routes
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
-        // Admin Dashboard Routes (if any ???)
+        // Admin comments routes
+            $router->get('/comments','Comment#index');
+            $router->get('/comments/review/:id','Comment#review');
+            // Admin Dashboard Routes (if any ???)
             $router->get('/dashboard', 'Admin#dashboard');
         // Admin BlogPost Routes
             $router->get('/posts/edit/:id', 'Post#edit');
@@ -42,6 +45,7 @@ class Routes
             // Admin BlogPost Routes
             $router->post('/posts/edit/:id', 'Post#edit');
             $router->post('/posts/new', 'Post#create');
+            // Admin comments routes
         });
     }
 

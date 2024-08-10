@@ -1,6 +1,6 @@
 <?php
 
-namespace src\model;
+namespace src\Model;
 
 class Category implements EntityInterface
 {
