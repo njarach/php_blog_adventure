@@ -8,6 +8,11 @@ use src\Repository\UserRepository;
 class Post implements EntityInterface
 {
     use EntityTrait;
+
+    public string $authorName;
+    public array $comments;
+
+//    ----------------------
     protected string $title;
     protected string $content;
 

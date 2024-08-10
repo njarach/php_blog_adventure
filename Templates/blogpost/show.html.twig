@@ -8,27 +8,26 @@
                                 <a method="post" style="text-decoration: none" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}">Supprimer</a>
                         </div>
                 </div>
-                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ authorName }}</strong></p>
+                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ post.authorName }}</strong></p>
                 <div class="my-3">{{ post.intro }}</div>
                 <hr>
                 <div>{{ post.content }}</div>
         </article>
-        <h3>Nouveau commentaire</h3>
 
+        <h3>Nouveau commentaire</h3>
                 <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
                         <div class="hstack gap-3 col-6">
                         <input class="form-control" type="text" name="content" id="comment-content">
                         <input class="btn btn-primary" type="submit" value="Envoyer">
                         </div>
                 </form>
-
         <section id="comment-section">
-                {% if comments|length > 0 %}
-                        {% for comment in comments %}
+                {% if post.comments|length > 0 %}
+                        {% for comment in post.comments %}
                                 {% if comment.reviewed %}
                 <div class="comment">
                         <span>{{ comment.content }}</span>
-                        <span>par {{ comment.authorname }} le {{ comment.createdat }}</span>
+                        <span>par {{ comment.authorName }} le {{ comment.createdat }}</span>
                 </div>
                                 {% endif %}
                 {% endfor %}

@@ -8,6 +8,10 @@ use src\Repository\UserRepository;
 class Comment implements EntityInterface
 {
     use EntityTrait;
+
+    public string $authorName;
+
+    //    ----------------------
     protected int $post_id;
     protected int $user_id;
     protected string $content;

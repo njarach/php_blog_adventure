@@ -24,6 +24,12 @@ class CommentRepository extends AbstractRepository
             foreach ($rows as $row){
                 $comment = new Comment();
                 $comment->setProperties($row);
+
+                // Fetch the author of the comment
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+                if(!empty($author))$comment->authorName = $author->getUsername();
+
                 $comments[] = $comment;
             }
             return $comments;
@@ -42,6 +48,12 @@ class CommentRepository extends AbstractRepository
         if (!empty($row)) {
             $comment = new Comment();
             $comment->setProperties($row);
+
+            // Fetch the author of the comment
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+            if(!empty($author))$comment->authorName = $author->getUsername();
+
             return $comment;
         } else {
             return null;
@@ -59,6 +71,12 @@ class CommentRepository extends AbstractRepository
             foreach ($rows as $row){
                 $comment = new Comment();
                 $comment->setProperties($row);
+
+                // Fetch the author of the comment
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+                if(!empty($author))$comment->authorName = $author->getUsername();
+
                 $comments[] = $comment;
             }
             return $comments;
@@ -76,6 +94,12 @@ class CommentRepository extends AbstractRepository
         if (!empty($row)) {
             $comment = new Comment();
             $comment->setProperties($row);
+
+            // Fetch the author of the comment
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+            if(!empty($author))$comment->authorName = $author->getUsername();
+
             return $comment;
         } else {
             return null;

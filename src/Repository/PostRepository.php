@@ -31,6 +31,17 @@ class PostRepository extends AbstractRepository
             foreach ($rows as $row) {
                 $post = new Post();
                 $post->setProperties($row);
+
+                // Fetch the author of the post
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
+
+                // Fetch the comments of the post
+                $commentRepository = new CommentRepository();
+                $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
+
+                if (!empty($author)) $post->authorName = $author->getUsername();
+                if (!empty($comments)) $post->comments = $comments;
                 $posts[] = $post;
             }
             return $posts;
@@ -43,10 +54,21 @@ class PostRepository extends AbstractRepository
      */
     public function findById(int $id): ?Post
     {
-        $row =  $this->fetchById($id);
+        $row = $this->fetchById($id);
         if (!empty($row)) {
             $post = new Post();
             $post->setProperties($row);
+
+            // Fetch the author of the post
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
+
+            // Fetch the comments of the post
+            $commentRepository = new CommentRepository();
+            $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
+
+            if (!empty($author)) $post->authorName = $author->getUsername();
+            if (!empty($comments)) $post->comments = $comments;
             return $post;
         } else {
             return null;
@@ -58,12 +80,23 @@ class PostRepository extends AbstractRepository
      */
     public function findBy(array $criteria): ?array
     {
-        $rows =  $this->fetchBy($criteria);
+        $rows = $this->fetchBy($criteria);
         $posts = [];
         if (!empty($rows)) {
-            foreach ($rows as $row){
+            foreach ($rows as $row) {
                 $post = new Post();
                 $post->setProperties($row);
+
+                // Fetch the author of the post
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
+
+                // Fetch the comments of the post
+                $commentRepository = new CommentRepository();
+                $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
+
+                if (!empty($author)) $post->authorName = $author->getUsername();
+                if (!empty($comments)) $post->comments = $comments;
                 $posts[] = $post;
             }
             return $posts;
@@ -81,6 +114,17 @@ class PostRepository extends AbstractRepository
         if (!empty($row)) {
             $post = new Post();
             $post->setProperties($row);
+
+            // Fetch the author of the post
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
+
+            // Fetch the comments of the post
+            $commentRepository = new CommentRepository();
+            $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
+
+            if (!empty($author)) $post->authorName = $author->getUsername();
+            if (!empty($comments)) $post->comments = $comments;
             return $post;
         } else {
             throw new Exception("Aucun post n'a été trouvé !");

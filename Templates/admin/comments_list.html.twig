@@ -20,7 +20,7 @@
                     <tr>
                         <td>{{ comment.id }}</td>
                         <td>{{ comment.content }}</td>
-                        <td>{{ comment.authorname }}</td>
+                        <td>{{ comment.authorName }}</td>
                         <td>{{ comment.createdat|date('d-m-Y H:i:s') }}</td>
                         <td><a href="/php_blog_adventure/admin/comments/review/{{ comment.id }}">
                                 <i class="bi bi-eye-fill"></i>
@@ -47,7 +47,7 @@
                     <tr>
                         <td>{{ comment.id }}</td>
                         <td>{{ comment.content }}</td>
-                        <td>{{ comment.authorname }}</td>
+                        <td>{{ comment.authorName }}</td>
                         <td>{{ comment.createdat|date('d-m-Y H:i:s') }}</td>
                     </tr>
                 {% endfor %}

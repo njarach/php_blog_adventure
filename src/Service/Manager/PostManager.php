@@ -37,6 +37,15 @@ class PostManager
         return $this->postRepository->findById($postId);
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function findOneBy(array $array): ?Post
+    {
+        return $this->postRepository->findOneBy($array);
+    }
+
     /**
      * @throws Exception
      */
