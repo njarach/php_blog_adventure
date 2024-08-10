@@ -1,6 +1,6 @@
 <?php
 
-namespace src\controller\AdminController;
+namespace src\Controller\AdminController;
 
 use Exception;
 use src\Service\Manager\CommentManager;
@@ -24,6 +24,7 @@ class PostController extends CrudController
      */
     public function index()
     {
+        // TODO : this will send user to admin list of blogposts, not the basic index
         $blogPosts = $this->postManager->findAll();
         echo $this->render('blogpost/index.html.twig', [
             'posts'=>$blogPosts
@@ -39,9 +40,8 @@ class PostController extends CrudController
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
-                echo $this->render('blogpost/index.html.twig', [
-                    'posts' => $this->postManager->findAll()
-                ]);
+                // TODO Redirect to the post's index page after successful post creation ? create a redirect method in abstract controller ?
+                header("Location: /php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 echo $this->render('blogpost/new.html.twig', [
@@ -51,6 +51,7 @@ class PostController extends CrudController
                 ]);
             }
         } else {
+//            Categories are not required so they will not be refactored yet.
             $categories = $this->postManager->getAllCategories();
             echo $this->render('blogpost/new.html.twig', [
                 'categories' => $categories
@@ -65,12 +66,10 @@ class PostController extends CrudController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->postManager->validatePostData($_POST);
-
             if (empty($errors)) {
                 $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
-                echo $this->render('blogpost/index.html.twig', [
-                    'posts' => $this->postManager->findAll()
-                ]);
+                // TODO Redirect to the post's ADMIN (for now it's basic index) index page after successful post creation ? create a redirect method in abstract controller ?
+                header("Location: /php_blog_adventure/posts/{$postId}");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 $post = $this->postManager->findById($postId);
@@ -98,9 +97,8 @@ class PostController extends CrudController
     {
         $post = $this->postManager->findById($postId);
         $this->postManager->delete($post);
-        echo $this->render('blogpost/index.html.twig',[
-            'posts'=>$this->postManager->findAll()
-        ]);
+        // TODO Redirect to the post's ADMIN (for now it's basic index) index page after successful post creation ? create a redirect method in abstract controller ?
+        header("Location: /php_blog_adventure/posts");
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace src\controller;
+namespace src\Controller;
 
 use Exception;
 use src\Service\Manager\CommentManager;
@@ -9,11 +9,9 @@ use src\Service\Manager\PostManager;
 class CommentController extends AbstractController
 {
     private CommentManager $commentManager;
-    private PostManager $postManager;
     public function __construct()
     {
         $this->commentManager = new CommentManager();
-        $this->postManager = new PostManager();
     }
 
     /**
@@ -21,38 +19,26 @@ class CommentController extends AbstractController
      */
     public function create(int $postId)
     {
-        $blogPost = $this->postManager->findById($postId);
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Checking datas sent by the user, return error to be displayed on the blogpost#show if any
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
                 $this->commentManager->createComment($_POST['content'], 1, $postId);
-                $authorName = $this->postManager->getAuthorName($blogPost->getAuthorId());
-                $comments = $this->commentManager->getPostComments($postId);
-                echo $this->render('blogpost/show.html.twig', [
-                    'post' => $blogPost,
-                    'comments'=> $comments,
-                    'authorName'=>$authorName
-                ]);
+//                $blogPost = $this->postManager->findOneBy(['id'=>$postId]);
+//                echo $this->render('blogpost/show.html.twig', [
+//                    'post' => $blogPost,
+//                ]);
+                // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
+                header("Location: /php_blog_adventure/posts/{$postId}");
             } else {
-                $authorName = $this->postManager->getAuthorName($blogPost->getAuthorId());
-                $comments = $this->commentManager->getPostComments($postId);
                 echo $this->render('blogpost/show.html.twig', [
                     'commentErrors' => $commentErrors,
                     'commentFormData' => $_POST,
-                    'comments'=> $comments,
-                    'authorName'=>$authorName
                 ]);
             }
         } else {
-            $authorName = $this->postManager->getAuthorName($blogPost->getAuthorId());
-            $comments = $this->commentManager->getPostComments($postId);
-            echo $this->render('blogpost/show.html.twig', [
-                'post' => $blogPost,
-                'comments'=> $comments,
-                'authorName'=>$authorName
-            ]);
+            // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
+            header("Location: /php_blog_adventure/posts/{$postId}");
         }
     }
 
