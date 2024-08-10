@@ -6,7 +6,8 @@
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ post.categoryid }}</strong>
+{#                    Displaying category is not a requirement yet. Maybe add it later ?#}
+{#                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ post.categoryid }}</strong>#}
                     <h3 class="mb-0">{{ post.title }}</h3>
                     <div class="mb-1 text-body-secondary">{{ post.createdat|date('M-y') }}</div>
                     <p class="card-text mb-auto">{{ post.intro|default("Introduction de l'article si aucune n'a été définie.") }}</p>

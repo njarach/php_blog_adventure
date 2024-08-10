@@ -12,7 +12,6 @@ class PostManager
 {
     private PostRepository $postRepository;
     private CategoryRepository $categoryRepository;
-    private UserRepository $userRepository;
 
     private array $errors = [];
 
@@ -20,7 +19,6 @@ class PostManager
     {
         $this->postRepository = new PostRepository();
         $this->categoryRepository = new CategoryRepository();
-        $this->userRepository = new UserRepository();
     }
 
     /**
@@ -37,6 +35,15 @@ class PostManager
     public function findById(int $postId): ?Post
     {
         return $this->postRepository->findById($postId);
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function findOneBy(array $array): ?Post
+    {
+        return $this->postRepository->findOneBy($array);
     }
 
     /**
@@ -70,12 +77,6 @@ class PostManager
         return null;
     }
 
-    // This is useful ?
-    public function getCategoryNameById(int $categoryId): ?string
-    {
-        return $this->categoryRepository->getCategoryNameById($categoryId);
-    }
-
     /**
      * @throws Exception
      * This is used most notably to display categories' names on forms
@@ -83,12 +84,6 @@ class PostManager
     public function getAllCategories(): array
     {
         return $this->categoryRepository->findAll();
-    }
-
-    // This is maybe useful ?
-    public function getAuthorNameById(int $userId): ?string
-    {
-        return $this->userRepository->getUserNameById($userId);
     }
 
     public function createPost(string $title, string $content, int $categoryId, string $intro): ?Post
@@ -115,12 +110,12 @@ class PostManager
     /**
      * @throws Exception
      */
-    public function delete($post): void
+    public function delete(Post $post): void
     {
         $this->postRepository->delete($post);
     }
 
-    public function validatePostData($data): array
+    public function validatePostData(array $data): array
     {
         // Un tableau vide, toujours vide à l'instanciation
         $errors = $this->errors;
@@ -141,9 +136,18 @@ class PostManager
         return $errors;
     }
 
-    public function checkPost($data): bool
+    private function checkPost($data): bool
     {
         return isset($data) && !empty(trim($data));
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getAuthorName(int $authorId): ?string
+    {
+        $userRepository = new UserRepository();
+        $author = $userRepository->findOneBy(['id'=>$authorId]);
+        return $author?->getUsername();
+    }
 }

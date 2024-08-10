@@ -7,7 +7,6 @@ use src\model\Comment;
 
 class CommentRepository extends AbstractRepository
 {
-
     protected function getTableName(): string
     {
         return 'comment';
@@ -15,6 +14,7 @@ class CommentRepository extends AbstractRepository
 
     /**
      * @throws Exception
+     * Returns an array of Comment objects.
      */
     public function findAll(): array
     {
@@ -23,18 +23,21 @@ class CommentRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $comment = new Comment();
-                $comment->setContent($row['content']);
-                $comment->setId($row['id']);
-                $comment->setUserId($row['user_id']);
-                $comment->setCreatedAt($row['created_at']);
-                $comment->setPostId($row['post_id']);
+                $comment->setProperties($row);
+
+                // Fetch the author of the comment
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+                if(!empty($author))$comment->authorName = $author->getUsername();
+
                 $comments[] = $comment;
             }
             return $comments;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucun commentaire n'a été trouvé !");
         }
     }
+
 
     /**
      * @throws Exception
@@ -44,37 +47,41 @@ class CommentRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $comment = new Comment();
-            $comment->setContent($row['content']);
-            $comment->setId($row['id']);
-            $comment->setUserId($row['user_id']);
-            $comment->setCreatedAt($row['created_at']);
-            $comment->setPostId($row['post_id']);
+            $comment->setProperties($row);
+
+            // Fetch the author of the comment
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+            if(!empty($author))$comment->authorName = $author->getUsername();
+
             return $comment;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findBy(array $criteria): array
+    public function findBy(array $criteria): ?array
     {
         $rows =  $this->fetchBy($criteria);
         $comments = [];
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $comment = new Comment();
-                $comment->setContent($row['content']);
-                $comment->setId($row['id']);
-                $comment->setUserId($row['user_id']);
-                $comment->setCreatedAt($row['created_at']);
-                $comment->setPostId($row['post_id']);
+                $comment->setProperties($row);
+
+                // Fetch the author of the comment
+                $userRepository = new UserRepository();
+                $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+                if(!empty($author))$comment->authorName = $author->getUsername();
+
                 $comments[] = $comment;
             }
             return $comments;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
     }
 
@@ -83,17 +90,27 @@ class CommentRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?Comment
     {
-        $row = $this->findOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $comment = new Comment();
-            $comment->setContent($row['content']);
-            $comment->setId($row['id']);
-            $comment->setUserId($row['user_id']);
-            $comment->setCreatedAt($row['created_at']);
-            $comment->setPostId($row['post_id']);
+            $comment->setProperties($row);
+
+            // Fetch the author of the comment
+            $userRepository = new UserRepository();
+            $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
+            if(!empty($author))$comment->authorName = $author->getUsername();
+
             return $comment;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            return null;
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function add(Comment $comment): void
+    {
+        $this->new($comment);
     }
 }

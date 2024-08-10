@@ -23,13 +23,12 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['id']);
-                $category->setName($row['name']);
+                $category->setProperties($row);
                 $categories[] = $category;
             }
             return $categories;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -41,11 +40,10 @@ class CategoryRepository extends AbstractRepository
         $row =  $this->fetchById($id);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['id']);
-            $category->setName($row['name']);
+            $category->setProperties($row);
             return $category;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -59,13 +57,12 @@ class CategoryRepository extends AbstractRepository
         if (!empty($rows)) {
             foreach ($rows as $row){
                 $category = new Category();
-                $category->setId($row['id']);
-                $category->setName($row['name']);
+                $category->setProperties($row);
                 $categories[] = $category;
             }
             return $categories;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
     }
 
@@ -74,25 +71,13 @@ class CategoryRepository extends AbstractRepository
      */
     public function findOneBy(array $criteria): ?Category
     {
-        $row = $this->findOneBy($criteria);
+        $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $category = new Category();
-            $category->setId($row['id']);
-            $category->setName($row['name']);
+            $category->setProperties($row);
             return $category;
         } else {
-            throw new Exception("Aucune donnée n'a été trouvée !");
+            throw new Exception("Aucune catégorie n'a été trouvée !");
         }
-    }
-
-    public function getCategoryNameById(int $categoryId): ?string
-    {
-        $sql = "SELECT name FROM category WHERE id = :categoryId";
-        $statement = $this->connection->getInstance()->prepare($sql);
-        $statement->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-        return $result['name'] ?? null;
     }
 }

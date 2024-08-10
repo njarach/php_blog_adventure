@@ -1,17 +1,43 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-        <article class="blog-post">
-                <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
-                        <div class="crud-links-wrapper">
-                                <a style="text-decoration: none" class="me-1" href="/php_blog_adventure/admin/posts/edit/{{ post.id }}">Editer</a>
-                                <a method="post" style="text-decoration: none" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}">Supprimer</a>
-                        </div>
-                </div>
-                <p class="blog-post-meta">{{ post.createdAt|date('M-y')}} par <strong>{{ post.authorid }}</strong></p>
-                <div class="my-3">{{ post.intro }}</div>
-                <hr>
-                <div>{{ post.content }}</div>
-        </article>
+    <article class="blog-post mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
+            <div class="crud-links-wrapper">
+                <a style="text-decoration: none" class="me-1" href="/php_blog_adventure/admin/posts/edit/{{ post.id }}">Editer</a>
+                <a style="text-decoration: none" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}">Supprimer</a>
+            </div>
+        </div>
+        <p class="blog-post-meta">{{ post.createdAt|date('M-y') }} par <strong>{{ post.authorName }}</strong></p>
+        <div class="my-3">{{ post.intro }}</div>
+        <hr>
+        <div>{{ post.content }}</div>
+    </article>
 
+    <h3>Nouveau commentaire</h3>
+    <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
+        <div class="hstack gap-3 col-6">
+            <input class="form-control" type="text" name="content" id="comment-content">
+            <input class="btn btn-primary" type="submit" value="Envoyer">
+        </div>
+    </form>
+    <section id="comment-section">
+        {% if post.comments|length > 0 %}
+            {% for comment in post.comments %}
+                {% if comment.reviewed %}
+                    <div class="comment">
+                        <span>{{ comment.content }}</span>
+                        <span>par {{ comment.authorName }} le {{ comment.createdat }}</span>
+                    </div>
+{#                        TODO : gérer le fait que le commentaire soit visible pour son auteur si son id = id de l'user de la session + afficher le message de vérification en attente #}
+                {% elseif comment.userid == 1%}
+                        <div class="comment bg-danger-subtle">
+                                <span class="text-danger">Ce commentaire est en attente de vérification par un administrateur.</span>
+                                <span>{{ comment.content }}</span>
+                                <span>par {{ comment.authorName }} le {{ comment.createdat }}</span>
+                        </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </section>
 {% endblock %}
