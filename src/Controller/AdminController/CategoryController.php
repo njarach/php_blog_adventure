@@ -2,7 +2,9 @@
 
 namespace src\Controller\AdminController;
 
-class CategoryController extends CrudController
+use src\controller\AbstractController;
+
+class CategoryController extends AbstractController
 {
     // Categories management is not required, maybe add those later ?
     public function index()

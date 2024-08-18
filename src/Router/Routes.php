@@ -26,9 +26,8 @@ class Routes
         // Admin comments routes
             $router->get('/comments','Comment#index');
             $router->get('/comments/review/:id','Comment#review');
-            // Admin Dashboard Routes (if any ???)
-            $router->get('/dashboard', 'Admin#dashboard');
         // Admin BlogPost Routes
+            $router->get('/posts', 'Post#index');
             $router->get('/posts/edit/:id', 'Post#edit');
             $router->get('/posts/new', 'Post#create');
             $router->get('/posts/delete/:id', 'Post#delete');

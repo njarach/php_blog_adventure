@@ -3,17 +3,13 @@
     <article class="blog-post mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
-            <div class="crud-links-wrapper">
-                <a style="text-decoration: none" class="me-1" href="/php_blog_adventure/admin/posts/edit/{{ post.id }}">Editer</a>
-                <a style="text-decoration: none" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}">Supprimer</a>
-            </div>
         </div>
         <p class="blog-post-meta">{{ post.createdAt|date('M-y') }} par <strong>{{ post.authorName }}</strong></p>
         <div class="my-3">{{ post.intro }}</div>
         <hr>
         <div>{{ post.content }}</div>
     </article>
-
+    <hr>
     <h3>Nouveau commentaire</h3>
     <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
         <div class="hstack gap-3 col-6">

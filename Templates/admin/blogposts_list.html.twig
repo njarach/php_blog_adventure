@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1 class="my-3">Liste des Articles</h1>
+    <hr>
+    <div class="row mb-2">
+        <div class="table table-responsive">
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 40%;">Title</th>
+                    <th style="width: 20%;">Date</th>
+                    <th style="width: 20%;">Author</th>
+                    <th style="width: 10%;" class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td >{{ post.id }}</td>
+                        <td>{{ post.title }}</td>
+                        <td >{{ post.createdat|date('M-y') }}</td>
+                        <td>{{ post.authorName }}</td>
+                        <td class="text-center">
+                            <div class="crud-links-wrapper text-end">
+                                <a class="me-1" style="text-decoration: none;" href="/php_blog_adventure/admin/posts/edit/{{ post.id }}"><i class="bi bi-pen text-dark"></i></a>
+                                <a style="text-decoration: none;" href="/php_blog_adventure/admin/posts/delete/{{ post.id }}"><i class="bi bi-trash-fill text-danger"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

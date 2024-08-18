@@ -3,30 +3,26 @@
 namespace src\Controller\AdminController;
 
 use Exception;
+use src\controller\AbstractController;
 use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
 
-class PostController extends CrudController
+class PostController extends AbstractController
 {
     private PostManager $postManager;
-    private CommentManager $commentManager;
 
     public function __construct()
     {
         $this->postManager = new PostManager();
-        $this->commentManager = new CommentManager();
     }
-
-    // check role and authorization in service ?
 
     /**
      * @throws Exception
      */
     public function index()
     {
-        // TODO : this will send user to admin list of blogposts, not the basic index
         $blogPosts = $this->postManager->findAll();
-        echo $this->render('blogpost/index.html.twig', [
+        echo $this->render('admin/blogposts_list.html.twig', [
             'posts'=>$blogPosts
         ]);
     }
@@ -41,7 +37,7 @@ class PostController extends CrudController
             if (empty($errors)) {
                 $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
                 // TODO Redirect to the post's index page after successful post creation ? create a redirect method in abstract controller ?
-                $this->redirectToRoute("Location: /php_blog_adventure/posts");
+                $this->redirectToRoute("/php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 echo $this->render('blogpost/new.html.twig', [
@@ -68,8 +64,7 @@ class PostController extends CrudController
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
-                $post = $this->postManager->findById($postId);
-                $this->redirectToRoute("Location: /php_blog_adventure/posts/{$postId}");
+                $this->redirectToRoute("/php_blog_adventure/admin/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 $post = $this->postManager->findById($postId);
@@ -97,27 +92,6 @@ class PostController extends CrudController
     {
         $post = $this->postManager->findById($postId);
         $this->postManager->delete($post);
-        $this->redirectToRoute("Location: /php_blog_adventure/posts");
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function show(int $postId)
-    {
-        $blogPost = $this->postManager->findById($postId);
-        if ($blogPost) {
-            $comments = $this->commentManager->getPostComments($postId);
-            echo $this->render('blogpost/show.html.twig', [
-                'post' => $blogPost,
-                'comments'=>$comments
-            ]);
-        } else {
-            http_response_code(404);
-            echo $this->render('error/error.html.twig', [
-                'errorCode'=>404,
-                'errorMessage'=>"Aucun article trouvé pour l'id $postId..."
-            ]);
-        }
+        $this->redirectToRoute("/php_blog_adventure/admin/posts");
     }
 }
