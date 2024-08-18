@@ -24,12 +24,8 @@ class CommentController extends AbstractController
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
                 $this->commentManager->createComment($_POST['content'], 1, $postId);
-//                $blogPost = $this->postManager->findOneBy(['id'=>$postId]);
-//                echo $this->render('blogpost/show.html.twig', [
-//                    'post' => $blogPost,
-//                ]);
                 // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
-                header("Location: /php_blog_adventure/posts/{$postId}");
+                $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
             } else {
                 echo $this->render('blogpost/show.html.twig', [
                     'commentErrors' => $commentErrors,
@@ -38,7 +34,7 @@ class CommentController extends AbstractController
             }
         } else {
             // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
-            header("Location: /php_blog_adventure/posts/{$postId}");
+            $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
         }
     }
 

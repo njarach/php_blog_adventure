@@ -1,6 +1,6 @@
 <?php
 
-namespace src\controller\AdminController;
+namespace src\Controller\AdminController;
 
 use src\controller\AbstractController;
 

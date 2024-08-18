@@ -1,6 +1,6 @@
 <?php
 
-namespace src\controller;
+namespace src\Controller;
 
 use Exception;
 

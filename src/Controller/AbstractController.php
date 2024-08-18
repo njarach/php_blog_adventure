@@ -28,4 +28,9 @@ abstract class AbstractController
             throw new Exception('A twig exception occurred.');
         }
     }
+
+    protected function redirectToRoute(string $pathLocation): void
+    {
+        header("Location: $pathLocation");
+    }
 }

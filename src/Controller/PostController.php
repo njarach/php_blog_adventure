@@ -1,8 +1,7 @@
 <?php
-namespace src\controller;
+namespace src\Controller;
 
 use Exception;
-use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
 
 class PostController extends AbstractController
