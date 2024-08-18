@@ -68,8 +68,14 @@ class PostController extends CrudController
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
+                $editedpost = $this->postManager->findOneBy(['id'=>$postId]);
+//                var_dump($editedpost);
+                $post = $this->postManager->findById($postId);
+                echo $this->render('blogpost/show.html.twig', [
+                    'post' => $post,
+                ]);
                 // TODO Redirect to the post's ADMIN (for now it's basic index) index page after successful post creation ? create a redirect method in abstract controller ?
-                header("Location: /php_blog_adventure/posts/{$postId}");
+//                header("Location: /php_blog_adventure/posts/{$postId}");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 $post = $this->postManager->findById($postId);

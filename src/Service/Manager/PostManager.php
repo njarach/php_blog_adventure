@@ -54,14 +54,12 @@ class PostManager
         if ($title && $content && $categoryId && $intro) {
             // Retrieve the existing post from the database. This should throw an exception if, for some reason, none is found.
             $existingPost = $this->postRepository->findById($postId);
-
             if ($existingPost) {
                 // Update the post properties with the ones provided by the user through the form
                 $existingPost->setTitle($title);
                 $existingPost->setContent($content);
                 $existingPost->setCategoryId($categoryId);
                 $existingPost->setIntro($intro);
-
                 try {
                     $this->postRepository->edit($existingPost);
                 } catch (Exception $e) {

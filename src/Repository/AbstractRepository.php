@@ -19,6 +19,15 @@ abstract class AbstractRepository implements RepositoryInterface
 
     abstract protected function getTableName(): string;
 
+    // This is used to get the table columns that are properly mapped in the DB
+    protected function getTableColumns(): array
+    {
+        $sql = "SHOW COLUMNS FROM " . $this->getTableName();
+        $stmt = $this->connection->getInstance()->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     protected function fetchAll(): array
     {
         $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
@@ -98,13 +107,14 @@ abstract class AbstractRepository implements RepositoryInterface
     public function edit(EntityInterface $entity)
     {
         $properties = $entity->getProperties();
-
         $primaryKey = 'id';
-
         $primaryKeyValue = $properties[$primaryKey];
 
-        // Filter out null values to only update provided properties. That way if a user doesn't set a property, it goes to the next to be updated.
-        $properties = array_filter($properties, fn($value) => $value !== null);
+        // Get valid columns from the database
+        $validColumns = $this->getTableColumns();
+
+        // Filter out properties that are not valid columns or that have null values
+        $properties = array_filter($properties, fn($value, $key) => $value !== null && in_array($key, $validColumns), ARRAY_FILTER_USE_BOTH);
         $columns = array_keys($properties);
 
         $setClause = implode(", ", array_map(fn($col) => "$col = :$col", $columns));
@@ -116,6 +126,7 @@ abstract class AbstractRepository implements RepositoryInterface
         foreach ($properties as $column => $value) {
             $statement->bindValue(":$column", $value);
         }
+
         // Bind the primary key value
         $statement->bindValue(":$primaryKey", $primaryKeyValue);
 
@@ -129,13 +140,8 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function delete(EntityInterface $entity)
     {
-        // Assuming 'id' is the primary key
-        $primaryKey = 'id';
         $properties = $entity->getProperties();
-
-        if (!isset($properties[$primaryKey])) {
-            throw new \Exception('Primary key value is missing. Do not forget to set it when feeding the results in the object.');
-        }
+        $primaryKey = 'id';
 
         $primaryKeyValue = $properties[$primaryKey];
 

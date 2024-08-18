@@ -90,7 +90,7 @@ class CommentManager
      */
     public function reviewComment(int $id): ?Comment
     {
-        $comment = $this->commentRepository->findById($id);
+        $comment = $this->commentRepository->findOneBy(['id'=>$id]);
         if ($comment){
             $comment->setReviewed(true);
 
