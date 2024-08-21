@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% if error is defined %}
+    <div class="bg-alert text-danger">{{ error }}</div>
+    {% endif %}
 <form data-bitwarden-watching="1" method="post" action="/php_blog_adventure/login">
     <h1 class="h3 mb-3 fw-normal">Connectez-vous</h1>
     <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Email</label>
     </div>
     <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Mot de passe</label>
     </div>
     <button class="btn btn-primary w-100 py-2" type="submit">Se connecter</button>
-    <p class="mt-5 mb-3 text-body-secondary">MON DEV BLOG 2024</p>
 </form>
 {% endblock %}

@@ -2,8 +2,8 @@
 
 namespace src\Service;
 
-use src\Model\EntityInterface;
-use src\Repository\UserRepository;
+use Exception;
+use src\Model\User;
 use src\Service\Manager\UserManager;
 
 class AuthenticationService
@@ -14,9 +14,20 @@ class AuthenticationService
         $this->userManager = new UserManager();
     }
 
-    public function getUser(string $email): ?EntityInterface
+    /**
+     * @throws Exception
+     */
+    public function getUser(string $email): ?User
     {
      return $this->userManager->getUser($email);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function createUser(string $username, string $email, string $hashedPassword): void
+    {
+        $this->userManager->createUser($username,$email,$hashedPassword);
     }
 
 }

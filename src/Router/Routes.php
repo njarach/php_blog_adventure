@@ -20,6 +20,9 @@ class Routes
         $this->router->get('/posts/:id', 'Post#show');
         // Contact routes
         $this->router->get('/contact','Contact#form');
+        // Login routes
+        $this->router->get('/login','Authentication#login');
+        $this->router->get('/register','Authentication#register');
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
@@ -39,6 +42,9 @@ class Routes
     {
         // Comment routes
         $this->router->post('/comments/new/:id', 'Comment#create');
+        // Login routes
+        $this->router->post('/login','Authentication#login');
+        $this->router->post('/register','Authentication#register');
         // Admin Routes
         $this->router->group('/admin',function (Router $router) {
             // Admin BlogPost Routes

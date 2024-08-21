@@ -63,7 +63,6 @@ class CommentManager
 
         if ($existingComment){
             $existingComment->setContent($content);
-
             try {
                 $this->commentRepository->edit($existingComment);
             } catch (Exception $e) {

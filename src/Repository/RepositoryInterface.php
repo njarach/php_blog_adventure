@@ -1,6 +1,6 @@
 <?php
 
-namespace src\repository;
+namespace src\Repository;
 
 interface RepositoryInterface
 {

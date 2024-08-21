@@ -60,6 +60,8 @@ class PostManager
                 $existingPost->setContent($content);
                 $existingPost->setCategoryId($categoryId);
                 $existingPost->setIntro($intro);
+                $currentDateTime = date('Y-m-d H:i:s');
+                $existingPost->setUpdatedAt($currentDateTime);
                 try {
                     $this->postRepository->edit($existingPost);
                 } catch (Exception $e) {

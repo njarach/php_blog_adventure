@@ -22,4 +22,18 @@ class UserManager
         return $this->userRepository->findOneBy(['email'=>$email]);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function createUser(string $username, string $email, string $hashedPassword): void
+    {
+        $user = new User();
+        $user->setEmail($email);
+        $user->setUsername($username);
+        $user->setPassword($hashedPassword);
+        $currentDateTime = date('Y-m-d H:i:s');
+        $user->setCreatedAt($currentDateTime);
+        $this->userRepository->add($user);
+    }
+
 }
