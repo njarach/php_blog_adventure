@@ -5,6 +5,9 @@ use src\Router\Routes;
 
 require_once 'vendor/autoload.php';
 
+// Start session
+session_start();
+
 // Define the base path for your application
 $basePath = 'php_blog_adventure';
 
