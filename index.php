@@ -2,7 +2,6 @@
 
 use src\Router\Router;
 use src\Router\Routes;
-use src\Service\SessionService;
 
 require_once 'vendor/autoload.php';
 
