@@ -62,10 +62,18 @@ class Router
         return $route;
     }
 
-    public function group(string $pattern, callable $callback): void
+    public function group(string $pattern, callable $callback, $authentication = null): void
     {
+        // Check if the $authentication is an array and can be treated as a callable
+        if (is_array($authentication) && is_callable($authentication)) {
+            call_user_func($authentication);
+        } elseif (is_callable($authentication)) {
+            call_user_func($authentication);
+        }
+
         $oldGroupPattern = $this->groupPattern;
         $this->groupPattern .= $pattern;
+
         call_user_func($callback, $this);
         $this->groupPattern = $oldGroupPattern;
     }

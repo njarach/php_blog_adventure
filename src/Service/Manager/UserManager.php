@@ -17,9 +17,9 @@ class UserManager
     /**
      * @throws Exception
      */
-    public function getUser(string $email): ?User
+    public function getUser(array $criteria): ?User
     {
-        return $this->userRepository->findOneBy(['email'=>$email]);
+        return $this->userRepository->findOneBy($criteria);
     }
 
     /**

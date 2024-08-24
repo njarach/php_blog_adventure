@@ -2,7 +2,7 @@
 
 use src\Router\Router;
 use src\Router\Routes;
-
+date_default_timezone_set('Europe/Paris');
 require_once 'vendor/autoload.php';
 
 // Start session

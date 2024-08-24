@@ -13,12 +13,12 @@
             </div>
         {% endif %}
 
-        <form action="/php_blog_adventure/admin/posts/new" method="post" class="needs-validation">
+        <form action="/php_blog_adventure/admin/posts/new" method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">Titre</label>
                 <input type="text" class="form-control {% if errors.title is defined %}is-invalid{% endif %}" id="title" name="title" value="{{ formData.title|default('') }}" required>
                 {% if errors.title is defined %}
-                    <div class="invalid-feedback">
+                    <div class="text-danger">
                         {{ errors.title }}
                     </div>
                 {% endif %}
@@ -28,7 +28,7 @@
                 <label for="intro" class="form-label">Intro</label>
                 <textarea class="form-control {% if errors.intro is defined %}is-invalid{% endif %}" id="intro" name="intro" required>{{ formData.intro|default('') }}</textarea>
                 {% if errors.intro is defined %}
-                    <div class="invalid-feedback">
+                    <div class="text-danger">
                         {{ errors.intro }}
                     </div>
                 {% endif %}
@@ -38,7 +38,7 @@
                 <label for="content" class="form-label">Contenu</label>
                 <textarea class="form-control {% if errors.content is defined %}is-invalid{% endif %}" id="content" name="content" required>{{ formData.content|default('') }}</textarea>
                 {% if errors.content is defined %}
-                    <div class="invalid-feedback">
+                    <div class="text-danger">
                         {{ errors.content }}
                     </div>
                 {% endif %}
@@ -53,7 +53,7 @@
                     {% endfor %}
                 </select>
                 {% if errors.category_id is defined %}
-                    <div class="invalid-feedback">
+                    <div class="text-danger">
                         {{ errors.category_id }}
                     </div>
                 {% endif %}

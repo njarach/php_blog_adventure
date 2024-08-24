@@ -35,8 +35,7 @@ class PostController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
-                $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
-                // TODO Redirect to the post's index page after successful post creation ? create a redirect method in abstract controller ?
+                $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $this->getCurrentUser()->getId(), $_POST['intro']);
                 $this->redirectToRoute("/php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();

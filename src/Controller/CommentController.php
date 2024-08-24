@@ -23,8 +23,7 @@ class CommentController extends AbstractController
             // Checking datas sent by the user, return error to be displayed on the blogpost#show if any
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
-                $this->commentManager->createComment($_POST['content'], 1, $postId);
-                // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
+                $newcomment = $this->commentManager->createComment($_POST['content'], $this->getCurrentUser()->getId(), $postId);
                 $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
             } else {
                 echo $this->render('blogpost/show.html.twig', [
