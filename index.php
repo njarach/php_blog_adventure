@@ -9,8 +9,7 @@ require_once 'vendor/autoload.php';
 date_default_timezone_set('Europe/Paris');
 
 // Start session
-$session = new SessionService();
-$session->startSession();
+session_start();
 
 // Define the base path for your application
 $basePath = 'php_blog_adventure';
