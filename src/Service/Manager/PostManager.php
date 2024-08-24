@@ -115,7 +115,7 @@ class PostManager
 
     public function validatePostData(array $data): array
     {
-        // Un tableau vide, toujours vide à l'instanciation
+        // Empty array, always empty when instancing
         $errors = $this->errors;
 
         if (!$this->checkPost($data['title'])) {

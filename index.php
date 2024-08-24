@@ -2,11 +2,15 @@
 
 use src\Router\Router;
 use src\Router\Routes;
-date_default_timezone_set('Europe/Paris');
+use src\Service\SessionService;
+
 require_once 'vendor/autoload.php';
 
+date_default_timezone_set('Europe/Paris');
+
 // Start session
-session_start();
+$session = new SessionService();
+$session->startSession();
 
 // Define the base path for your application
 $basePath = 'php_blog_adventure';

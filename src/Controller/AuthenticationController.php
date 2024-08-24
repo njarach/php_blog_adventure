@@ -23,18 +23,19 @@ class AuthenticationController extends AbstractController
     public function login(string $authenticationError = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = trim($_POST['email']);
-            $password = $_POST['password'];
-            $user = $this->userManager->getUser(['email'=>$email]);
-            if ($user && password_verify($password,$user->getPassword())) {
-                    $_SESSION['user_id'] = $user->getId();
+            list($errors,$password,$email) = $this->authenticationService->validateLoginData($_POST);
+            if (empty($errors)){
+                $user = $this->userManager->getUser(['email'=>$email]);
+                if ($this->authenticationService->checkCredentials($user, $password)) {
+                    $this->authenticationService->setSessionUserId($user);
                     $this->redirectToRoute('/php_blog_adventure/posts');
                     exit;
-            } else {
-                echo $this->render('/security/login.html.twig', [
-                    'error' => 'La tentative de connexion a échoué',
-                    'authenticationError'=>$authenticationError
-                ]);
+                } else {
+                    echo $this->render('/security/login.html.twig', [
+                        'error' => 'La tentative de connexion a échoué',
+                        'authenticationError'=>$authenticationError
+                    ]);
+                }
             }
         }
         echo $this->render('security/login.html.twig');
