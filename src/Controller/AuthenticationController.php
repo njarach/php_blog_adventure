@@ -21,7 +21,7 @@ class AuthenticationController extends AbstractController
     /**
      * @throws Exception
      */
-    public function login(string $authenticationError = null): Response
+    public function login(): Response
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             list($errors, $password, $email) = $this->authenticationService->validateLoginData();
@@ -32,11 +32,14 @@ class AuthenticationController extends AbstractController
                     return $this->redirectToRoute('/php_blog_adventure/posts');
                 } else {
                     return $this->render('/security/login.html.twig', [
-                        'error' => 'La tentative de connexion a échoué',
-                        'authenticationError'=>$authenticationError,
-                        'errors'=>$errors
+                        'authenticationError'=>"Email ou mot de passe invalide.",
                     ]);
                 }
+            } else {
+                // This is probably clumsy, form validation is also set up in template ?
+                return $this->render('/security/login.html.twig', [
+                    'errors'=>$errors,
+                ]);
             }
         }
         return $this->render('security/login.html.twig',[
