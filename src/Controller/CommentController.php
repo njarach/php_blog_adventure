@@ -5,6 +5,7 @@ namespace src\Controller;
 use Exception;
 use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
+use src\Service\Response;
 
 class CommentController extends AbstractController
 {
@@ -17,23 +18,22 @@ class CommentController extends AbstractController
     /**
      * @throws Exception
      */
-    public function create(int $postId)
+    public function create(int $postId): Response
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Checking datas sent by the user, return error to be displayed on the blogpost#show if any
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
-                $newcomment = $this->commentManager->createComment($_POST['content'], $this->getCurrentUser()->getId(), $postId);
-                $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
+                $this->commentManager->createComment($_POST['content'], $this->getCurrentUser()->getId(), $postId);
+                return $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
             } else {
-                echo $this->render('blogpost/show.html.twig', [
+                return $this->render('blogpost/show.html.twig', [
                     'commentErrors' => $commentErrors,
                     'commentFormData' => $_POST,
                 ]);
             }
         } else {
-            // TODO Redirect to the post's show page after successful comment creation ? create a redirect method in abstract controller ?
-            $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
+            return $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
         }
     }
 

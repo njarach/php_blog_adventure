@@ -5,6 +5,7 @@ namespace src\Controller;
 use Exception;
 use src\Model\User;
 use src\Service\Manager\UserManager;
+use src\Service\Response;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -21,21 +22,22 @@ abstract class AbstractController
     /**
      * @throws Exception
      */
-    protected function render(string $template, array $context = []): string
+    protected function render(string $template, array $context = []): Response
     {
         try {
             $currentUser = $this->getCurrentUser();
             $context['currentUser'] = $currentUser;
             $twig = $this->getTwigEnvironment();
-            return $twig->render($template, $context);
+            $content = $twig->render($template, $context);
+            return new Response($content);
         } catch (Exception $e) {
             throw new Exception("A twig exception occurred : $e");
         }
     }
 
-    protected function redirectToRoute(string $pathLocation): void
+    protected function redirectToRoute(string $pathLocation): Response
     {
-        header("Location: $pathLocation");
+        return new Response('', 302, ['Location' => $pathLocation]);
     }
 
     /**

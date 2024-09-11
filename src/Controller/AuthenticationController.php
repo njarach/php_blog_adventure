@@ -5,6 +5,7 @@ namespace src\Controller;
 use Exception;
 use src\Service\AuthenticationService;
 use src\Service\Manager\UserManager;
+use src\Service\Response;
 
 class AuthenticationController extends AbstractController
 {
@@ -20,7 +21,7 @@ class AuthenticationController extends AbstractController
     /**
      * @throws Exception
      */
-    public function login(string $authenticationError = null)
+    public function login(string $authenticationError = null): Response
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             list($errors, $password, $email) = $this->authenticationService->validateLoginData();
@@ -28,10 +29,9 @@ class AuthenticationController extends AbstractController
                 $user = $this->userManager->getUser(['email'=>$email]);
                 if ($this->authenticationService->checkCredentials($user, $password)) {
                     $this->authenticationService->setSessionUserId($user);
-                    $this->redirectToRoute('/php_blog_adventure/posts');
-                    exit;
+                    return $this->redirectToRoute('/php_blog_adventure/posts');
                 } else {
-                    echo $this->render('/security/login.html.twig', [
+                    return $this->render('/security/login.html.twig', [
                         'error' => 'La tentative de connexion a échoué',
                         'authenticationError'=>$authenticationError,
                         'errors'=>$errors
@@ -39,13 +39,13 @@ class AuthenticationController extends AbstractController
                 }
             }
         }
-        echo $this->render('security/login.html.twig',[
+        return $this->render('security/login.html.twig',[
         ]);
     }
 
-    public function logout()
+    public function logout(): Response
     {
         $this->authenticationService->endSession();
-        $this->redirectToRoute('/php_blog_adventure/login');
+        return $this->redirectToRoute('/php_blog_adventure/login');
     }
 }

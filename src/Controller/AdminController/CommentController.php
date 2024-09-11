@@ -5,6 +5,7 @@ namespace src\Controller\AdminController;
 use Exception;
 use src\controller\AbstractController;
 use src\Service\Manager\CommentManager;
+use src\Service\Response;
 
 class CommentController extends AbstractController
 {
@@ -17,11 +18,11 @@ class CommentController extends AbstractController
     /**
      * @throws Exception
      */
-    public function review(int $commentId)
+    public function review(int $commentId): Response
     {
         $this->commentManager->reviewComment($commentId);
         list($reviewedComments, $unreviewedComments) = $this->commentManager->getReviewSortedComments();
-        echo $this->render('admin/comments_list.html.twig',[
+        return $this->render('admin/comments_list.html.twig',[
             'reviewedComments'=>$reviewedComments,
             'unreviewedComments'=>$unreviewedComments
         ]);
@@ -32,10 +33,10 @@ class CommentController extends AbstractController
      * @throws Exception
      * This is used for admins to get a list of comments. They are sorted and allow admin to review them.  
      */
-    public function index()
+    public function index(): Response
     {
         list($reviewedComments, $unreviewedComments) = $this->commentManager->getReviewSortedComments();
-        echo $this->render('admin/comments_list.html.twig',[
+        return $this->render('admin/comments_list.html.twig',[
             'reviewedComments'=>$reviewedComments,
             'unreviewedComments'=>$unreviewedComments
         ]);
@@ -43,7 +44,6 @@ class CommentController extends AbstractController
 
     public function show(int $postId)
     {
-        // TODO: Implement show() method.
         // not required, maybe add this later
     }
 }
