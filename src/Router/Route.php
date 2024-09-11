@@ -2,6 +2,9 @@
 
 namespace src\Router;
 
+use Exception;
+use src\Service\Response;
+
 class Route
 {
     private ?string $path;
@@ -37,16 +40,25 @@ class Route
         return '([^/]+)';
     }
 
-    public function execute()
+    /**
+     * @throws Exception
+     */
+    public function execute(): void
     {
         if (is_string($this->action)) {
             $params = explode('#', $this->action);
             $namespace = $this->isAdmin ? "src\\Controller\\AdminController\\" : "src\\Controller\\";
             $controller = $namespace . $params[0] . "Controller";
             $controller = new $controller();
-            return call_user_func_array([$controller, $params[1]], $this->matches);
+            $response = call_user_func_array([$controller, $params[1]], $this->matches);
         } else {
-            return call_user_func_array($this->action, $this->matches);
+            $response = call_user_func_array($this->action, $this->matches);
+        }
+
+        if ($response instanceof Response) {
+            $response->send();
+        } else {
+            throw new Exception("Something went wrong when returning Response object in the Router.");
         }
     }
 

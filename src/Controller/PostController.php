@@ -1,4 +1,5 @@
 <?php
+
 namespace src\Controller;
 
 use Exception;
@@ -20,9 +21,9 @@ class PostController extends AbstractController
     public function index(): Response
     {
         $blogPosts = $this->postManager->findAll();
-       return $this->render('blogpost/index.html.twig', [
-           'posts'=>$blogPosts
-       ]);
+        return $this->render('blogpost/index.html.twig', [
+            'posts' => $blogPosts
+        ]);
     }
 
     /**
@@ -30,7 +31,7 @@ class PostController extends AbstractController
      */
     public function show(int $postId): Response
     {
-        $blogPost = $this->postManager->findOneBy(['id'=>$postId]);
+        $blogPost = $this->postManager->findOneBy(['id' => $postId]);
         if ($blogPost) {
             return $this->render('blogpost/show.html.twig', [
                 'post' => $blogPost,
@@ -38,8 +39,8 @@ class PostController extends AbstractController
         } else {
             http_response_code(404);
             return $this->render('error/error.html.twig', [
-                'errorCode'=>404,
-                'errorMessage'=>"Aucun article trouvé pour l'id $postId..."
+                'errorCode' => 404,
+                'errorMessage' => "Aucun article trouvé pour l'id $postId..."
             ]);
         }
     }
