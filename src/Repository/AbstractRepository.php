@@ -119,7 +119,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
         $setClause = implode(", ", array_map(fn($col) => "$col = :$col", $columns));
 
-        $sql = "UPDATE " . $this->getTableName() . " SET " . $setClause . " WHERE $primaryKey = :$primaryKey";
+        $sql = "UPDATE " . $this->getTableName() . " SET " . $setClause . " WHERE $primaryKey = :$primaryKeyValue";
         $statement = $this->connection->getInstance()->prepare($sql);
 
         // Bind the values dynamically
@@ -128,7 +128,7 @@ abstract class AbstractRepository implements RepositoryInterface
         }
 
         // Bind the primary key value
-        $statement->bindValue(":$primaryKey", $primaryKeyValue);
+        $statement->bindValue(":$primaryKeyValue", $primaryKeyValue);
 
         if (!$statement->execute()) {
             throw new \Exception('Failed to update entity: ' . implode(', ', $statement->errorInfo()));

@@ -20,18 +20,18 @@ class AuthenticationService
        $this->sessionService->endSession();
     }
 
-    public function validateLoginData(array $_POST): array
+    public function validateLoginData(): array
     {
         $errors = $this->errors;
-        $email = ($_POST['email']);
-        $password = $_POST['password'];
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
         if (!$this->checkLogin($email)){
-            $errors['email'] = 'Veuillez renseigner une adresse email valide';
+            $errors['email'] = 'Veuillez renseigner une adresse email valide.';
         }
         if (!$this->checkLogin($password)){
-            $errors['password'] = 'Veuillez renseigner un mot de passe valide';
+            $errors['password'] = 'Veuillez renseigner un mot de passe valide.';
         }
-        return $errors;
+        return [$errors,$password,$email];
     }
 
     private function checkLogin($data): bool

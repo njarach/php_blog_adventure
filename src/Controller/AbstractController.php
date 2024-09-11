@@ -43,7 +43,7 @@ abstract class AbstractController
      */
     protected function getCurrentUser(): ?User
     {
-        if ($_SESSION['user_id']){
+        if (isset($_SESSION['user_id'])){
             $userManager = new UserManager();
             return $userManager->getUser(['id'=>$_SESSION['user_id']]);
         }

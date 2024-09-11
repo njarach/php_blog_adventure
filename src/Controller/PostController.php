@@ -8,7 +8,6 @@ class PostController extends AbstractController
 {
     private PostManager $postManager;
 
-
     public function __construct()
     {
         $this->postManager = new PostManager();

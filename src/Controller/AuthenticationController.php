@@ -23,7 +23,7 @@ class AuthenticationController extends AbstractController
     public function login(string $authenticationError = null)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            list($errors,$password,$email) = $this->authenticationService->validateLoginData($_POST);
+            list($errors, $password, $email) = $this->authenticationService->validateLoginData();
             if (empty($errors)){
                 $user = $this->userManager->getUser(['email'=>$email]);
                 if ($this->authenticationService->checkCredentials($user, $password)) {
@@ -33,12 +33,14 @@ class AuthenticationController extends AbstractController
                 } else {
                     echo $this->render('/security/login.html.twig', [
                         'error' => 'La tentative de connexion a échoué',
-                        'authenticationError'=>$authenticationError
+                        'authenticationError'=>$authenticationError,
+                        'errors'=>$errors
                     ]);
                 }
             }
         }
-        echo $this->render('security/login.html.twig');
+        echo $this->render('security/login.html.twig',[
+        ]);
     }
 
     public function logout()
