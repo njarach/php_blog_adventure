@@ -28,7 +28,7 @@ class RegisterController extends AbstractController
             if (isset($password) && !empty($password) && !empty($email) && !empty($username)){
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $this->userManager->createUser($username,$email,$hashedPassword);
-                return $this->redirectToRoute('/php_blog_adventure/posts');
+                return $this->redirect('/php_blog_adventure/posts');
             } else {
                 return $this->render('/security/register.html.twig', [
                     'error' => "La tentative d'enregistrement a échouée."

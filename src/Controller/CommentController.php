@@ -25,7 +25,8 @@ class CommentController extends AbstractController
             $commentErrors = $this->commentManager->validateCommentData($_POST);
             if (empty($errors)) {
                 $this->commentManager->createComment($_POST['content'], $this->getCurrentUser()->getId(), $postId);
-                return $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
+                var_dump('i will now redirect');
+                return $this->redirect("/php_blog_adventure/posts/{$postId}");
             } else {
                 return $this->render('blogpost/show.html.twig', [
                     'commentErrors' => $commentErrors,
@@ -33,7 +34,7 @@ class CommentController extends AbstractController
                 ]);
             }
         } else {
-            return $this->redirectToRoute("/php_blog_adventure/posts/{$postId}");
+            return $this->redirect("/php_blog_adventure/posts/{$postId}");
         }
     }
 

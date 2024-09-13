@@ -24,6 +24,7 @@ class Routes
         $this->router->get('/contact', 'Contact#form');
         // Login routes
         $this->router->get('/login', 'Authentication#login');
+        $this->router->get('/logout', 'Authentication#logout');
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {

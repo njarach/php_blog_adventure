@@ -2,6 +2,8 @@
 
 namespace src\Service;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Response
 {
     protected string $content;
@@ -15,8 +17,8 @@ class Response
         $this->headers = $headers;
     }
 
-//    This is used in the Twig render of AbstractController so we return an object instead of directly echoing
-    public function send(): void
+    // Send headers and content to the browser
+    #[NoReturn] public function send(): void
     {
         http_response_code($this->statusCode);
 
@@ -25,5 +27,13 @@ class Response
         }
 
         echo $this->content;
+        exit; // Make sure the script stops after sending the response
+    }
+
+    // Redirect helper
+    public static function redirect(string $url, int $statusCode = 302): Response
+    {
+        // Create a response with the Location header and a 302 status code
+        return new self('', $statusCode, ['Location' => $url]);
     }
 }

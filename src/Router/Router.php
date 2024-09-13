@@ -81,25 +81,27 @@ class Router
     /**
      * @throws Exception
      */
-    public function listen(): mixed {
+    public function listen(): void
+    {
         try {
+            // Check if the request method is registered
             if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
                 throw new RouterException('REQUEST_METHOD does not exist');
             }
-            /**
-             * @var Route[] $routes
-             */
+
             $routes = $this->routes[$_SERVER['REQUEST_METHOD']];
             foreach ($routes as $route) {
                 if ($route->match($this->url)) {
-                    return $route->execute();
+                    $route->execute();
+                    var_dump($this->url);
                 }
             }
+
+            // If no route matched, handle a 404 error
             $this->handleError(404);
         } catch (Exception $e) {
             $this->handleError(500, $e);
         }
-        return false;
     }
 
     /**

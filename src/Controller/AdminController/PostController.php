@@ -37,7 +37,7 @@ class PostController extends AbstractController
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $this->getCurrentUser()->getId(), $_POST['intro']);
-                return $this->redirectToRoute("/php_blog_adventure/posts");
+                return $this->redirect("/php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 return $this->render('blogpost/new.html.twig', [
@@ -64,7 +64,7 @@ class PostController extends AbstractController
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
                 $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
-                return $this->redirectToRoute("/php_blog_adventure/admin/posts");
+                return $this->redirect("/php_blog_adventure/admin/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 $post = $this->postManager->findById($postId);
@@ -92,6 +92,6 @@ class PostController extends AbstractController
     {
         $post = $this->postManager->findById($postId);
         $this->postManager->delete($post);
-        return $this->redirectToRoute("/php_blog_adventure/admin/posts");
+        return $this->redirect("/php_blog_adventure/admin/posts");
     }
 }

@@ -3,6 +3,7 @@
 namespace src\Controller;
 
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
 use src\Model\User;
 use src\Service\Manager\UserManager;
 use src\Service\Response;
@@ -35,9 +36,9 @@ abstract class AbstractController
         }
     }
 
-    protected function redirectToRoute(string $pathLocation): Response
+    protected function redirect(string $url, int $statusCode = 302): Response
     {
-        return new Response('', 302, ['Location' => $pathLocation]);
+        return Response::redirect($url, $statusCode);
     }
 
     /**
