@@ -17,7 +17,6 @@ class Response
         $this->headers = $headers;
     }
 
-    // Send headers and content to the browser
     #[NoReturn] public function send(): void
     {
         http_response_code($this->statusCode);
@@ -27,13 +26,11 @@ class Response
         }
 
         echo $this->content;
-        exit; // Make sure the script stops after sending the response
+        exit;
     }
 
-    // Redirect helper
     public static function redirect(string $url, int $statusCode = 302): Response
     {
-        // Create a response with the Location header and a 302 status code
         return new self('', $statusCode, ['Location' => $url]);
     }
 }
