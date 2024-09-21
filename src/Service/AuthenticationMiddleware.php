@@ -23,8 +23,7 @@ class AuthenticationMiddleware
     public function checkLoggedIn(): void
     {
         if (!isset($_SESSION['user_id'])) {
-            $this->authenticationController->login();
-            exit();
+            throw new Exception("Action non autorisée, veuillez vous connecter pour réaliser cette action.",402);
         }
     }
 
@@ -33,12 +32,15 @@ class AuthenticationMiddleware
      */
     public function checkAdmin(): void
     {
-        $this->checkLoggedIn();
-        $user = $this->userManager->getUser(['id' => $_SESSION['user_id']]);
+        try {
+            $this->checkLoggedIn();
+            $user = $this->userManager->getUser(['id' => $_SESSION['user_id']]);
+        } catch (Exception $e) {
+            throw new Exception("Action non autorisée, veuillez vous connecter pour réaliser cette action.",402);
+        }
         if ($user) {
             if (!$this->verifyAdminUser($user->getEmail())) {
-                $this->authenticationController->login();
-                exit();
+                throw new Exception("Action non autorisée, vous devez être un administrateur pour réaliser cette action.",402);
             }
         }
     }

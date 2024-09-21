@@ -27,7 +27,13 @@ class AuthenticationController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             list($errors, $password, $email) = $this->authenticationService->validateLoginData();
             if (empty($errors)){
-                $user = $this->userManager->getUser(['email'=>$email]);
+                try {
+                    $user = $this->userManager->getUser(['email' => $email]);
+                } catch (Exception $e) {
+                    return $this->render('/security/login.html.twig', [
+                        'authenticationError'=>"Aucun utilisateur n'est enregistré avec cette adresse.",
+                    ]);
+                }
                 if ($this->authenticationService->checkCredentials($user, $password)) {
                     $this->authenticationService->setSessionUserId($user);
                     return $this->redirect('/php_blog_adventure/posts');
@@ -37,7 +43,6 @@ class AuthenticationController extends AbstractController
                     ]);
                 }
             } else {
-                // This is probably clumsy, form validation is also set up in template ?
                 return $this->render('/security/login.html.twig', [
                     'errors'=>$errors,
                 ]);

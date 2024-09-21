@@ -13,8 +13,12 @@
     <h3>Nouveau commentaire</h3>
     <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
         <div class="hstack gap-3 col-6">
+            {% if currentUser.id is defined and currentUser.id is not null %}
             <input class="form-control" type="text" name="content" id="comment-content">
             <input class="btn btn-primary" type="submit" value="Envoyer">
+            {% else %}
+            <input class="form-control" disabled type="text" name="content" id="comment-content" placeholder="Veuillez vous connecter pour publier un commentaire.">
+            {% endif %}
         </div>
     </form>
     <section id="comment-section">

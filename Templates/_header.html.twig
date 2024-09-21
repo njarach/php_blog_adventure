@@ -9,7 +9,9 @@
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <a class="btn btn-sm btn-outline-secondary me-1" href="/php_blog_adventure/admin/posts">Articles</a>
-                <a class="btn btn-sm btn-outline-secondary me-1" href="/php_blog_adventure/admin/posts/new">Nouvel article</a>
+                {% if roleAdmin %}
+                    <a class="btn btn-sm btn-outline-secondary me-1" href="/php_blog_adventure/admin/posts/new">Nouvel article</a>
+                {% endif %}
                 <a class="btn btn-sm btn-outline-secondary me-1" href="/php_blog_adventure/register">S'inscrire</a>
                 {% if currentUser is defined and currentUser.id is not null %}
                     <a class="btn btn-sm btn-outline-secondary" href="/php_blog_adventure/logout">Se déconnecter</a>

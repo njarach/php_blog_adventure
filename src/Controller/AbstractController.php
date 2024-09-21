@@ -27,7 +27,9 @@ abstract class AbstractController
     {
         try {
             $currentUser = $this->getCurrentUser();
+            $roleAdmin = $this->checkUserAdmin();
             $context['currentUser'] = $currentUser;
+            $context['roleAdmin'] = $roleAdmin;
             $twig = $this->getTwigEnvironment();
             $content = $twig->render($template, $context);
             return new Response($content);
@@ -51,5 +53,20 @@ abstract class AbstractController
             return $userManager->getUser(['id'=>$_SESSION['user_id']]);
         }
         return null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function checkUserAdmin(): bool
+    {
+        if (isset($_SESSION['user_id'])){
+            $userManager = new UserManager();
+            $user = $userManager->getUser(['id'=>$_SESSION['user_id']]);
+        }
+        if (isset($user) && !empty($user) && $user->getEmail()=='admin@mail.com'){
+            return true;
+        }
+        return false;
     }
 }
