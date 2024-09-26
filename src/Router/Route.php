@@ -2,18 +2,23 @@
 
 namespace src\Router;
 
+use Exception;
+use src\Service\Response;
+
 class Route
 {
     private ?string $path;
-    private ?string $action;
+    private ?string $callable;
     private array $matches = [];
     private array $params = [];
     private bool $isAdmin;
+    private array $middleware = [];
 
-    public function __construct($path, $action){
+    public function __construct(string $path, $callable, array $middleware){
         $this->path = trim($path, '/');
-        $this->action = $action;
+        $this->callable = $callable;
         $this->isAdmin = str_contains($path, 'admin');
+        $this->middleware = $middleware;
     }
 
     public function match(string $url): bool
@@ -37,16 +42,25 @@ class Route
         return '([^/]+)';
     }
 
-    public function execute()
+    /**
+     * @throws Exception
+     */
+    public function execute(): void
     {
-        if (is_string($this->action)) {
-            $params = explode('#', $this->action);
+        if (is_string($this->callable)) {
+            $params = explode('#', $this->callable);
             $namespace = $this->isAdmin ? "src\\Controller\\AdminController\\" : "src\\Controller\\";
             $controller = $namespace . $params[0] . "Controller";
             $controller = new $controller();
-            return call_user_func_array([$controller, $params[1]], $this->matches);
+            $response = call_user_func_array([$controller, $params[1]], $this->matches);
         } else {
-            return call_user_func_array($this->action, $this->matches);
+            $response = call_user_func_array($this->callable, $this->matches);
+        }
+
+        if ($response instanceof Response) {
+            $response->send();
+        } else {
+            throw new Exception("Something went wrong when returning Response object in the Router.");
         }
     }
 
@@ -57,5 +71,9 @@ class Route
             $path = str_replace(":$k", $v, $path);
         }
         return $path;
+    }
+
+    public function getMiddleware(): array {
+        return $this->middleware;
     }
 }

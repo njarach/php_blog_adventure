@@ -8,6 +8,7 @@ class User implements EntityInterface
     protected string $username;
     protected string $password;
     protected string $email;
+    protected bool $isAdmin;
     protected string $created_at;
 
     /**
@@ -59,6 +60,22 @@ class User implements EntityInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param bool $isAdmin
+     */
+    public function setIsAdmin(bool $isAdmin): void
+    {
+        $this->isAdmin = $isAdmin;
+    }
+
+    /**
      * @return string
      */
     public function getCreatedAt(): string
@@ -73,5 +90,4 @@ class User implements EntityInterface
     {
         $this->created_at = $created_at;
     }
-
 }

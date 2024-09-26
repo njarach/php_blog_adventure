@@ -13,8 +13,12 @@
     <h3>Nouveau commentaire</h3>
     <form method="post" action="/php_blog_adventure/comments/new/{{ post.id }}">
         <div class="hstack gap-3 col-6">
+            {% if currentUser.id is defined and currentUser.id is not null %}
             <input class="form-control" type="text" name="content" id="comment-content">
             <input class="btn btn-primary" type="submit" value="Envoyer">
+            {% else %}
+            <input class="form-control" disabled type="text" name="content" id="comment-content" placeholder="Veuillez vous connecter pour publier un commentaire.">
+            {% endif %}
         </div>
     </form>
     <section id="comment-section">
@@ -25,8 +29,7 @@
                         <span>{{ comment.content }}</span>
                         <span>par {{ comment.authorName }} le {{ comment.createdat }}</span>
                     </div>
-{#                        TODO : gérer le fait que le commentaire soit visible pour son auteur si son id = id de l'user de la session + afficher le message de vérification en attente #}
-                {% elseif comment.userid == 1%}
+                {% elseif comment.userid == currentUser.id %}
                         <div class="comment bg-danger-subtle">
                                 <span class="text-danger">Ce commentaire est en attente de vérification par un administrateur.</span>
                                 <span>{{ comment.content }}</span>

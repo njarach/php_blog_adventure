@@ -1,8 +1,12 @@
 <?php
 
-namespace src\controller;
+namespace src\Controller;
 
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
+use src\Model\User;
+use src\Service\Manager\UserManager;
+use src\Service\Response;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -19,18 +23,50 @@ abstract class AbstractController
     /**
      * @throws Exception
      */
-    protected function render(string $template, array $context = []): string
+    protected function render(string $template, array $context = []): Response
     {
         try {
+            $currentUser = $this->getCurrentUser();
+            $roleAdmin = $this->checkUserAdmin();
+            $context['currentUser'] = $currentUser;
+            $context['roleAdmin'] = $roleAdmin;
             $twig = $this->getTwigEnvironment();
-            return $twig->render($template, $context);
+            $content = $twig->render($template, $context);
+            return new Response($content);
         } catch (Exception $e) {
-            throw new Exception('A twig exception occurred.');
+            throw new Exception("A twig exception occurred : $e");
         }
     }
 
-    protected function redirectToRoute(string $pathLocation): void
+    protected function redirect(string $url, int $statusCode = 302): Response
     {
-        header("Location: $pathLocation");
+        return Response::redirect($url, $statusCode);
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getCurrentUser(): ?User
+    {
+        if (isset($_SESSION['user_id'])){
+            $userManager = new UserManager();
+            return $userManager->getUser(['id'=>$_SESSION['user_id']]);
+        }
+        return null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function checkUserAdmin(): bool
+    {
+        if (isset($_SESSION['user_id'])){
+            $userManager = new UserManager();
+            $user = $userManager->getUser(['id'=>$_SESSION['user_id']]);
+        }
+        if (isset($user) && !empty($user) && $user->isAdmin()){
+            return true;
+        }
+        return false;
     }
 }

@@ -3,7 +3,6 @@
 namespace src\Repository;
 
 use Exception;
-use PDO;
 use src\model\Category;
 
 class CategoryRepository extends AbstractRepository

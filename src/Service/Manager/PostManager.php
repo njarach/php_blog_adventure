@@ -24,7 +24,7 @@ class PostManager
     /**
      * @throws Exception
      */
-    public function findAll(): array
+    public function findAll(): ?array
     {
         return $this->postRepository->findAll();
     }
@@ -60,6 +60,8 @@ class PostManager
                 $existingPost->setContent($content);
                 $existingPost->setCategoryId($categoryId);
                 $existingPost->setIntro($intro);
+                $currentDateTime = date('Y-m-d H:i:s');
+                $existingPost->setUpdatedAt($currentDateTime);
                 try {
                     $this->postRepository->edit($existingPost);
                 } catch (Exception $e) {
@@ -84,17 +86,15 @@ class PostManager
         return $this->categoryRepository->findAll();
     }
 
-    public function createPost(string $title, string $content, int $categoryId, string $intro): ?Post
+    public function createPost(string $title, string $content, int $categoryId, int $authorId, string $intro): ?Post
     {
-
         if ($title && $content && $categoryId) {
             $newPost = new Post();
             $newPost->setTitle($title);
             $newPost->setContent($content);
             $newPost->setCategoryId($categoryId);
             $newPost->setIntro($intro);
-            $newPost->setAuthorId(1);
-
+            $newPost->setAuthorId($authorId);
             try {
                 $this->postRepository->add($newPost);
             } catch (Exception $e) {
@@ -115,7 +115,7 @@ class PostManager
 
     public function validatePostData(array $data): array
     {
-        // Un tableau vide, toujours vide à l'instanciation
+        // Empty array, always empty when instancing
         $errors = $this->errors;
 
         if (!$this->checkPost($data['title'])) {

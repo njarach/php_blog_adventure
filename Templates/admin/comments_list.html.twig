@@ -22,9 +22,10 @@
                         <td>{{ comment.content }}</td>
                         <td>{{ comment.authorName }}</td>
                         <td>{{ comment.createdat|date('d-m-Y H:i:s') }}</td>
-                        <td><a href="/php_blog_adventure/admin/comments/review/{{ comment.id }}">
-                                <i class="bi bi-eye-fill"></i>
-                            </a>
+                        <td>
+                            <form onclick="this.submit()" action="/php_blog_adventure/admin/comments/review/{{ comment.id }}" method="post">
+                                <i class="bi bi-eye-fill" style="cursor: pointer"></i>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}

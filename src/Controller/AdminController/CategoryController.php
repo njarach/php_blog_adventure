@@ -27,6 +27,6 @@ class CategoryController extends AbstractController
 
     public function show(int $postId)
     {
-        // TODO: Implement show() method.
+//      here add logic to show a category
     }
 }

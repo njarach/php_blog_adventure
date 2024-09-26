@@ -4,6 +4,7 @@ namespace src\Router;
 
 use Exception;
 use src\controller\ErrorController;
+use src\Service\Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -15,6 +16,7 @@ class Router
     private array $routes = [];
     private array $namedRoutes = [];
     private string $groupPattern = '';
+    private array $middleware = [];
 
     public function __construct(string $url, string $basePath = ''){
         $this->url = $url;
@@ -51,7 +53,7 @@ class Router
             $path = '/' . $this->basePath . $path;
         }
 
-        $route = new Route($path, $callable);
+        $route = new Route($path, $callable, $this->middleware);
         $this->routes[$method][] = $route;
         if (is_string($callable) && $name === null) {
             $name = $callable;
@@ -62,50 +64,68 @@ class Router
         return $route;
     }
 
-    public function group(string $pattern, callable $callback): void
+    public function group(string $pattern, callable $callback, array $middleware = null): void
     {
         $oldGroupPattern = $this->groupPattern;
         $this->groupPattern .= $pattern;
+
+        if ($middleware) {
+            $this->middleware = $middleware;
+        }
+
         call_user_func($callback, $this);
+
         $this->groupPattern = $oldGroupPattern;
+        $this->middleware = [];
     }
 
     /**
      * @throws Exception
      */
-    public function listen(): mixed {
+    public function listen(): void
+    {
         try {
             if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
-                throw new RouterException('REQUEST_METHOD does not exist');
+                throw new RouterException('La méthode de la requête n\'existe pas.');
             }
-            /**
-             * @var Route[] $routes
-             */
             $routes = $this->routes[$_SERVER['REQUEST_METHOD']];
             foreach ($routes as $route) {
                 if ($route->match($this->url)) {
-                    return $route->execute();
+
+                    $middlewares = $route->getMiddleware();
+                    if (!empty($middlewares)) {
+                        if (!is_array($middlewares) || count($middlewares) !== 2) {
+                            throw new RouterException("Middleware is not structured correctly: " . json_encode($middlewares));
+                        }
+                        [$middlewareClass, $middlewareMethod] = $middlewares;
+                        if (!class_exists($middlewareClass)) {
+                            throw new RouterException("Middleware class {$middlewareClass} does not exist.");
+                        }
+                        $instance = new $middlewareClass();
+                        if (!method_exists($instance, $middlewareMethod)) {
+                            throw new RouterException("Method {$middlewareMethod} does not exist on middleware class {$middlewareClass}.");
+                        }
+                        call_user_func([$instance, $middlewareMethod]);
+                    }
+
+                    $route->execute();
+                    return;
                 }
             }
-            $this->handleError(404);
+            throw new RouterException("La page que vous recherchez n'existe pas.", 404);
         } catch (Exception $e) {
-            $this->handleError(500, $e);
+            $this->handleError($e->getCode() ?: 500, $e);
         }
-        return false;
     }
 
     /**
      * @throws Exception
      */
-    public function handleError(string $errorCode, Exception $exception = null): void
+    public function handleError(int $errorCode, Exception $exception = null): void
     {
         $errorController = new ErrorController();
-
-        if ($errorCode == 404) {
-            $errorController->error404($errorCode);
-        } else {
-            $errorController->error500($errorCode,$exception);
-        }
+        $response = $errorController->renderError($errorCode, $exception);
+        $response->send();
     }
 
     /**

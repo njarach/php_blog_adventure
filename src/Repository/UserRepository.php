@@ -3,7 +3,6 @@
 namespace src\Repository;
 
 use Exception;
-use src\model\Comment;
 use src\model\User;
 
 class UserRepository extends AbstractRepository
@@ -75,6 +74,14 @@ class UserRepository extends AbstractRepository
         } else {
             throw new Exception("Aucun utilisateur n'a été trouvé !");
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function add(User $user)
+    {
+        $this->new($user);
     }
 
     protected function getTableName(): string

@@ -5,6 +5,11 @@ use src\Router\Routes;
 
 require_once 'vendor/autoload.php';
 
+date_default_timezone_set('Europe/Paris');
+
+// Start session
+session_start();
+
 // Define the base path for your application
 $basePath = 'php_blog_adventure';
 

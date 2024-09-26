@@ -3,15 +3,16 @@
 namespace src\Controller;
 
 use Exception;
+use src\Service\Response;
 
 class ContactController extends AbstractController
 {
     /**
      * @throws Exception
      */
-    public function form()
+    public function form(): Response
     {
-        echo $this->render('contact/contact.html.twig');
+        return $this->render('contact/contact.html.twig');
     }
 
 }
