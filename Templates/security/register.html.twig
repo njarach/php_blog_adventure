@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    {% if error is defined %}
-        <div class="bg-alert text-danger">{{ error }}</div>
+    {% if errors is defined %}
+        {% for error in errors %}
+            <div class="bg-alert text-danger">{{ error }}</div>
+        {% endfor %}
     {% endif %}
-    <form data-bitwarden-watching="1" method="post" action="/php_blog_adventure/admin/register">
+    {% if registerError is defined %}
+        <div class="bg-alert text-danger">{{ registerError }}</div>
+    {% endif %}
+    <form data-bitwarden-watching="1" method="post" action="/php_blog_adventure/register">
         <h1 class="h3 mb-3 fw-normal">Connectez-vous</h1>
         <div class="form-floating">
             <input name="username" type="text" class="form-control" id="floatingInput" placeholder="Pseudonyme">

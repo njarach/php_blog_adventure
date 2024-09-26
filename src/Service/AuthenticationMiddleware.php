@@ -39,15 +39,15 @@ class AuthenticationMiddleware
             throw new Exception("Action non autorisée, veuillez vous connecter pour réaliser cette action.",402);
         }
         if ($user) {
-            if (!$this->verifyAdminUser($user->getEmail())) {
+            if (!$this->verifyAdminUser($user->isAdmin())) {
                 throw new Exception("Action non autorisée, vous devez être un administrateur pour réaliser cette action.",402);
             }
         }
     }
 
-    private function verifyAdminUser(string $email): bool
+    private function verifyAdminUser(bool $isAdmin): bool
     {
-        return $email == 'admin@mail.com';
+        return $isAdmin;
     }
 
 }

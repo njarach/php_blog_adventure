@@ -64,7 +64,7 @@ abstract class AbstractController
             $userManager = new UserManager();
             $user = $userManager->getUser(['id'=>$_SESSION['user_id']]);
         }
-        if (isset($user) && !empty($user) && $user->getEmail()=='admin@mail.com'){
+        if (isset($user) && !empty($user) && $user->isAdmin()){
             return true;
         }
         return false;

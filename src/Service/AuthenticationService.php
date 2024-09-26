@@ -25,16 +25,16 @@ class AuthenticationService
         $errors = $this->errors;
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
-        if (!$this->checkLogin($email)){
+        if (!$this->checkData($email)){
             $errors['email'] = 'Veuillez renseigner une adresse email valide.';
         }
-        if (!$this->checkLogin($password)){
+        if (!$this->checkData($password)){
             $errors['password'] = 'Veuillez renseigner un mot de passe valide.';
         }
         return [$errors,$password,$email];
     }
 
-    private function checkLogin($data): bool
+    private function checkData($data): bool
     {
         return isset($data) && !empty(trim($data));
     }
@@ -52,5 +52,31 @@ class AuthenticationService
     public function setSessionUserId(User $user): void
     {
         $this->sessionService->setSessionUserId($user->getId());
+    }
+
+    /**
+     * @return array
+     */
+    public function validateRegisterData(): array
+    {
+        $errors = $this->errors;
+        $username = trim($_POST['username']);
+        $email = trim($_POST['email']);
+        $password = $_POST['password'];
+        if (!$this->checkData($username)) {
+            $errors['username'] = 'Veuillez renseigner un nom d\'utilisateur valide.';
+        }
+        if (!$this->checkData($email)) {
+            $errors['email'] = 'Veuillez renseigner un email valide.';
+        }
+        if (!$this->checkData($password)) {
+            $errors['password'] = 'Veuillez renseigner un mot de passe valide.';
+        }
+        return [$errors,$username,$email,$password];
+    }
+
+    public function hashPassword(mixed $password): string
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 }
