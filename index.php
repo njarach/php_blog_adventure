@@ -7,17 +7,13 @@ require_once 'vendor/autoload.php';
 
 date_default_timezone_set('Europe/Paris');
 
-// Start session
 session_start();
 
-// Define the base path for your application
 $basePath = 'php_blog_adventure';
 
-// Router is instantiated with URL as constructor parameter and base path
 $url = $_SERVER['REQUEST_URI'] ?? '/';
 $router = new Router($url, $basePath);
 
-// Routes class contains the routes (called with the setup method)
 $routes = new Routes($router);
 
 try {

@@ -115,11 +115,9 @@ class PostRepository extends AbstractRepository
             $post = new Post();
             $post->setProperties($row);
 
-            // Fetch the author of the post
             $userRepository = new UserRepository();
             $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
 
-            // Fetch the comments of the post
             $commentRepository = new CommentRepository();
             $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
 
@@ -129,5 +127,22 @@ class PostRepository extends AbstractRepository
         } else {
             throw new Exception("Aucun post n'a été trouvé !");
         }
+    }
+
+    public function findLatest(): Post{
+        $row = $this->fetchLatest();
+
+        $post = new Post();
+        $post->setProperties($row);
+
+        $userRepository = new UserRepository();
+        $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
+
+        $commentRepository = new CommentRepository();
+        $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
+
+        if (!empty($author)) $post->authorName = $author->getUsername();
+        if (!empty($comments)) $post->comments = $comments;
+        return $post;
     }
 }

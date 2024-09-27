@@ -80,6 +80,14 @@ abstract class AbstractRepository implements RepositoryInterface
         return $result?:null;
     }
 
+    protected function fetchlatest(): array {
+        $sql = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT 1";
+        $statement = $this->connection->getInstance()->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     /**
      * @throws Exception
      */
@@ -110,10 +118,8 @@ abstract class AbstractRepository implements RepositoryInterface
         $primaryKey = 'id';
         $primaryKeyValue = $properties[$primaryKey];
 
-        // Get valid columns from the database
         $validColumns = $this->getTableColumns();
 
-        // Filter out properties that are not valid columns or that have null values
         $properties = array_filter($properties, fn($value, $key) => $value !== null && in_array($key, $validColumns), ARRAY_FILTER_USE_BOTH);
         $columns = array_keys($properties);
 
@@ -122,12 +128,10 @@ abstract class AbstractRepository implements RepositoryInterface
         $sql = "UPDATE " . $this->getTableName() . " SET " . $setClause . " WHERE $primaryKey = :$primaryKeyValue";
         $statement = $this->connection->getInstance()->prepare($sql);
 
-        // Bind the values dynamically
         foreach ($properties as $column => $value) {
             $statement->bindValue(":$column", $value);
         }
 
-        // Bind the primary key value
         $statement->bindValue(":$primaryKeyValue", $primaryKeyValue);
 
         if (!$statement->execute()) {
@@ -148,7 +152,6 @@ abstract class AbstractRepository implements RepositoryInterface
         $sql = "DELETE FROM " . $this->getTableName() . " WHERE $primaryKey = :$primaryKey";
         $statement = $this->connection->getInstance()->prepare($sql);
 
-        // Bind the primary key value
         $statement->bindValue(":$primaryKey", $primaryKeyValue);
 
         if (!$statement->execute()) {
