@@ -37,6 +37,13 @@ class PostManager
         return $this->postRepository->findById($postId);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function findLatestPost(): Post
+    {
+        return $this->postRepository->findLatest();
+    }
 
     /**
      * @throws Exception
