@@ -17,9 +17,13 @@
                     <form action="/php_blog_adventure/contact/" method="post">
                         <div class="row gy-4 gy-xl-5 p-4 p-xl-5">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                            <div class="col-12">
-                                <label for="fullname" class="form-label">Nom et Prénom <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="fullname" name="fullname" value="" required>
+                            <div class="col-6">
+                                <label for="lastname" class="form-label">Nom<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="lastname" name="lastname" value="" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="firstname" class="form-label">Prénom<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="firstname" name="firstname" value="" required>
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="email" class="form-label">Email <span class="text-danger">*</span></label>

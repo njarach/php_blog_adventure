@@ -18,27 +18,47 @@ class ContactService
 
     public function sanitizeContactForm(): array
     {
-        // TODO : peut être enlevé le 'full name' et mettre nom et prénom, évaluer si c'est bien du string, évaluer si le phone est bien 10 nombres
-        $fullName = $this->sanitizeInput($_POST['fullname']);
+        $firstname = $this->sanitizeInput($_POST['firstname']);
+        $lastname = $this->sanitizeInput($_POST['lastname']);
         $email = $this->sanitizeInput($_POST['email']);
         $phone = $this->sanitizeInput($_POST['phone']);
         $message = $this->sanitizeInput($_POST['message']);
-        return [$fullName,$email,$phone,$message];
+        return [$firstname,$lastname,$email,$phone,$message];
     }
 
     /**
-     * @param string $fullName
+     * @throws Exception
+     */
+    public function validateContactForm(string $firstname, string $lastname, string $email, string $phone): void
+    {
+        if (preg_match('/\d/', $lastname)) {
+            throw new Exception("Le nom ne doit pas contenir de chiffres.");
+        }
+        if (preg_match('/\d/', $firstname)) {
+            throw new Exception("Le prénom ne doit pas contenir de chiffres.");
+        }
+        if (!preg_match('/^[\d\s\-+]+$/', $phone)) {
+            throw new Exception("Le numéro de téléphone n'est pas valide et ne peut pas contenir de caractères alphabétiques.");
+        }
+        if (!$this->validateEmail($email)) {
+            throw new Exception("Email invalide");
+        }
+    }
+
+    /**
+     * @param string $firstname
+     * @param string $lastname
      * @param string $email
      * @param string $phone
      * @param string $message
      * @throws Exception
      */
-    public function sendEmail(string $fullName, string $email, string $phone, string $message): void
+    public function sendEmail(string $firstname, string $lastname, string $email, string $phone, string $message): void
     {
-        $subject = "Nouveau message provenant de : $fullName";
+        $subject = "Nouveau message provenant de : $firstname $lastname";
         $body = "
             <h1>Nouveau message</h1>
-            <p><strong>Nom:</strong> $fullName</p>
+            <p><strong>Nom:</strong> $firstname $lastname</p>
             <p><strong>Email:</strong> $email</p>
             <p><strong>Téléphone:</strong> $phone</p>
             <p><strong>Message:</strong> $message</p>
@@ -54,7 +74,7 @@ class ContactService
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
-        $mail->setFrom($email, $fullName);
+        $mail->setFrom($email, "$firstname $lastname");
         $mail->addAddress('nicolas.jarach@hotmail.com');
 
         $mail->isHTML(true);
@@ -64,5 +84,16 @@ class ContactService
         $mail->Encoding = 'base64';
 
         $mail->send();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function validateCsrfToken(): void
+    {
+        $sessionService = new SessionService();
+        if (!$sessionService->validateCsrfToken()) {
+            throw new Exception("L'authentification CSRF a échoué.");
+        }
     }
 }
