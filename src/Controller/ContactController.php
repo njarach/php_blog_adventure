@@ -20,22 +20,26 @@ class ContactController extends AbstractController
     /**
      * @throws Exception
      */
-    public function form(): Response {
+    public function send(): Response {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$this->sessionService->validateCsrfToken()) {
                 throw new Exception("L'authentification CSRF a échoué.");
             }
-            $fullname = $this->contactService->sanitizeInput($_POST['fullname']);
-            $email = $this->contactService->sanitizeInput($_POST['email']);
-            $phone = $this->contactService->sanitizeInput($_POST['phone']);
-            $message = $this->contactService->sanitizeInput($_POST['message']);
+            list($fullName,$email,$phone,$message) = $this->contactService->sanitizeContactForm();
 
             if (!$this->contactService->validateEmail($email)) {
                 throw new Exception("Email invalide");
             }
+
+            try {
+                $this->contactService->sendEmail($fullName,$email,$phone,$message);
+                return $this->render('home/contact_success.html.twig');
+            } catch (Exception $e) {
+                throw new  Exception("Message could not be sent. Mailer Error: $e");
+            }
         }
         $this->sessionService->generateCsrfToken();
-        return $this->render('contact/_contact_form.html.twig',[
+        return $this->render('home/home.html.twig',[
             'csrf_token'=>$_SESSION['csrf_token']
         ]);
     }

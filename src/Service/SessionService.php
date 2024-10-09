@@ -28,8 +28,8 @@ class SessionService
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']))return true;
-        return false;
+        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) return false;
+        return true;
     }
 
     /**
