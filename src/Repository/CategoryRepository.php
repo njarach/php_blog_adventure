@@ -27,7 +27,7 @@ class CategoryRepository extends AbstractRepository
             }
             return $categories;
         } else {
-            throw new Exception("Aucune catégorie n'a été trouvée !");
+            return [];
         }
     }
 
@@ -61,7 +61,7 @@ class CategoryRepository extends AbstractRepository
             }
             return $categories;
         } else {
-            throw new Exception("Aucune catégorie n'a été trouvée !");
+            return [];
         }
     }
 

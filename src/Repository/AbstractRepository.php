@@ -34,13 +34,12 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchById(int $id): ?array
+    protected function fetchById(int $id): array
     {
         $statement = $this->connection->getInstance()->prepare("SELECT * FROM " . $this->getTableName() . " WHERE id = :id");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     protected function fetchBy(array $criteria): array
@@ -61,7 +60,7 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchOneBy(array $criteria): ?array
+    protected function fetchOneBy(array $criteria): array
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
         $conditions = [];
@@ -76,16 +75,14 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->bindParam($param, $value);
         }
         $statement->execute($params);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result?:null;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     protected function fetchlatest(): array {
         $sql = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT 1";
         $statement = $this->connection->getInstance()->prepare($sql);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     /**

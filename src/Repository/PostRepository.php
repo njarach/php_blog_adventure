@@ -23,7 +23,7 @@ class PostRepository extends AbstractRepository
     /**
      * @throws Exception
      */
-    public function findAll(): ?array
+    public function findAll(): array
     {
         $rows = $this->fetchAll();
         if (count($rows)) {
@@ -31,22 +31,17 @@ class PostRepository extends AbstractRepository
             foreach ($rows as $row) {
                 $post = new Post();
                 $post->setProperties($row);
-
-                // Fetch the author of the post
                 $userRepository = new UserRepository();
                 $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
-
-                // Fetch the comments of the post
                 $commentRepository = new CommentRepository();
                 $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
-
                 if (!empty($author)) $post->authorName = $author->getUsername();
                 if (!empty($comments)) $post->comments = $comments;
                 $posts[] = $post;
             }
             return $posts;
         }
-        return null;
+        return [];
     }
 
     /**
@@ -58,27 +53,22 @@ class PostRepository extends AbstractRepository
         if (!empty($row)) {
             $post = new Post();
             $post->setProperties($row);
-
-            // Fetch the author of the post
             $userRepository = new UserRepository();
             $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
-
-            // Fetch the comments of the post
             $commentRepository = new CommentRepository();
             $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
-
             if (!empty($author)) $post->authorName = $author->getUsername();
             if (!empty($comments)) $post->comments = $comments;
             return $post;
         } else {
-            return null;
+            throw new Exception("Aucun article n'a été trouvé.");
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findBy(array $criteria): ?array
+    public function findBy(array $criteria): array
     {
         $rows = $this->fetchBy($criteria);
         $posts = [];
@@ -86,41 +76,33 @@ class PostRepository extends AbstractRepository
             foreach ($rows as $row) {
                 $post = new Post();
                 $post->setProperties($row);
-
-                // Fetch the author of the post
                 $userRepository = new UserRepository();
                 $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
-
-                // Fetch the comments of the post
                 $commentRepository = new CommentRepository();
                 $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
-
                 if (!empty($author)) $post->authorName = $author->getUsername();
                 if (!empty($comments)) $post->comments = $comments;
                 $posts[] = $post;
             }
             return $posts;
         } else {
-            return null;
+            return [];
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findOneBy(array $criteria): ?Post
+    public function findOneBy(array $criteria): Post
     {
         $row = $this->fetchOneBy($criteria);
         if (!empty($row)) {
             $post = new Post();
             $post->setProperties($row);
-
             $userRepository = new UserRepository();
             $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
-
             $commentRepository = new CommentRepository();
             $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
-
             if (!empty($author)) $post->authorName = $author->getUsername();
             if (!empty($comments)) $post->comments = $comments;
             return $post;
@@ -129,18 +111,17 @@ class PostRepository extends AbstractRepository
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function findLatest(): Post{
         $row = $this->fetchLatest();
-
         $post = new Post();
         $post->setProperties($row);
-
         $userRepository = new UserRepository();
         $author = $userRepository->findOneBy(['id' => $post->getAuthorId()]);
-
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->findBy(['post_id' => $post->getId()]);
-
         if (!empty($author)) $post->authorName = $author->getUsername();
         if (!empty($comments)) $post->comments = $comments;
         return $post;

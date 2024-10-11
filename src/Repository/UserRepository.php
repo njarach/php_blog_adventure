@@ -11,7 +11,7 @@ class UserRepository extends AbstractRepository
     /**
      * @throws Exception
      */
-    public function findAll(): ?array
+    public function findAll(): array
     {
         $rows = $this->fetchAll();
         $users = [];
@@ -23,14 +23,14 @@ class UserRepository extends AbstractRepository
             }
             return $users;
         } else {
-            throw new Exception("Aucun utilisateur n'a été trouvé !");
+            return [];
         }
     }
 
     /**
      * @throws Exception
      */
-    public function findById(int $id): ?User
+    public function findById(int $id): User
     {
         $row = $this->fetchById($id);
         if (!empty($row)) {
@@ -57,7 +57,7 @@ class UserRepository extends AbstractRepository
             }
             return $users;
         } else {
-            throw new Exception("Aucun utilisateur n'a été trouvé !");
+            return [];
         }
     }
 

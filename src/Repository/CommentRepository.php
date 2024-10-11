@@ -24,17 +24,14 @@ class CommentRepository extends AbstractRepository
             foreach ($rows as $row){
                 $comment = new Comment();
                 $comment->setProperties($row);
-
-                // Fetch the author of the comment
                 $userRepository = new UserRepository();
                 $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
                 if(!empty($author))$comment->authorName = $author->getUsername();
-
                 $comments[] = $comment;
             }
             return $comments;
         } else {
-            throw new Exception("Aucun commentaire n'a été trouvé !");
+            return [];
         }
     }
 
@@ -48,15 +45,12 @@ class CommentRepository extends AbstractRepository
         if (!empty($row)) {
             $comment = new Comment();
             $comment->setProperties($row);
-
-            // Fetch the author of the comment
             $userRepository = new UserRepository();
             $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
             if(!empty($author))$comment->authorName = $author->getUsername();
-
             return $comment;
         } else {
-            return null;
+            throw new Exception("Aucun commentaire n'a été trouvé.");
         }
     }
 
@@ -71,17 +65,14 @@ class CommentRepository extends AbstractRepository
             foreach ($rows as $row){
                 $comment = new Comment();
                 $comment->setProperties($row);
-
-                // Fetch the author of the comment
                 $userRepository = new UserRepository();
                 $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
                 if(!empty($author))$comment->authorName = $author->getUsername();
-
                 $comments[] = $comment;
             }
             return $comments;
         } else {
-            return null;
+            return [];
         }
     }
 
@@ -94,15 +85,12 @@ class CommentRepository extends AbstractRepository
         if (!empty($row)) {
             $comment = new Comment();
             $comment->setProperties($row);
-
-            // Fetch the author of the comment
             $userRepository = new UserRepository();
             $author = $userRepository->findOneBy(['id'=>$comment->getUserId()]);
             if(!empty($author))$comment->authorName = $author->getUsername();
-
             return $comment;
         } else {
-            return null;
+            throw new Exception("Aucun commentaire n'a été trouvé.");
         }
     }
 
