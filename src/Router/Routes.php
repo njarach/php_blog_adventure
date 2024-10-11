@@ -17,6 +17,7 @@ class Routes
     {
         // Home routes
         $this->router->get('/', 'Home#home');
+        $this->router->get('/download/cv','Home#downloadCv');
         // BlogPost routes
         $this->router->get('/posts', 'Post#index');
         $this->router->get('/posts/:id', 'Post#show');

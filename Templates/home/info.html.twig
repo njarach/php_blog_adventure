@@ -1,17 +1,36 @@
+<style>
+    .cv-image-wrapper {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .cv-image-wrapper img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
 </style>
+
 <section class="bg-light mt-5 py-3 py-md-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-4">
-                <a href="#" download="CV_YourName" class="d-block">
-                    <img src="https://via.placeholder.com/100" alt="Profile Image" class="img-fluid rounded w-50" />
-                </a>
+                <div class="vstack text-center">
+                    <a href="/php_blog_adventure/download/cv" class="text-decoration-none">
+                        <div class="cv-image-wrapper mx-auto mb-2">
+                            <img src="assets/photo/img.png"
+                                 alt="Photo de Nicolas Jarach, développeur web"
+                                 class="img-fluid rounded-circle"/>
+                        </div>
+                        <span class="text-primary fw-bold" style="font-size: 0.8rem">Cliquez pour télécharger mon CV</span>
+                    </a>
+                </div>
             </div>
-
             <div class="col-md-8">
                 <p>
                     Développeur PHP depuis maintenant 1 an, je suis en mesure de concrétiser tous vos projets.
-                    Une idée de boutique en ligne ou d'application métier ? N'hésitez plus.
+                    Une idée de boutique en ligne ou d'application métier ? N'hésitez plus, contactez-moi et discutons ensemble de votre projet pour le réaliser.
                 </p>
             </div>
         </div>
