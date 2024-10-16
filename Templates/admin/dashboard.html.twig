@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Administration du Blog</h1>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-card-list"></i> Gestion des Articles
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Liste des articles</h5>
+                        <p class="card-text">Voir, modifier ou supprimer vos articles publiés.</p>
+                        <a href="/php_blog_adventure/admin/posts" class="btn btn-primary">
+                            <i class="bi bi-card-text"></i> Voir les articles
+                        </a>
+                        <a href="/php_blog_adventure/admin/posts/new" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Créer un article
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-info">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-chat-dots"></i> Gestion des Commentaires
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Liste des commentaires</h5>
+                        <p class="card-text">Modérer et gérer les commentaires des utilisateurs sur vos articles.</p>
+                        <a href="/php_blog_adventure/admin/comments" class="btn btn-info">
+                            <i class="bi bi-chat-left-text"></i> Voir les commentaires
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
