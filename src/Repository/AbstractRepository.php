@@ -19,22 +19,20 @@ abstract class AbstractRepository implements RepositoryInterface
 
     abstract protected function getTableName(): string;
 
-    // This is used to get the table columns that are properly mapped in the DB
-    protected function getTableColumns(): array|bool
+    protected function getTableColumns(): array
     {
         $sql = "SHOW COLUMNS FROM " . $this->getTableName();
         $stmt = $this->connection->getInstance()->query($sql);
-
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    protected function fetchAll(): array|bool
+    protected function fetchAll(): array|false
     {
         $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchById(int $id): array|bool
+    protected function fetchById(int $id): array|false
     {
         $statement = $this->connection->getInstance()->prepare("SELECT * FROM " . $this->getTableName() . " WHERE id = :id");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -42,7 +40,7 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchBy(array $criteria): array|bool
+    protected function fetchBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
         $conditions = [];
@@ -60,7 +58,7 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchOneBy(array $criteria): array|bool
+    protected function fetchOneBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
         $conditions = [];
@@ -78,7 +76,7 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchlatest(): array|bool
+    protected function fetchlatest(): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT 1";
         $statement = $this->connection->getInstance()->prepare($sql);

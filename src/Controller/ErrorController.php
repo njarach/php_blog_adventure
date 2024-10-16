@@ -15,11 +15,9 @@ class ErrorController extends AbstractController
      */
     public function renderError(int $errorCode, Exception $exception = null): Response {
         $message = 'An unexpected error occurred.';
-
         if ($exception) {
             $message = $exception->getMessage();
         }
-
         return $this->render('error/error.html.twig', [
             'errorCode' => $errorCode,
             'message'   => $message,
