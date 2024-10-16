@@ -15,7 +15,6 @@ class Post implements EntityInterface
 //    ----------------------
     protected string $title;
     protected string $content;
-
     protected string $intro;
     protected int $author_id;
     protected int $category_id;
