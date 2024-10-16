@@ -31,6 +31,8 @@ class Routes
 
         // Admin routes
         $this->router->group('/admin', function (Router $router) {
+            // Admin Dashboard
+            $router->get('/','AdminDashboard#dashboard');
             // Admin comments routes
             $router->get('/comments', 'Comment#index');
             // Admin BlogPost Routes

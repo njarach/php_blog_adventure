@@ -1,13 +1,12 @@
 <?php
 
-namespace src\config;
+namespace src\Config;
 
 use PDO;
 use PDOException;
 
 class DatabaseConnection
 {
-//   We use static keywords in this class to access properties and methods without needing to instantiate the class beforehand.
     private static ?PDO $instance = null;
     public static function getInstance(): ?PDO
     {
