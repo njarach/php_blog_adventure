@@ -19,31 +19,28 @@ abstract class AbstractRepository implements RepositoryInterface
 
     abstract protected function getTableName(): string;
 
-    // This is used to get the table columns that are properly mapped in the DB
     protected function getTableColumns(): array
     {
         $sql = "SHOW COLUMNS FROM " . $this->getTableName();
         $stmt = $this->connection->getInstance()->query($sql);
-
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    protected function fetchAll(): array
+    protected function fetchAll(): array|false
     {
         $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchById(int $id): ?array
+    protected function fetchById(int $id): array|false
     {
         $statement = $this->connection->getInstance()->prepare("SELECT * FROM " . $this->getTableName() . " WHERE id = :id");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchBy(array $criteria): array
+    protected function fetchBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
         $conditions = [];
@@ -61,7 +58,7 @@ abstract class AbstractRepository implements RepositoryInterface
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchOneBy(array $criteria): ?array
+    protected function fetchOneBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
         $conditions = [];
@@ -76,16 +73,15 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->bindParam($param, $value);
         }
         $statement->execute($params);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result?:null;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    protected function fetchlatest(): array {
+    protected function fetchlatest(): array|false
+    {
         $sql = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT 1";
         $statement = $this->connection->getInstance()->prepare($sql);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     /**

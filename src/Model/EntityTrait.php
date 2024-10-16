@@ -27,7 +27,6 @@ trait EntityTrait
     public function setProperties(array $data): void
     {
         foreach ($data as $key => $value) {
-            // Convert snake_case to camelCase for method names
             $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
             if (method_exists($this, $method)) {
                 $this->$method($value);
