@@ -7,6 +7,12 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class ContactService
 {
+    private RequestService $requestService;
+    public function __construct()
+    {
+        $this->requestService = new RequestService();
+    }
+
     private function sanitizeInput($data): string
     {
         return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
@@ -18,11 +24,11 @@ class ContactService
 
     public function sanitizeContactForm(): array
     {
-        $firstname = $this->sanitizeInput($_POST['firstname']);
-        $lastname = $this->sanitizeInput($_POST['lastname']);
-        $email = $this->sanitizeInput($_POST['email']);
-        $phone = $this->sanitizeInput($_POST['phone']);
-        $message = $this->sanitizeInput($_POST['message']);
+        $firstname = $this->sanitizeInput($this->requestService->getPostData('firstname'));
+        $lastname = $this->sanitizeInput($this->requestService->getPostData('lastname'));
+        $email = $this->sanitizeInput($this->requestService->getPostData('email'));
+        $phone = $this->sanitizeInput($this->requestService->getPostData('phone'));
+        $message = $this->sanitizeInput($this->requestService->getPostData('message'));
         return [$firstname,$lastname,$email,$phone,$message];
     }
 
