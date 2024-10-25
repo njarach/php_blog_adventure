@@ -6,7 +6,7 @@ use src\Service\RequestService;
 use src\Service\ServerService;
 use src\Service\SessionService;
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 date_default_timezone_set('Europe/Paris');
 
@@ -41,7 +41,8 @@ try {
     try {
         $router->handleError(500, $e);
     } catch (Exception $e) {
-        echo ($e->getMessage());
+        //TODO : this probably needs some tweaks but at least it solves security issue ?
+        echo '<div>' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</div>';
         return true;
     }
 }
