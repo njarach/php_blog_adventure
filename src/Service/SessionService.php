@@ -6,13 +6,33 @@ use Exception;
 
 class SessionService
 {
+    private array $session;
+
+    public function __construct()
+    {
+        $this->startSession();
+        $this->session = &$_SESSION;
+    }
 
     /**
      * @return void
      */
     public function startSession(): void
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSessionUserId(): ?int
+    {
+        if (isset($this->session['user_id'])) {
+            return $this->session['user_id'];
+        }
+        return null;
     }
 
     /**
@@ -21,18 +41,7 @@ class SessionService
      */
     public function setSessionUserId(int $userId): void
     {
-        $_SESSION['user_id'] = $userId;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getSessionUserId(): ?int
-    {
-        if (isset($_SESSION['user_id'])) {
-            return $_SESSION['user_id'];
-        }
-        return null;
+        $this->session['user_id'] = $userId;
     }
 
     public function endSession(): void
@@ -46,7 +55,7 @@ class SessionService
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) return false;
+        if (!hash_equals($this->session['csrf_token'], $_POST['csrf_token'])) return false;
         return true;
     }
 
@@ -55,9 +64,9 @@ class SessionService
      */
     public function generateCsrfToken(): void
     {
-        if (!isset($_SESSION['csrf_token'])) {
+        if (!isset($this->session['csrf_token'])) {
             try {
-                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+                $this->session['csrf_token'] = bin2hex(random_bytes(32));
             } catch (Exception $e) {
                 throw new Exception("La génération d'un token aléatoire a rencontré une erreur");
             }
@@ -69,8 +78,8 @@ class SessionService
      */
     public function getCsrfToken(): ?string
     {
-        if (!isset($_SESSION['csrf_token'])) {
-            return $_SESSION['csrf_token'];
+        if (!isset($this->session['csrf_token'])) {
+            return $this->session['csrf_token'];
         }
         return null;
     }

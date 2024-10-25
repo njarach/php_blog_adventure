@@ -36,7 +36,8 @@ abstract class AbstractController
             $content = $twig->render($template, $context);
             return new Response($content);
         } catch (Exception $e) {
-            throw new Exception("A twig exception occurred : $e");
+            $escapedMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+            throw new Exception("A Twig error occurred: " . $escapedMessage);
         }
     }
 

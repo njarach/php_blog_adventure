@@ -28,7 +28,7 @@ class CommentController extends AbstractController
                 } else {
                     return $this->render('blogpost/show.html.twig', [
                         'errors' => $errors,
-                        'commentFormData' => $_POST,
+                        'commentFormData' => $this->getRequestService()->getAllPostData(),
                     ]);
                 }
             } catch (Exception $e) {

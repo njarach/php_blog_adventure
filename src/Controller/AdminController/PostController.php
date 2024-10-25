@@ -43,7 +43,7 @@ class PostController extends AbstractController
                 return $this->render('blogpost/new.html.twig', [
                     'categories' => $categories,
                     'errors' => $errors,
-                    'formData' => $_POST
+                    'formData' => $this->getRequestService()->getAllPostData()
                 ]);
             }
         } else {
@@ -61,7 +61,7 @@ class PostController extends AbstractController
     public function edit(int $postId): Response
     {
         if ($this->getRequestService()->getRequestMethod() === 'POST') {
-            $errors = $this->postManager->validatePostData($_POST);
+            $errors = $this->postManager->validatePostData($this->getRequestService()->getAllPostData());
             if (empty($errors)) {
                 $this->postManager->edit($postId, $this->getRequestService()->getPostData('title'), $this->getRequestService()->getPostData('content'), $this->getRequestService()->getPostData('category_id'),
                     $this->getRequestService
@@ -74,7 +74,7 @@ class PostController extends AbstractController
                     'post' => $post,
                     'categories' => $categories,
                     'errors' => $errors,
-                    'formData' => $_POST
+                    'formData' => $this->getRequestService()->getAllPostData()
                 ]);
             }
         } else {
