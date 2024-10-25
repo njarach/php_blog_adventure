@@ -21,15 +21,18 @@ class SessionService
      */
     public function setSessionUserId(int $userId): void
     {
-        $_SESSION['user_id'] = $userId ;
+        $_SESSION['user_id'] = $userId;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSessionUserId(): int
+    public function getSessionUserId(): ?int
     {
-        return $_SESSION['user_id'];
+        if (isset($_SESSION['user_id'])) {
+            return $_SESSION['user_id'];
+        }
+        return null;
     }
 
     public function endSession(): void

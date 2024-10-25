@@ -65,7 +65,9 @@ abstract class AbstractController
     {
         $sessionUserId = $this->getSessionService()->getSessionUserId();
         $userManager = new UserManager();
-        $user = $userManager->getUser(['id'=>$sessionUserId]);
+        if (isset($sessionUserId)){
+            $user = $userManager->getUser(['id'=>$sessionUserId]);;
+        }
         if (isset($user) && !empty($user) && $user->isAdmin()){
             return true;
         }

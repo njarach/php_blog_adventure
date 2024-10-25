@@ -41,7 +41,7 @@ try {
     try {
         $router->handleError(500, $e);
     } catch (Exception $e) {
-        echo ('Le controller responsable de la gestion des erreurs a rencontré une erreur.');
+        echo ($e->getMessage());
         return true;
     }
 }
