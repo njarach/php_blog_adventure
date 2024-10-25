@@ -24,7 +24,7 @@ class AuthenticationController extends AbstractController
      */
     public function login(): Response
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->getRequestService()->getRequestMethod() == 'POST') {
             list($errors, $password, $email) = $this->authenticationService->validateLoginData();
             if (empty($errors)){
                 try {

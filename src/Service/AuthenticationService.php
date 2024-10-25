@@ -9,10 +9,12 @@ class AuthenticationService
 {
     private array $errors = [];
     private SessionService $sessionService;
+    private RequestService $requestService;
 
     public function __construct()
     {
         $this->sessionService = new SessionService();
+        $this->requestService = new RequestService();
     }
 
     public function endSession(): void
@@ -23,8 +25,8 @@ class AuthenticationService
     public function validateLoginData(): array
     {
         $errors = $this->errors;
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $email = $this->requestService->getPostData('email') ?? '';
+        $password = $this->requestService->getPostData('password') ?? '';
         if (!$this->checkData($email)){
             $errors['email'] = 'Veuillez renseigner une adresse email valide.';
         }
@@ -60,9 +62,9 @@ class AuthenticationService
     public function validateRegisterData(): array
     {
         $errors = $this->errors;
-        $username = trim($_POST['username']);
-        $email = trim($_POST['email']);
-        $password = $_POST['password'];
+        $username = trim($this->requestService->getPostData('username'));
+        $email = trim($this->requestService->getPostData('email'));
+        $password = $this->requestService->getPostData('password');
         if (!$this->checkData($username)) {
             $errors['username'] = 'Veuillez renseigner un nom d\'utilisateur valide.';
         }

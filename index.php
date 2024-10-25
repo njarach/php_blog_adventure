@@ -2,31 +2,38 @@
 
 use src\Router\Router;
 use src\Router\Routes;
+use src\Service\RequestService;
+use src\Service\ServerService;
+use src\Service\SessionService;
 
 require_once 'vendor/autoload.php';
 
 date_default_timezone_set('Europe/Paris');
 
-session_start();
+$serverService = new ServerService();
+$requestService = new RequestService();
+$sessionService = new SessionService();
+
+$sessionService->startSession();
 
 $basePath = 'php_blog_adventure';
 
-$url = $_SERVER['REQUEST_URI'] ?? '/';
+$url = $serverService->getRequestUri();
 $router = new Router($url, $basePath);
 
 $routes = new Routes($router);
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if ($requestService->getRequestMethod() == 'GET') {
         $routes->setupGetRoutes();
         $router->listen();
-    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    } elseif ($requestService->getRequestMethod() == 'POST') {
         $routes->setupPostRoutes();
         $router->listen();
-    } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+    } elseif ($requestService->getRequestMethod() == 'PATCH') {
         $routes->setupPatchRoutes();
         $router->listen();
-    } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    } elseif ($requestService->getRequestMethod() == 'DELETE') {
         $routes->setupDeleteRoutes();
         $router->listen();
     }
@@ -34,7 +41,7 @@ try {
     try {
         $router->handleError(500, $e);
     } catch (Exception $e) {
-        echo ('Le controller responsable de la gestion des erreurs a rencontré une erreur.');
+        echo ($e->getMessage());
         return true;
     }
 }

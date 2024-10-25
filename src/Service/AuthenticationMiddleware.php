@@ -9,12 +9,12 @@ use src\Service\Manager\UserManager;
 class AuthenticationMiddleware
 {
     private UserManager $userManager;
-    private AuthenticationController $authenticationController;
+    private SessionService $sessionService;
 
     public function __construct()
     {
         $this->userManager = new UserManager();
-        $this->authenticationController = new AuthenticationController();
+        $this->sessionService = new SessionService();
     }
 
     /**
@@ -22,7 +22,8 @@ class AuthenticationMiddleware
      */
     public function checkLoggedIn(): void
     {
-        if (!isset($_SESSION['user_id'])) {
+        $sessionUserId = $this->sessionService->getSessionUserId();
+        if (!isset($sessionUserId)) {
             throw new Exception("Action non autorisée, veuillez vous connecter pour réaliser cette action.",402);
         }
     }
@@ -34,7 +35,7 @@ class AuthenticationMiddleware
     {
         try {
             $this->checkLoggedIn();
-            $user = $this->userManager->getUser(['id' => $_SESSION['user_id']]);
+            $user = $this->userManager->getUser(['id' => $this->sessionService->getSessionUserId()]);
         } catch (Exception $e) {
             throw new Exception("Action non autorisée, veuillez vous connecter pour réaliser cette action.",402);
         }

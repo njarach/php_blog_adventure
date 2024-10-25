@@ -5,23 +5,20 @@ namespace src\Controller;
 use Exception;
 use src\Service\ContactService;
 use src\Service\Response;
-use src\Service\SessionService;
 
 class ContactController extends AbstractController
 {
     private ContactService $contactService;
-    private SessionService $sessionService;
     public function __construct()
     {
         $this->contactService = new ContactService();
-        $this->sessionService = new SessionService();
     }
 
     /**
      * @throws Exception
      */
     public function send(): Response {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->getRequestService()->getRequestMethod() === 'POST') {
             $this->contactService->validateCsrfToken();
             list($firstname,$lastname,$email,$phone,$message) = $this->contactService->sanitizeContactForm();
             $this->contactService->validateContactForm($firstname, $lastname, $email, $phone);
@@ -32,7 +29,7 @@ class ContactController extends AbstractController
                 throw new  Exception("Votre demande de contact a rencontré une erreur et n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
             }
         }
-        $this->sessionService->generateCsrfToken();
+        $this->getSessionService()->generateCsrfToken();
         return $this->render('home/home.html.twig',[
             'csrf_token'=>$_SESSION['csrf_token']
         ]);
