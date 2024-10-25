@@ -7,11 +7,13 @@ use Exception;
 class SessionService
 {
     private array $session;
+    private RequestService $requestService;
 
     public function __construct()
     {
         $this->startSession();
         $this->session = &$_SESSION;
+        $this->requestService = new RequestService();
     }
 
     /**
@@ -55,7 +57,7 @@ class SessionService
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($this->session['csrf_token'], $_POST['csrf_token'])) return false;
+        if (!hash_equals($this->session['csrf_token'], $this->requestService->getPostData('csrf_token'))) return false;
         return true;
     }
 

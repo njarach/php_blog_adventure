@@ -31,7 +31,7 @@ class ContactController extends AbstractController
         }
         $this->getSessionService()->generateCsrfToken();
         return $this->render('home/home.html.twig',[
-            'csrf_token'=>$_SESSION['csrf_token']
+            'csrf_token'=>$this->getSessionService()->getCsrfToken()
         ]);
     }
 
