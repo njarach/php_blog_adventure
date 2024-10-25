@@ -3,10 +3,12 @@
 namespace src\Controller;
 
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 use src\Model\User;
 use src\Service\Manager\UserManager;
+use src\Service\RequestService;
 use src\Service\Response;
+use src\Service\ServerService;
+use src\Service\SessionService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -48,11 +50,12 @@ abstract class AbstractController
      */
     protected function getCurrentUser(): ?User
     {
-        if (isset($_SESSION['user_id'])){
-            $userManager = new UserManager();
-            return $userManager->getUser(['id'=>$_SESSION['user_id']]);
+        $sessionUserId = $this->getSessionService()->getSessionUserId();
+        if (!isset($sessionUserId)){
+            return null;
         }
-        return null;
+        $userManager = new UserManager();
+        return $userManager->getUser(['id'=>$sessionUserId]);
     }
 
     /**
@@ -60,13 +63,27 @@ abstract class AbstractController
      */
     protected function checkUserAdmin(): bool
     {
-        if (isset($_SESSION['user_id'])){
-            $userManager = new UserManager();
-            $user = $userManager->getUser(['id'=>$_SESSION['user_id']]);
-        }
+        $sessionUserId = $this->getSessionService()->getSessionUserId();
+        $userManager = new UserManager();
+        $user = $userManager->getUser(['id'=>$sessionUserId]);
         if (isset($user) && !empty($user) && $user->isAdmin()){
             return true;
         }
         return false;
+    }
+
+    protected function getServerService():ServerService
+    {
+        return new ServerService();
+    }
+
+    protected function getSessionService():SessionService
+    {
+        return new SessionService();
+    }
+
+    protected function getRequestService():RequestService
+    {
+        return new RequestService();
     }
 }

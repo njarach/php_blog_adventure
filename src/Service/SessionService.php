@@ -7,14 +7,29 @@ use Exception;
 class SessionService
 {
 
+    /**
+     * @return void
+     */
     public function startSession(): void
     {
         session_start();
     }
 
+    /**
+     * @param int $userId
+     * @return void
+     */
     public function setSessionUserId(int $userId): void
     {
         $_SESSION['user_id'] = $userId ;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionUserId(): int
+    {
+        return $_SESSION['user_id'];
     }
 
     public function endSession(): void
@@ -44,5 +59,16 @@ class SessionService
                 throw new Exception("La génération d'un token aléatoire a rencontré une erreur");
             }
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCsrfToken(): ?string
+    {
+        if (!isset($_SESSION['csrf_token'])) {
+            return $_SESSION['csrf_token'];
+        }
+        return null;
     }
 }

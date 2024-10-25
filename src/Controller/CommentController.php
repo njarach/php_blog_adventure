@@ -4,7 +4,6 @@ namespace src\Controller;
 
 use Exception;
 use src\Service\Manager\CommentManager;
-use src\Service\Manager\PostManager;
 use src\Service\Response;
 
 class CommentController extends AbstractController
@@ -20,11 +19,11 @@ class CommentController extends AbstractController
      */
     public function create(int $postId): Response
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->getRequestService()->getRequestMethod() === 'POST') {
             try {
-                $errors = $this->commentManager->validateCommentData($_POST);
+                $errors = $this->commentManager->validateCommentData($this->getRequestService()->getAllPostData());
                 if (empty($errors)) {
-                    $this->commentManager->createComment($_POST['content'], $this->getCurrentUser()->getId(), $postId);
+                    $this->commentManager->createComment($this->getRequestService()->getPostData('content'), $this->getCurrentUser()->getId(), $postId);
                     return $this->redirect("/php_blog_adventure/posts/{$postId}");
                 } else {
                     return $this->render('blogpost/show.html.twig', [
@@ -45,11 +44,11 @@ class CommentController extends AbstractController
 
     public function edit(int $commentId)
     {
-        // not required, maybe add this later
+        //TODO: not required, maybe add this later
     }
 
     public function delete(int $postId)
     {
-        // not required, maybe add this later
+        //TODO: not required, maybe add this later
     }
 }

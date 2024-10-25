@@ -24,7 +24,7 @@ class RegisterController extends AbstractController
      */
     public function register(): Response
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->getRequestService()->getRequestMethod() == 'POST') {
             list($errors,$password,$email,$username) = $this->authenticationService->validateRegisterData();
             if (empty($errors)){
                 try {

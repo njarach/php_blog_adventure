@@ -4,10 +4,7 @@ namespace src\Router;
 
 use Exception;
 use src\controller\ErrorController;
-use src\Service\Response;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use src\Service\RequestService;
 
 class Router
 {
@@ -17,10 +14,12 @@ class Router
     private array $namedRoutes = [];
     private string $groupPattern = '';
     private array $middleware = [];
+    private RequestService $requestService;
 
     public function __construct(string $url, string $basePath = ''){
         $this->url = $url;
         $this->basePath = trim($basePath, '/');
+        $this->requestService = new RequestService();
     }
 
     public function get(string $path, $callable, string $name = null): Route
@@ -85,10 +84,10 @@ class Router
     public function listen(): void
     {
         try {
-            if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
+            if (!isset($this->routes[$this->requestService->getRequestMethod()])) {
                 throw new RouterException('La méthode de la requête n\'existe pas.');
             }
-            $routes = $this->routes[$_SERVER['REQUEST_METHOD']];
+            $routes = $this->routes[$this->requestService->getRequestMethod()];
             foreach ($routes as $route) {
                 if ($route->match($this->url)) {
 

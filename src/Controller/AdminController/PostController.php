@@ -4,7 +4,6 @@ namespace src\Controller\AdminController;
 
 use Exception;
 use src\controller\AbstractController;
-use src\Service\Manager\CommentManager;
 use src\Service\Manager\PostManager;
 use src\Service\Response;
 
@@ -33,10 +32,11 @@ class PostController extends AbstractController
      */
     public function create(): Response
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = $this->postManager->validatePostData($_POST);
+        if ($this->getRequestService()->getRequestMethod() === 'POST') {
+            $errors = $this->postManager->validatePostData($this->getRequestService()->getAllPostData());
             if (empty($errors)) {
-                $this->postManager->createPost($_POST['title'], $_POST['content'], $_POST['category_id'], $this->getCurrentUser()->getId(), $_POST['intro']);
+                $this->postManager->createPost($this->getRequestService()->getPostData('title'), $this->getRequestService()->getPostData('content'), $this->getRequestService()->getPostData('category_id'), $this->getCurrentUser()
+                    ->getId(), $this->getRequestService()->getPostData('intro'));
                 return $this->redirect("/php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
@@ -60,10 +60,12 @@ class PostController extends AbstractController
      */
     public function edit(int $postId): Response
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->getRequestService()->getRequestMethod() === 'POST') {
             $errors = $this->postManager->validatePostData($_POST);
             if (empty($errors)) {
-                $this->postManager->edit($postId, $_POST['title'], $_POST['content'], $_POST['category_id'], $_POST['intro']);
+                $this->postManager->edit($postId, $this->getRequestService()->getPostData('title'), $this->getRequestService()->getPostData('content'), $this->getRequestService()->getPostData('category_id'),
+                    $this->getRequestService
+                    ()->getPostData('intro'));
                 return $this->redirect("/php_blog_adventure/admin/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
