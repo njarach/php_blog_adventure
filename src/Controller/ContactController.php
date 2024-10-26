@@ -18,7 +18,7 @@ class ContactController extends AbstractController
      * @throws Exception
      */
     public function send(): Response {
-        if ($this->getRequestService()->getRequestMethod() === 'POST') {
+        if ($this->request()->getRequestMethod() === 'POST') {
             $this->contactService->validateCsrfToken();
             list($firstname,$lastname,$email,$phone,$message) = $this->contactService->sanitizeContactForm();
             $this->contactService->validateContactForm($firstname, $lastname, $email, $phone);

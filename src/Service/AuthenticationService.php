@@ -25,8 +25,8 @@ class AuthenticationService
     public function validateLoginData(): array
     {
         $errors = $this->errors;
-        $email = $this->requestService->getPostData('email') ?? '';
-        $password = $this->requestService->getPostData('password') ?? '';
+        $email = $this->requestService->get('email') ?? '';
+        $password = $this->requestService->get('password') ?? '';
         if (!$this->checkData($email)){
             $errors['email'] = 'Veuillez renseigner une adresse email valide.';
         }
@@ -62,9 +62,9 @@ class AuthenticationService
     public function validateRegisterData(): array
     {
         $errors = $this->errors;
-        $username = trim($this->requestService->getPostData('username'));
-        $email = trim($this->requestService->getPostData('email'));
-        $password = $this->requestService->getPostData('password');
+        $username = trim($this->requestService->get('username'));
+        $email = trim($this->requestService->get('email'));
+        $password = $this->requestService->get('password');
         if (!$this->checkData($username)) {
             $errors['username'] = 'Veuillez renseigner un nom d\'utilisateur valide.';
         }

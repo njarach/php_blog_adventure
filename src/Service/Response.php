@@ -26,7 +26,6 @@ class Response
         }
 
         echo $this->content;
-        exit;
     }
 
     public static function redirect(string $url, int $statusCode = 302): Response

@@ -41,8 +41,7 @@ try {
     try {
         $router->handleError(500, $e);
     } catch (Exception $e) {
-        //TODO : this probably needs some tweaks but at least it solves security issue ?
-        echo '<div>' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</div>';
+        echo '<div>An unexpected error occurred. Please try again later.</div>';
         return true;
     }
 }

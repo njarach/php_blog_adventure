@@ -16,7 +16,6 @@ class CommentManager
         $this->commentRepository = new CommentRepository();
     }
 
-    // To show a list of comments, maybe useful ?
     /**
      * @throws Exception
      */
@@ -34,45 +33,42 @@ class CommentManager
         return $comments ?: [];
     }
 
-    public function createComment(string $content, int $userId, int $postId): ?Comment
+    /**
+     * @throws Exception
+     */
+    public function createComment(string $content, int $userId, int $postId): Comment
     {
-        if ($content && $postId){
-            $newComment = new Comment();
-            $newComment->setContent($content);
-            $newComment->setPostId($postId);
-            // for now user id is 1 , will be added dynamically later when authentication is added
-            $newComment->setUserId($userId);
-            // will add a condition if user is admin, it sets the reviewed to true automatically
-            $newComment->setReviewed(false);
-            try {
+        $newComment = new Comment();
+        try {
+            if ($content && $postId) {
+                $newComment->setContent($content);
+                $newComment->setPostId($postId);
+                $newComment->setUserId($userId);
+                $newComment->setReviewed(false);
                 $this->commentRepository->add($newComment);
-            } catch (Exception $e) {
-                echo 'Erreur: ' . $e->getMessage();
             }
-            return $newComment;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return null;
+        return $newComment;
     }
 
     /**
      * @throws Exception
      */
-    public function edit(string $content, int $id): ?Comment
+    public function edit(string $content, int $id): Comment
     {
-        $existingComment = $this->commentRepository->findById($id);
+        try {
+            $existingComment = $this->commentRepository->findById($id);
+            if ($existingComment) {
+                $existingComment->setContent($content);
 
-        if ($existingComment){
-            $existingComment->setContent($content);
-            try {
                 $this->commentRepository->edit($existingComment);
-            } catch (Exception $e) {
-                echo 'Erreur: ' . $e->getMessage();
             }
-            return $existingComment;
-        } else {
-            echo "Erreur: Il semblerait que le commentaire n'existe plus.";
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return null;
+        return $existingComment;
     }
 
     /**
@@ -87,22 +83,20 @@ class CommentManager
     /**
      * @throws Exception
      */
-    public function reviewComment(int $id): ?Comment
+    public function reviewComment(int $id): Comment
     {
-        $comment = $this->commentRepository->findOneBy(['id'=>$id]);
-        if ($comment){
-            $comment->setReviewed(true);
+        try {
+            $comment = $this->commentRepository->findOneBy(['id' => $id]);
+            if ($comment) {
+                $comment->setReviewed(true);
 
-            try {
+
                 $this->commentRepository->edit($comment);
-            } catch (Exception $e) {
-                echo 'Erreur: ' . $e->getMessage();
             }
-            return $comment;
-        } else {
-            echo "Erreur: Il semblerait que le commentaire n'existe plus.";
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return null;
+        return $comment;
     }
 
     public function validateCommentData(array $data): array
@@ -125,10 +119,10 @@ class CommentManager
      */
     public function getReviewedComments(): ?array
     {
-        $reviewedComments = $this->commentRepository->findBy(['reviewed'=>true]);
-        if (!empty($reviewedComments)){
+        $reviewedComments = $this->commentRepository->findBy(['reviewed' => true]);
+        if (!empty($reviewedComments)) {
             return $reviewedComments;
-        }else{
+        } else {
             return null;
         }
     }
