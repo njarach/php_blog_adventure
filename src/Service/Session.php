@@ -4,16 +4,16 @@ namespace src\Service;
 
 use Exception;
 
-class SessionService
+class Session
 {
     private array $session;
-    private RequestService $requestService;
+    private Request $request;
 
     public function __construct()
     {
         $this->startSession();
         $this->session = &$_SESSION;
-        $this->requestService = new RequestService();
+        $this->request = new Request();
     }
 
     /**
@@ -57,7 +57,7 @@ class SessionService
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($this->session['csrf_token'], $this->requestService->get('csrf_token'))) return false;
+        if (!hash_equals($this->session['csrf_token'], $this->request->get('csrf_token'))) return false;
         return true;
     }
 

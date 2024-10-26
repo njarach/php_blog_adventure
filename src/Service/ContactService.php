@@ -7,10 +7,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class ContactService
 {
-    private RequestService $requestService;
+    private Request $request;
     public function __construct()
     {
-        $this->requestService = new RequestService();
+        $this->request = new Request();
     }
 
     private function sanitizeInput($data): string
@@ -24,11 +24,11 @@ class ContactService
 
     public function sanitizeContactForm(): array
     {
-        $firstname = $this->sanitizeInput($this->requestService->get('firstname'));
-        $lastname = $this->sanitizeInput($this->requestService->get('lastname'));
-        $email = $this->sanitizeInput($this->requestService->get('email'));
-        $phone = $this->sanitizeInput($this->requestService->get('phone'));
-        $message = $this->sanitizeInput($this->requestService->get('message'));
+        $firstname = $this->sanitizeInput($this->request->get('firstname'));
+        $lastname = $this->sanitizeInput($this->request->get('lastname'));
+        $email = $this->sanitizeInput($this->request->get('email'));
+        $phone = $this->sanitizeInput($this->request->get('phone'));
+        $message = $this->sanitizeInput($this->request->get('message'));
         return [$firstname,$lastname,$email,$phone,$message];
     }
 
@@ -97,7 +97,7 @@ class ContactService
      */
     public function validateCsrfToken(): void
     {
-        $sessionService = new SessionService();
+        $sessionService = new Session();
         if (!$sessionService->validateCsrfToken()) {
             throw new Exception("L'authentification CSRF a échoué.");
         }

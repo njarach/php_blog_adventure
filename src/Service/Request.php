@@ -2,7 +2,7 @@
 
 namespace src\Service;
 
-class RequestService
+class Request
 {
     private array $post;
     private array $get;

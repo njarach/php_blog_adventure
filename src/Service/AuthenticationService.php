@@ -8,25 +8,25 @@ use src\Model\User;
 class AuthenticationService
 {
     private array $errors = [];
-    private SessionService $sessionService;
-    private RequestService $requestService;
+    private Session $session;
+    private Request $request;
 
     public function __construct()
     {
-        $this->sessionService = new SessionService();
-        $this->requestService = new RequestService();
+        $this->session = new Session();
+        $this->request = new Request();
     }
 
     public function endSession(): void
     {
-       $this->sessionService->endSession();
+       $this->session->endSession();
     }
 
     public function validateLoginData(): array
     {
         $errors = $this->errors;
-        $email = $this->requestService->get('email') ?? '';
-        $password = $this->requestService->get('password') ?? '';
+        $email = $this->request->get('email') ?? '';
+        $password = $this->request->get('password') ?? '';
         if (!$this->checkData($email)){
             $errors['email'] = 'Veuillez renseigner une adresse email valide.';
         }
@@ -53,7 +53,7 @@ class AuthenticationService
 
     public function setSessionUserId(User $user): void
     {
-        $this->sessionService->setSessionUserId($user->getId());
+        $this->session->setSessionUserId($user->getId());
     }
 
     /**
@@ -62,9 +62,9 @@ class AuthenticationService
     public function validateRegisterData(): array
     {
         $errors = $this->errors;
-        $username = trim($this->requestService->get('username'));
-        $email = trim($this->requestService->get('email'));
-        $password = $this->requestService->get('password');
+        $username = trim($this->request->get('username'));
+        $email = trim($this->request->get('email'));
+        $password = $this->request->get('password');
         if (!$this->checkData($username)) {
             $errors['username'] = 'Veuillez renseigner un nom d\'utilisateur valide.';
         }

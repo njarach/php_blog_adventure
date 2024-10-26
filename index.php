@@ -2,19 +2,17 @@
 
 use src\Router\Router;
 use src\Router\Routes;
-use src\Service\RequestService;
+use src\Service\Request;
 use src\Service\ServerService;
-use src\Service\SessionService;
+use src\Service\Session;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 date_default_timezone_set('Europe/Paris');
 
 $serverService = new ServerService();
-$requestService = new RequestService();
-$sessionService = new SessionService();
-
-$sessionService->startSession();
+$requestService = new Request();
+$sessionService = new Session();
 
 $basePath = 'php_blog_adventure';
 

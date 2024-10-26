@@ -9,12 +9,12 @@ use src\Service\Manager\UserManager;
 class AuthenticationMiddleware
 {
     private UserManager $userManager;
-    private SessionService $sessionService;
+    private Session $sessionService;
 
     public function __construct()
     {
         $this->userManager = new UserManager();
-        $this->sessionService = new SessionService();
+        $this->sessionService = new Session();
     }
 
     /**

@@ -4,7 +4,7 @@ namespace src\Router;
 
 use Exception;
 use src\controller\ErrorController;
-use src\Service\RequestService;
+use src\Service\Request;
 
 class Router
 {
@@ -14,12 +14,12 @@ class Router
     private array $namedRoutes = [];
     private string $groupPattern = '';
     private array $middleware = [];
-    private RequestService $requestService;
+    private Request $requestService;
 
     public function __construct(string $url, string $basePath = ''){
         $this->url = $url;
         $this->basePath = trim($basePath, '/');
-        $this->requestService = new RequestService();
+        $this->requestService = new Request();
     }
 
     public function get(string $path, $callable, string $name = null): Route

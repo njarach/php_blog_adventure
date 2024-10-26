@@ -29,9 +29,9 @@ class ContactController extends AbstractController
                 throw new  Exception("Votre demande de contact a rencontré une erreur et n'a pas pu aboutir. Veuillez réessayer ultérieurement.");
             }
         }
-        $this->getSessionService()->generateCsrfToken();
+        $this->session()->generateCsrfToken();
         return $this->render('home/home.html.twig',[
-            'csrf_token'=>$this->getSessionService()->getCsrfToken()
+            'csrf_token'=>$this->session()->getCsrfToken()
         ]);
     }
 

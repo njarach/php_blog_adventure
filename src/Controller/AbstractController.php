@@ -5,10 +5,10 @@ namespace src\Controller;
 use Exception;
 use src\Model\User;
 use src\Service\Manager\UserManager;
-use src\Service\RequestService;
+use src\Service\Request;
 use src\Service\Response;
 use src\Service\ServerService;
-use src\Service\SessionService;
+use src\Service\Session;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -51,7 +51,7 @@ abstract class AbstractController
      */
     protected function getCurrentUser(): ?User
     {
-        $sessionUserId = $this->getSessionService()->getSessionUserId();
+        $sessionUserId = $this->session()->getSessionUserId();
         if (!isset($sessionUserId)){
             return null;
         }
@@ -64,7 +64,7 @@ abstract class AbstractController
      */
     protected function checkUserAdmin(): bool
     {
-        $sessionUserId = $this->getSessionService()->getSessionUserId();
+        $sessionUserId = $this->session()->getSessionUserId();
         $userManager = new UserManager();
         if (isset($sessionUserId)){
             $user = $userManager->getUser(['id'=>$sessionUserId]);;
@@ -75,18 +75,18 @@ abstract class AbstractController
         return false;
     }
 
-    protected function getServerService():ServerService
+    protected function server():ServerService
     {
         return new ServerService();
     }
 
-    protected function getSessionService():SessionService
+    protected function session():Session
     {
-        return new SessionService();
+        return new Session();
     }
 
-    protected function request():RequestService
+    protected function request():Request
     {
-        return new RequestService();
+        return new Request();
     }
 }
