@@ -6,7 +6,6 @@ use Exception;
 use PDO;
 use src\config\DatabaseConnection;
 use src\model\EntityInterface;
-use src\model\Post;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
@@ -19,27 +18,51 @@ abstract class AbstractRepository implements RepositoryInterface
 
     abstract protected function getTableName(): string;
 
+    /**
+     * @throws Exception
+     */
     protected function getTableColumns(): array
     {
         $sql = "SHOW COLUMNS FROM " . $this->getTableName();
-        $stmt = $this->connection->getInstance()->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        try {
+            $stmt = $this->connection->getInstance()->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     protected function fetchAll(): array|false
     {
-        $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     protected function fetchById(int $id): array|false
     {
-        $statement = $this->connection->getInstance()->prepare("SELECT * FROM " . $this->getTableName() . " WHERE id = :id");
-        $statement->bindParam(':id', $id, PDO::PARAM_INT);
-        $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        try {
+            $statement = $this->connection->getInstance()->prepare("SELECT * FROM " . $this->getTableName() . " WHERE id = :id");
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     protected function fetchBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
@@ -50,14 +73,21 @@ abstract class AbstractRepository implements RepositoryInterface
             $params[":$key"] = $value;
         }
         $sql .= implode(' AND ', $conditions);
-        $statement = $this->connection->getInstance()->prepare($sql);
-        foreach ($params as $param => $value) {
-            $statement->bindParam($param, $value);
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            foreach ($params as $param => $value) {
+                $statement->bindParam($param, $value);
+            }
+            $statement->execute($params);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
         }
-        $statement->execute($params);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @throws Exception
+     */
     protected function fetchOneBy(array $criteria): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
@@ -68,21 +98,34 @@ abstract class AbstractRepository implements RepositoryInterface
             $params[":$key"] = $value;
         }
         $sql .= implode(' AND ', $conditions);
-        $statement = $this->connection->getInstance()->prepare($sql);
-        foreach ($params as $param => $value) {
-            $statement->bindParam($param, $value);
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            foreach ($params as $param => $value) {
+                $statement->bindParam($param, $value);
+            }
+            $statement->execute($params);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
         }
-        $statement->execute($params);
-        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @throws Exception
+     */
     protected function fetchlatest(): array|false
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT 1";
-        $statement = $this->connection->getInstance()->prepare($sql);
-        $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
+        }
+
     }
+
 
     /**
      * @throws Exception
@@ -94,16 +137,16 @@ abstract class AbstractRepository implements RepositoryInterface
         $placeholders = array_map(fn($col) => ":$col", $columns);
 
         $sql = "INSERT INTO " . $this->getTableName() . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $placeholders) . ")";
-        $statement = $this->connection->getInstance()->prepare($sql);
-
-        foreach ($properties as $column => $value) {
-            $statement->bindValue(":$column", $value);
-        }
-
-        if (!$statement->execute()) {
-            throw new Exception('La création de l entité a échouée: ' . implode(', ', $statement->errorInfo()));
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            foreach ($properties as $column => $value) {
+                $statement->bindValue(":$column", $value);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
         }
     }
+
 
     /**
      * @throws Exception
@@ -122,18 +165,17 @@ abstract class AbstractRepository implements RepositoryInterface
         $setClause = implode(", ", array_map(fn($col) => "$col = :$col", $columns));
 
         $sql = "UPDATE " . $this->getTableName() . " SET " . $setClause . " WHERE $primaryKey = :$primaryKeyValue";
-        $statement = $this->connection->getInstance()->prepare($sql);
-
-        foreach ($properties as $column => $value) {
-            $statement->bindValue(":$column", $value);
-        }
-
-        $statement->bindValue(":$primaryKeyValue", $primaryKeyValue);
-
-        if (!$statement->execute()) {
-            throw new \Exception('Failed to update entity: ' . implode(', ', $statement->errorInfo()));
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            foreach ($properties as $column => $value) {
+                $statement->bindValue(":$column", $value);
+            }
+            $statement->bindValue(":$primaryKeyValue", $primaryKeyValue);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
         }
     }
+
 
     /**
      * @throws Exception
@@ -146,12 +188,11 @@ abstract class AbstractRepository implements RepositoryInterface
         $primaryKeyValue = $properties[$primaryKey];
 
         $sql = "DELETE FROM " . $this->getTableName() . " WHERE $primaryKey = :$primaryKey";
-        $statement = $this->connection->getInstance()->prepare($sql);
-
-        $statement->bindValue(":$primaryKey", $primaryKeyValue);
-
-        if (!$statement->execute()) {
-            throw new \Exception('Failed to delete entity: ' . implode(', ', $statement->errorInfo()));
+        try {
+            $statement = $this->connection->getInstance()->prepare($sql);
+            $statement->bindValue(":$primaryKey", $primaryKeyValue);
+        } catch (Exception $e) {
+            throw new Exception("Something went wrong. Try again later.");
         }
     }
 }
