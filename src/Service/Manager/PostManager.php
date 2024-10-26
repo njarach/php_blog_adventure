@@ -56,32 +56,23 @@ class PostManager
     /**
      * @throws Exception
      */
-    public function edit(int $postId, string $title, string $content, int $categoryId, string $intro): ?Post
+    public function edit(int $postId, string $title, string $content, int $categoryId, string $intro): Post
     {
-        if ($title && $content && $categoryId && $intro) {
-            // Retrieve the existing post from the database. This should throw an exception if, for some reason, none is found.
+        try {
             $existingPost = $this->postRepository->findById($postId);
             if ($existingPost) {
-                // Update the post properties with the ones provided by the user through the form
                 $existingPost->setTitle($title);
                 $existingPost->setContent($content);
                 $existingPost->setCategoryId($categoryId);
                 $existingPost->setIntro($intro);
                 $currentDateTime = date('Y-m-d H:i:s');
                 $existingPost->setUpdatedAt($currentDateTime);
-                try {
-                    $this->postRepository->edit($existingPost);
-                } catch (Exception $e) {
-                    echo 'Erreur: ' . $e->getMessage();
-                }
-                return $existingPost;
-            } else {
-                echo 'Erreur: Article non trouvé.';
+                $this->postRepository->edit($existingPost);
             }
-        } else {
-            echo 'Erreur: Tous les champs sont requis.';
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return null;
+        return $existingPost;
     }
 
     /**
@@ -93,23 +84,25 @@ class PostManager
         return $this->categoryRepository->findAll();
     }
 
+    /**
+     * @throws Exception
+     */
     public function createPost(string $title, string $content, int $categoryId, int $authorId, string $intro): ?Post
     {
-        if ($title && $content && $categoryId) {
-            $newPost = new Post();
-            $newPost->setTitle($title);
-            $newPost->setContent($content);
-            $newPost->setCategoryId($categoryId);
-            $newPost->setIntro($intro);
-            $newPost->setAuthorId($authorId);
-            try {
+        $newPost = new Post();
+        try {
+            if ($title && $content && $categoryId) {
+                $newPost->setTitle($title);
+                $newPost->setContent($content);
+                $newPost->setCategoryId($categoryId);
+                $newPost->setIntro($intro);
+                $newPost->setAuthorId($authorId);
                 $this->postRepository->add($newPost);
-            } catch (Exception $e) {
-                echo 'Erreur: ' . $e->getMessage();
             }
-            return $newPost;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return null;
+        return $newPost;
     }
 
     /**
@@ -152,7 +145,7 @@ class PostManager
     public function getAuthorName(int $authorId): ?string
     {
         $userRepository = new UserRepository();
-        $author = $userRepository->findOneBy(['id'=>$authorId]);
+        $author = $userRepository->findOneBy(['id' => $authorId]);
         return $author?->getUsername();
     }
 }

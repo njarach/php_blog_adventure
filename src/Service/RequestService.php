@@ -18,7 +18,7 @@ class RequestService
         return $this->server['REQUEST_METHOD'] ?? 'GET';
     }
 
-    public function getPostData(string $key, $default = null) {
+    public function get(string $key, $default = null) {
         return $this->post[$key] ?? $default;
     }
 

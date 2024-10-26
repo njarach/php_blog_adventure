@@ -19,16 +19,16 @@ class CommentController extends AbstractController
      */
     public function create(int $postId): Response
     {
-        if ($this->getRequestService()->getRequestMethod() === 'POST') {
+        if ($this->request()->getRequestMethod() === 'POST') {
             try {
-                $errors = $this->commentManager->validateCommentData($this->getRequestService()->getAllPostData());
+                $errors = $this->commentManager->validateCommentData($this->request()->getAllPostData());
                 if (empty($errors)) {
-                    $this->commentManager->createComment($this->getRequestService()->getPostData('content'), $this->getCurrentUser()->getId(), $postId);
+                    $this->commentManager->createComment($this->request()->get('content'), $this->getCurrentUser()->getId(), $postId);
                     return $this->redirect("/php_blog_adventure/posts/{$postId}");
                 } else {
                     return $this->render('blogpost/show.html.twig', [
                         'errors' => $errors,
-                        'commentFormData' => $this->getRequestService()->getAllPostData(),
+                        'commentFormData' => $this->request()->getAllPostData(),
                     ]);
                 }
             } catch (Exception $e) {

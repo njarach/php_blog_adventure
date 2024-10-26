@@ -32,18 +32,18 @@ class PostController extends AbstractController
      */
     public function create(): Response
     {
-        if ($this->getRequestService()->getRequestMethod() === 'POST') {
-            $errors = $this->postManager->validatePostData($this->getRequestService()->getAllPostData());
+        if ($this->request()->getRequestMethod() === 'POST') {
+            $errors = $this->postManager->validatePostData($this->request()->getAllPostData());
             if (empty($errors)) {
-                $this->postManager->createPost($this->getRequestService()->getPostData('title'), $this->getRequestService()->getPostData('content'), $this->getRequestService()->getPostData('category_id'), $this->getCurrentUser()
-                    ->getId(), $this->getRequestService()->getPostData('intro'));
+                $this->postManager->createPost($this->request()->get('title'), $this->request()->get('content'), $this->request()->get('category_id'), $this->getCurrentUser()
+                    ->getId(), $this->request()->get('intro'));
                 return $this->redirect("/php_blog_adventure/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
                 return $this->render('blogpost/new.html.twig', [
                     'categories' => $categories,
                     'errors' => $errors,
-                    'formData' => $this->getRequestService()->getAllPostData()
+                    'formData' => $this->request()->getAllPostData()
                 ]);
             }
         } else {
@@ -60,12 +60,11 @@ class PostController extends AbstractController
      */
     public function edit(int $postId): Response
     {
-        if ($this->getRequestService()->getRequestMethod() === 'POST') {
-            $errors = $this->postManager->validatePostData($this->getRequestService()->getAllPostData());
+        if ($this->request()->getRequestMethod() === 'POST') {
+            $errors = $this->postManager->validatePostData($this->request()->getAllPostData());
             if (empty($errors)) {
-                $this->postManager->edit($postId, $this->getRequestService()->getPostData('title'), $this->getRequestService()->getPostData('content'), $this->getRequestService()->getPostData('category_id'),
-                    $this->getRequestService
-                    ()->getPostData('intro'));
+                $this->postManager->edit($postId, $this->request()->get('title'), $this->request()->get('content'), $this->request()->get('category_id'),
+                    $this->request()->get('intro'));
                 return $this->redirect("/php_blog_adventure/admin/posts");
             } else {
                 $categories = $this->postManager->getAllCategories();
@@ -74,7 +73,7 @@ class PostController extends AbstractController
                     'post' => $post,
                     'categories' => $categories,
                     'errors' => $errors,
-                    'formData' => $this->getRequestService()->getAllPostData()
+                    'formData' => $this->request()->getAllPostData()
                 ]);
             }
         } else {

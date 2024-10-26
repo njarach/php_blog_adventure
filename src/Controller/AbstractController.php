@@ -85,7 +85,7 @@ abstract class AbstractController
         return new SessionService();
     }
 
-    protected function getRequestService():RequestService
+    protected function request():RequestService
     {
         return new RequestService();
     }

@@ -57,7 +57,7 @@ class SessionService
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($this->session['csrf_token'], $this->requestService->getPostData('csrf_token'))) return false;
+        if (!hash_equals($this->session['csrf_token'], $this->requestService->get('csrf_token'))) return false;
         return true;
     }
 

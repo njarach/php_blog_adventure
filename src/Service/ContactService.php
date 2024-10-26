@@ -24,11 +24,11 @@ class ContactService
 
     public function sanitizeContactForm(): array
     {
-        $firstname = $this->sanitizeInput($this->requestService->getPostData('firstname'));
-        $lastname = $this->sanitizeInput($this->requestService->getPostData('lastname'));
-        $email = $this->sanitizeInput($this->requestService->getPostData('email'));
-        $phone = $this->sanitizeInput($this->requestService->getPostData('phone'));
-        $message = $this->sanitizeInput($this->requestService->getPostData('message'));
+        $firstname = $this->sanitizeInput($this->requestService->get('firstname'));
+        $lastname = $this->sanitizeInput($this->requestService->get('lastname'));
+        $email = $this->sanitizeInput($this->requestService->get('email'));
+        $phone = $this->sanitizeInput($this->requestService->get('phone'));
+        $message = $this->sanitizeInput($this->requestService->get('message'));
         return [$firstname,$lastname,$email,$phone,$message];
     }
 
