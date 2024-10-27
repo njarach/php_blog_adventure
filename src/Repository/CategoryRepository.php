@@ -7,6 +7,9 @@ use src\model\Category;
 
 class CategoryRepository extends AbstractRepository
 {
+    /**
+     * @return string
+     */
     protected function getTableName(): string
     {
         return 'category';

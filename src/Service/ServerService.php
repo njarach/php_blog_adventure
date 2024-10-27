@@ -10,6 +10,9 @@ class ServerService
         $this->server = &$_SERVER;
     }
 
+    /**
+     * @return string The current request's URI. '/' is default.
+     */
     public function getRequestUri(): string {
         return $this->server['REQUEST_URI'] ?? '/';
     }

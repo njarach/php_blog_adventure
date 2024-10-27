@@ -7,6 +7,9 @@ use src\model\Post;
 
 class PostRepository extends AbstractRepository
 {
+    /**
+     * @return string
+     */
     protected function getTableName(): string
     {
         return 'post';

@@ -17,11 +17,17 @@ class AuthenticationService
         $this->request = new Request();
     }
 
+    /**
+     * @return void
+     */
     public function endSession(): void
     {
        $this->session->endSession();
     }
 
+    /**
+     * @return array
+     */
     public function validateLoginData(): array
     {
         $errors = $this->errors;
@@ -36,7 +42,11 @@ class AuthenticationService
         return [$errors,$password,$email];
     }
 
-    private function checkData($data): bool
+    /**
+     * @param mixed $data
+     * @return bool
+     */
+    private function checkData(mixed $data): bool
     {
         return isset($data) && !empty(trim($data));
     }
@@ -51,6 +61,10 @@ class AuthenticationService
         return $user && password_verify($password, $user->getPassword());
     }
 
+    /**
+     * @param User $user
+     * @return void
+     */
     public function setSessionUserId(User $user): void
     {
         $this->session->setSessionUserId($user->getId());
@@ -77,6 +91,10 @@ class AuthenticationService
         return [$errors,$username,$email,$password];
     }
 
+    /**
+     * @param mixed $password
+     * @return string
+     */
     public function hashPassword(mixed $password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);

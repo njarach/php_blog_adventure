@@ -32,16 +32,8 @@ class PostController extends AbstractController
     public function show(int $postId): Response
     {
         $blogPost = $this->postManager->findOneBy(['id' => $postId]);
-        if ($blogPost) {
-            return $this->render('blogpost/show.html.twig', [
-                'post' => $blogPost,
-            ]);
-        } else {
-            http_response_code(404);
-            return $this->render('error/error.html.twig', [
-                'errorCode' => 404,
-                'errorMessage' => "Aucun article trouvé pour l'id $postId..."
-            ]);
-        }
+        return $this->render('blogpost/show.html.twig', [
+            'post' => $blogPost,
+        ]);
     }
 }

@@ -21,6 +21,11 @@ class Route
         $this->middleware = $middleware;
     }
 
+    /**
+     * Checks if a given URL matches the route's pattern and captures any parameters.
+     * @param string $url - The URL to match against the route pattern.
+     * @return bool - True if the URL matches the route pattern and parameters are captured; false otherwise.
+     */
     public function match(string $url): bool
     {
         $url = trim($url, '/');
@@ -34,7 +39,12 @@ class Route
         return false;
     }
 
-    private function paramMatch($match): string
+    /**
+     * Replaces route placeholders (e.g., :id) with regex patterns to capture URL segments.
+     * @param array $match Array from preg_replace_callback, where $match[1] is the placeholder name (e.g., "id").
+     * @return string Regex pattern for capturing the placeholder segment in the URL.
+     */
+    private function paramMatch(array $match): string
     {
         if (isset($this->params[$match[1]])) {
             return '(' . $this->params[$match[1]] . ')';
@@ -43,6 +53,7 @@ class Route
     }
 
     /**
+     * Calls the controller and executes its method, providing the parameters in this object's matches.
      * @throws Exception
      */
     public function execute(): void
@@ -54,25 +65,20 @@ class Route
             $controller = new $controller();
             $response = call_user_func_array([$controller, $params[1]], $this->matches);
         } else {
-            $response = call_user_func_array($this->callable, $this->matches);
+            throw new Exception("Une erreur inattendue s'est produite lors de l'appel du controller et la fonction associée.");
         }
 
         if ($response instanceof Response) {
             $response->send();
         } else {
-            throw new Exception("Something went wrong when returning Response object in the Router.");
+            throw new Exception("Une erreur inattendue s'est produite lors de l'envoi de la réponse.");
         }
     }
 
-    public function getUrl($params): array|string|null
-    {
-        $path = $this->path;
-        foreach ($params as $k => $v) {
-            $path = str_replace(":$k", $v, $path);
-        }
-        return $path;
-    }
-
+    /**
+     * Returns this Route's middleware. Used in Router listen.
+     * @return array An array containing the Middleware class name and the method used.
+     */
     public function getMiddleware(): array {
         return $this->middleware;
     }

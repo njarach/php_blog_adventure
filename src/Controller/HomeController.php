@@ -41,7 +41,7 @@ class HomeController extends AbstractController
             header('Content-Length: ' . filesize($file));
             readfile($file);
         } else {
-            throw new Exception("The requested file does not exist.");
+            throw new Exception("Le fichier que vous recherchez n'existe pas.");
         }
     }
 }

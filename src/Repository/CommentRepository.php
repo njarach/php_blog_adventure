@@ -7,6 +7,9 @@ use src\model\Comment;
 
 class CommentRepository extends AbstractRepository
 {
+    /**
+     * @return string
+     */
     protected function getTableName(): string
     {
         return 'comment';

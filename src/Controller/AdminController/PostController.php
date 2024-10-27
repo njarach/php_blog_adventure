@@ -47,7 +47,7 @@ class PostController extends AbstractController
                 ]);
             }
         } else {
-//            Categories are not required so they will not be refactored yet.
+//           TODO Categories are not required in this project so they will not be refactored yet.
             $categories = $this->postManager->getAllCategories();
             return $this->render('blogpost/new.html.twig', [
                 'categories' => $categories

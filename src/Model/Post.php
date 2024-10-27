@@ -21,16 +21,26 @@ class Post implements EntityInterface
     protected string $created_at;
     protected string $updated_at;
 
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return void
+     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
+    /**
+     * @return string
+     */
     public function getContent(): string
     {
         return $this->content;
@@ -44,6 +54,9 @@ class Post implements EntityInterface
         $this->content = $content;
     }
 
+    /**
+     * @return int
+     */
     public function getAuthorId(): int
     {
         return $this->author_id;
@@ -57,16 +70,26 @@ class Post implements EntityInterface
         $this->author_id = $author_id;
     }
 
+    /**
+     * @return int
+     */
     public function getCategoryId(): int
     {
         return $this->category_id;
     }
 
+    /**
+     * @param int $category_id
+     * @return void
+     */
     public function setCategoryId(int $category_id): void
     {
         $this->category_id = $category_id;
     }
 
+    /**
+     * @return string
+     */
     public function getCreatedAt(): string
     {
         return $this->created_at;
@@ -80,6 +103,9 @@ class Post implements EntityInterface
         $this->created_at = $created_at;
     }
 
+    /**
+     * @return string
+     */
     public function getUpdatedAt(): string
     {
         return $this->updated_at;

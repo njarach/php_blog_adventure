@@ -18,7 +18,7 @@ class AuthenticationMiddleware
     }
 
     /**
-     * @throws Exception
+     * @throws Exception Throws Exception if user is not logged in.
      */
     public function checkLoggedIn(): void
     {
@@ -29,7 +29,7 @@ class AuthenticationMiddleware
     }
 
     /**
-     * @throws Exception
+     * @throws Exception Throws Exception if user is not logged in or not admin.
      */
     public function checkAdmin(): void
     {
@@ -46,6 +46,10 @@ class AuthenticationMiddleware
         }
     }
 
+    /**
+     * @param bool $isAdmin
+     * @return bool Returns true if admin, else false.
+     */
     private function verifyAdminUser(bool $isAdmin): bool
     {
         return $isAdmin;

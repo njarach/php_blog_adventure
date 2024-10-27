@@ -3,9 +3,10 @@
 namespace src\Controller\AdminController;
 
 use Exception;
+use src\Controller\AbstractController;
 use src\Service\Response;
 
-class AdminDashboardController extends \src\Controller\AbstractController
+class AdminDashboardController extends AbstractController
 {
     /**
      * @throws Exception

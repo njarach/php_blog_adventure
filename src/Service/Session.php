@@ -17,6 +17,7 @@ class Session
     }
 
     /**
+     * If no session exists, starts a new session.
      * @return void
      */
     public function startSession(): void
@@ -53,6 +54,7 @@ class Session
     }
 
     /**
+     * Compares the current session's csrf token to the one found in the request sent. Returns true if matches, else false.
      * @return bool
      */
     public function validateCsrfToken(): bool

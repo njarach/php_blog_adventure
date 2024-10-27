@@ -19,11 +19,18 @@ trait EntityTrait
         $this->id = $id;
     }
 
+    /**
+     * @return array
+     */
     public function getProperties(): array
     {
         return get_object_vars($this);
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function setProperties(array $data): void
     {
         foreach ($data as $key => $value) {

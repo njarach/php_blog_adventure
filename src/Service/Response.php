@@ -17,6 +17,9 @@ class Response
         $this->headers = $headers;
     }
 
+    /**
+     * @return void Echo the content provided to the Response.
+     */
     #[NoReturn] public function send(): void
     {
         http_response_code($this->statusCode);
@@ -24,10 +27,14 @@ class Response
         foreach ($this->headers as $name => $value) {
             header("$name: $value");
         }
-
         echo $this->content;
     }
 
+    /**
+     * @param string $url The URL the user is redirected to
+     * @param int $statusCode
+     * @return Response
+     */
     public static function redirect(string $url, int $statusCode = 302): Response
     {
         return new self('', $statusCode, ['Location' => $url]);

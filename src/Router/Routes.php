@@ -13,6 +13,10 @@ class Routes
         $this->router = $router;
     }
 
+    /**
+     * This sets up all GET method routes so they can be compared and eventually listened.
+     * @return void
+     */
     public function setupGetRoutes(): void
     {
         // Home routes
@@ -43,6 +47,10 @@ class Routes
         }, [AuthenticationMiddleware::class, 'checkAdmin']);
     }
 
+    /**
+     * This sets up all POST method routes so they can be compared and eventually listened.
+     * @return void
+     */
     public function setupPostRoutes(): void
     {
         // Logged in routes
@@ -64,15 +72,5 @@ class Routes
             // Admin comments routes
             $router->post('/comments/review/:id', 'Comment#review');
         }, [AuthenticationMiddleware::class, 'checkAdmin']);
-    }
-
-    public function setupPatchRoutes(): void
-    {
-        // Define PATCH routes here
-    }
-
-    public function setupDeleteRoutes(): void
-    {
-        // Define DELETE routes here
     }
 }

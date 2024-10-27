@@ -16,6 +16,9 @@ abstract class AbstractRepository implements RepositoryInterface
         $this->connection = new DatabaseConnection();
     }
 
+    /**
+     * @return string
+     */
     abstract protected function getTableName(): string;
 
     /**
@@ -28,7 +31,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $stmt = $this->connection->getInstance()->query($sql);
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -41,7 +44,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement = $this->connection->getInstance()->query("SELECT * FROM " . $this->getTableName());
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -56,7 +59,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -81,7 +84,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->execute($params);
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -106,7 +109,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->execute($params);
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -121,7 +124,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
 
     }
@@ -142,8 +145,11 @@ abstract class AbstractRepository implements RepositoryInterface
             foreach ($properties as $column => $value) {
                 $statement->bindValue(":$column", $value);
             }
+            if (!$statement->execute()) {
+                throw new Exception('La création de l entité a échouée: ' . implode(', ', $statement->errorInfo()));
+            }
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -171,8 +177,11 @@ abstract class AbstractRepository implements RepositoryInterface
                 $statement->bindValue(":$column", $value);
             }
             $statement->bindValue(":$primaryKeyValue", $primaryKeyValue);
+            if (!$statement->execute()) {
+                throw new \Exception('La modification de l\'entité a échoué : ' . implode(', ', $statement->errorInfo()));
+            }
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 
@@ -191,8 +200,11 @@ abstract class AbstractRepository implements RepositoryInterface
         try {
             $statement = $this->connection->getInstance()->prepare($sql);
             $statement->bindValue(":$primaryKey", $primaryKeyValue);
+            if (!$statement->execute()) {
+                throw new \Exception('La suppression de l\'entité a échoué : ' . implode(', ', $statement->errorInfo()));
+            }
         } catch (Exception $e) {
-            throw new Exception("Something went wrong. Try again later.");
+            throw new Exception("Une erreur s'est produite. Veuillez réessayer plus tard.");
         }
     }
 }

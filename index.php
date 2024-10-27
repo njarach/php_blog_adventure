@@ -18,7 +18,6 @@ $basePath = 'php_blog_adventure';
 
 $url = $serverService->getRequestUri();
 $router = new Router($url, $basePath);
-
 $routes = new Routes($router);
 
 try {
@@ -27,12 +26,6 @@ try {
         $router->listen();
     } elseif ($requestService->getRequestMethod() == 'POST') {
         $routes->setupPostRoutes();
-        $router->listen();
-    } elseif ($requestService->getRequestMethod() == 'PATCH') {
-        $routes->setupPatchRoutes();
-        $router->listen();
-    } elseif ($requestService->getRequestMethod() == 'DELETE') {
-        $routes->setupDeleteRoutes();
         $router->listen();
     }
 } catch (Exception $e) {

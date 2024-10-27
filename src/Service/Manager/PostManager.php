@@ -113,9 +113,13 @@ class PostManager
         $this->postRepository->delete($post);
     }
 
+    /**
+     * @param array $data
+     * @return array Returns an array of errors. Array is empty if no errors are found.
+     */
     public function validatePostData(array $data): array
     {
-        // Empty array, always empty when instancing
+        // Reminder : we use this to have an empty array, always empty when instancing this object
         $errors = $this->errors;
 
         if (!$this->checkPost($data['title'])) {
@@ -130,7 +134,6 @@ class PostManager
         if (!$this->checkPost($data['intro'])) {
             $errors['intro'] = "L'intro de l'article ne doit pas être vide.";
         }
-
         return $errors;
     }
 

@@ -30,8 +30,8 @@ class CommentController extends AbstractController
 
 
     /**
+     * This is used for admins to get a list of comments. They are sorted and allow admin to review them.
      * @throws Exception
-     * This is used for admins to get a list of comments. They are sorted and allow admin to review them.  
      */
     public function index(): Response
     {
