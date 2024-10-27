@@ -1,5 +1,7 @@
 # PHP BLOG
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fe3c23162fa84dcab255419c8bb108b7)](https://app.codacy.com/gh/njarach/php_blog_adventure?utm_source=github.com&utm_medium=referral&utm_content=njarach/php_blog_adventure&utm_campaign=Badge_Grade)
+
 ## Description
 
 Ce projet a été réalisé dans le cadre du projet n°5 de la formation Concepteur/Développeur d'application PHP Symfony : _Créez votre premier blog en php_. Il a été réalisé _from scratch_ et ne comprend que des librairies disponibles via composer, et Bootstrap 5.3 + Icons pour les éléments frontend.
