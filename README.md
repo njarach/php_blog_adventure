@@ -36,11 +36,14 @@ Puis, si vous utilisez Composer, lancer :
 
 Le projet nécessite une base de données pour fonctionner. Commencer par importer le fichier import.sql dans la base de données. 
 
-1. Mettre à jour le fichier config/DatabaseConnection, ligne 20 en renseignant le nom de la base de données, vos identifiants et mot de passe : 
+1. Mettre à jour le fichier config/DatabaseConnection, en renseignant le nom de la base de données, vos identifiants et mot de passe : 
 ````bash
-  self::$instance = new PDO('mysql:host=localhost;dbname=php_blog_adventure', 'root', '');
+  define('DB_HOST', 'localhost');
+  define('DB_NAME', 'php_blog_adventure');
+  define('DB_USER', 'root');
+  define('DB_PASSWORD', '');
 ````
-2. Mettre à jour le fichier src/Service/ContactService ligne 88-91 pour mettre en place l'envoi de mail. La version par défaut utilise Mailtrap, mais vous devez renseigner vos identifiants, protocole SMTP et identifiants pour effectivement permettre l'envoi de mail (formulaire de contact) :
+2. Mettre à jour le fichier src/Service/MailerSetup pour mettre en place l'envoi de mail. La version par défaut utilise Mailtrap, mais vous devez renseigner vos identifiants, protocole SMTP et identifiants pour effectivement permettre l'envoi de mail (formulaire de contact) :
 ````bash
   $mail->Host       = 'sandbox.smtp.mailtrap.io';
   $mail->SMTPAuth   = true;
