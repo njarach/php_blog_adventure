@@ -19,8 +19,8 @@ class HomeController extends AbstractController
      */
     public function home(): Response
     {
-        $this->session()->generateCsrfToken();
         $latestPost = $this->postManager->findLatestPost();
+
         return $this->render('home/home.html.twig',[
             'latestPost'=>$latestPost,
             'csrf_token'=>$this->session()->getCsrfToken()

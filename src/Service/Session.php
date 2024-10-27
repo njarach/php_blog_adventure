@@ -28,6 +28,7 @@ class Session
     }
 
     /**
+     * Retrieves the user ID from the session, if set.
      * @return int|null
      */
     public function getSessionUserId(): ?int
@@ -39,6 +40,7 @@ class Session
     }
 
     /**
+     * Sets the user ID in the session.
      * @param int $userId
      * @return void
      */
@@ -59,32 +61,34 @@ class Session
      */
     public function validateCsrfToken(): bool
     {
-        if (!hash_equals($this->session['csrf_token'], $this->request->get('csrf_token'))) return false;
-        return true;
+        $sessionToken = $this->session['csrf_token'] ?? null;
+        $requestToken = $this->request->get('csrf_token');
+
+        return $sessionToken && hash_equals($sessionToken, $requestToken);
     }
 
     /**
      * @throws Exception
      */
-    public function generateCsrfToken(): void
+    public function generateCsrfToken(): string
     {
         if (!isset($this->session['csrf_token'])) {
             try {
-                $this->session['csrf_token'] = bin2hex(random_bytes(32));
+                return $this->session['csrf_token'] = bin2hex(random_bytes(32));
             } catch (Exception $e) {
-                throw new Exception("La génération d'un token aléatoire a rencontré une erreur");
+                throw new Exception("La génération d'un token aléatoire a rencontré une erreur.");
             }
         }
+        return $this->session['csrf_token'];
     }
 
     /**
-     * @return string|null
+     * Retrieves the CSRF token from the session, generating one if it doesn't exist.
+     * @return string
+     * @throws Exception
      */
-    public function getCsrfToken(): ?string
+    public function getCsrfToken(): string
     {
-        if (!isset($this->session['csrf_token'])) {
-            return $this->session['csrf_token'];
-        }
-        return null;
+        return $this->session['csrf_token'] ?? $this->generateCsrfToken();
     }
 }

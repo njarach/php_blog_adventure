@@ -3,7 +3,7 @@
 namespace src\Service;
 
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use src\Config\MailerSetup;
 
 class ContactService
 {
@@ -69,7 +69,8 @@ class ContactService
      * @param string $email
      * @param string $phone
      * @param string $message
-     * @throws Exception
+     * @throws Exception PHPMailer Exception handler.
+     * @throws \Exception
      */
     public function sendEmail(string $firstname, string $lastname, string $email, string $phone, string $message): void
     {
@@ -82,26 +83,17 @@ class ContactService
             <p><strong>Message:</strong> $message</p>
         ";
 
-        $password = '27b62f515e05b0';
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host       = 'sandbox.smtp.mailtrap.io';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = '97032ba77b7dc6';
-        $mail->Password   = $password;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail = MailerSetup::configureMailer();
 
-        $mail->setFrom($email, "$firstname $lastname");
-        $mail->addAddress('nicolas.jarach@hotmail.com');
-
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64';
-
-        $mail->send();
+        try {
+            $mail->addAddress('nicolas.jarach@hotmail.com');
+            $mail->addReplyTo($email, "$firstname $lastname");
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->send();
+        } catch (Exception $e) {
+            throw new Exception("L'envoi du mail a échoué: " . $e->getMessage());
+        }
     }
 
     /**
