@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e29ac202133f418c829322101055a3fa)](https://app.codacy.com/gh/njarach/php_blog_adventure/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 # PHP BLOG
 
 ## Description
