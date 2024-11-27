@@ -23,8 +23,8 @@ class Route
 
     /**
      * Checks if a given URL matches the route's pattern and captures any parameters.
-     * @param string $url - The URL to match against the route pattern.
-     * @return bool - True if the URL matches the route pattern and parameters are captured; false otherwise.
+     * @param string $url The URL to match against the route pattern.
+     * @return bool True if the URL matches the route pattern and parameters are captured; false otherwise.
      */
     public function match(string $url): bool
     {

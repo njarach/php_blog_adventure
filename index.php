@@ -14,10 +14,10 @@ $serverService = new ServerService();
 $requestService = new Request();
 $sessionService = new Session();
 
-$basePath = 'php_blog_adventure';
+const basePath = 'php_blog_adventure';
 
 $url = $serverService->getRequestUri();
-$router = new Router($url, $basePath);
+$router = new Router($url, basePath);
 $routes = new Routes($router);
 
 try {

@@ -108,6 +108,9 @@ class Router
     public function listen(): void
     {
         try {
+            /**
+             * @var Route[] $routes
+             */
             $routes = $this->routes[$this->request->getRequestMethod()];
             foreach ($routes as $route) {
                 if ($route->match($this->url)) {
