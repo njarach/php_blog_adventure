@@ -88,7 +88,7 @@ class AuthenticationService
         if (!$this->checkData($password)) {
             $errors['password'] = 'Veuillez renseigner un mot de passe valide.';
         }
-        return [$errors,$username,$email,$password];
+        return [$errors,$password,$email,$username];
     }
 
     /**
