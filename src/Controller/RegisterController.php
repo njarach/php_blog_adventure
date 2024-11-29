@@ -35,7 +35,7 @@ class RegisterController extends AbstractController
                         'registerError'=>'L\'enregistrement a échoué. Veuillez réessayer ou contacter un administrateur si le problème persiste.'
                     ]);
                 }
-                return $this->redirect('/php_blog_adventure/posts');
+                return $this->redirect('/php_blog_adventure/login');
             } else {
                 return $this->render('/security/register.html.twig', [
                     'errors' => $errors
